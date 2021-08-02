@@ -1,0 +1,20 @@
+{
+  "common": {
+    "documentTitle": "个人主页",
+    "loading": "正在从服务器加载数据 ......",
+    "notFound": "页面不存在",
+    "goHome": "到主页"
+  },
+  "home": {
+    "title": "主页",
+    "presentation": "演示",
+    "blog": "Blog",
+    "aboutMe": "关于我",
+    "courses": "课程",
+    "admin": "管理",
+    "sign-in": "登录"
+  },
+  "course": {
+    "req": "requirement"
+  }
+}

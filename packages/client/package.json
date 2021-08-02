@@ -1,0 +1,38 @@
+{
+  "license": "MIT",
+  "private": "true",
+  "name": "@dailei/client",
+  "type": "module",
+  "version": "1.1.0",
+  "scripts": {
+    "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,mjs,json}\"",
+    "eslint": "eslint  --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
+    "stylelint": "stylelint  \"src/**/*.{jsx,tsx}\"",
+    "clean": "rimraf dist && mkdirp dist dist/www dist/local",
+    "copy:www": "cp -r public/* dist/www/",
+    "copy:local": "mkdirp dist/local/tmp && cp -r public/* dist/local/tmp",
+    "dev": "yarn clean && yarn copy:www && yarn rollup --watch -c rollup.config.www.js",
+    "dev:debug": "cp src/__debug__/*.md dist && yarn rollup --watch -c rollup.config.debug.js",
+    "inline": "yarn html-inline -i dist/local/tmp/index.html -o ../../../www-data/storage/local-presentation.html && rimraf dist/local/tmp",
+    "build:www": "yarn copy:www && yarn rollup -c rollup.config.www.js",
+    "build:local": "yarn copy:local && yarn rollup -c rollup.config.local.js && yarn inline",
+    "build:debug": "cp src/__debug__/*.md dist && yarn rollup -c rollup.config.debug.js",
+    "build": "yarn clean && yarn build:www && yarn build:local",
+    "debug": "DEBUG=* node dist/debug.js"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
+    "debug": "^4.3.2",
+    "graphql-request": "2.0.0",
+    "history": "^5.0.0",
+    "is-alphabetical": "^2.0.0",
+    "kuler": "^2.0.0",
+    "lodash": "^4.17.21",
+    "marked": "^2.1.3",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.0.0-beta.0"
+  }
+}

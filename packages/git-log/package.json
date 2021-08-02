@@ -1,0 +1,24 @@
+{
+  "license": "MIT",
+  "private": "true",
+  "name": "@dailei/git-log",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,mjs,json}\"",
+    "eslint": "eslint  --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
+    "clean": "rimraf reports && mkdirp reports",
+    "prepare": "yarn clean && node src/git-log.js && cp src/index.html reports/",
+    "inline": "yarn html-inline -i reports/index.html -o reports/git-log.html",
+    "log": "yarn prepare && yarn rollup -c rollup.config.git-log.js && yarn inline && rm reports/index.html reports/app.js && chromium reports/git-log.html"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
+    "dotenv-defaults": "^2.0.1",
+    "gitlog": "^4.0.4",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}

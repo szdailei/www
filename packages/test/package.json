@@ -1,0 +1,29 @@
+{
+  "license": "MIT",
+  "private": "true",
+  "name": "@dailei/test",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,mjs,json}\"",
+    "eslint": "eslint  --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
+    "clean:pdfs": "rimraf pdfs && mkdirp pdfs",
+    "clean:reports": "rimraf reports && mkdirp reports",
+    "clean": "yarn clean:pdfs && yarn clean:reports",
+    "prepare": "node ../../puppeteer-support-esm.js",
+    "export": "yarn clean:pdfs && yarn prepare && node src/export-all-pdfs.js",
+    "load-test": "node src/load-test/load-test.js",
+    "test": "yarn clean:reports && jest && chromium reports/jest_html_reporters.html"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "babel-jest": "^27.0.6",
+    "cli-table": "^0.3.1",
+    "dotenv-defaults": "^2.0.1",
+    "jest": "^27.0.6",
+    "jest-html-reporters": "^2.1.1",
+    "minimist": "^1.2.5",
+    "pdf-lib": "^1.16.0",
+    "puppeteer-core": "^10.1.0"
+  }
+}

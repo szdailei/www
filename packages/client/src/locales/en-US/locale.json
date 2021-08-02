@@ -1,0 +1,20 @@
+{
+  "common": {
+    "documentTitle": "Personal website",
+    "loading": "Loading data from server ......",
+    "notFound": "Not Found",
+    "goHome": "Go Home"
+  },
+  "home": {
+    "title": "Home",
+    "presentation": "Presentation",
+    "blog": "Blog",
+    "aboutMe": "About Me",
+    "courses": "Courses",
+    "admin": "Admin",
+    "sign-in": "Sign In"
+  },
+  "course": {
+    "req": "需求"
+  }
+}

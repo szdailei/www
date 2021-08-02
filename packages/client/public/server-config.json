@@ -1,0 +1,10 @@
+{
+  "apiGatewayProtocol": "http:",
+  "apiGatewayPort":8443,
+  "isApiGatewayOnStaticServer": true,
+  "apiGatewayHostName": "127.0.0.1",
+  "downloadProtocol": "http:",
+  "downloadServerPort": 8002,
+  "isDownloadServerOnStaticServer": true,
+  "downloadServerHostName": "127.0.0.111"
+}
