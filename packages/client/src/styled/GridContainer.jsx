@@ -1,21 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-function GridContainer({ gridTemplateColumns, children, ...styles }) {
-  const objStyles = {
+const GridContainer = React.forwardRef(({ ...rest }, ref) => {
+  const objStyle = {
     display: 'grid',
     alignItems: 'center',
-    gridTemplateColumns,
-    ...styles,
+    ...rest.style,
   };
-  const Styled = styled.div(objStyles);
-  return <Styled>{children}</Styled>;
-}
+  const Styled = styled.div(objStyle);
 
-GridContainer.propTypes = {
-  gridTemplateColumns: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
-};
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <Styled {...rest} ref={ref} />;
+});
 
 export default GridContainer;

@@ -82,12 +82,14 @@ function Home() {
   return (
     <Article>
       <Section
-        gridTemplateColumns="1fr"
-        gridTemplateRows="auto auto"
-        gridTemplateAreas={gridTemplateAreas}
-        fontSize="1.5em"
+        style={{
+          gridTemplateColumns: '1fr',
+          gridTemplateRows: 'auto auto',
+          gridTemplateAreas,
+          fontSize: '1.5em',
+        }}
       >
-        <Header display="grid" gridTemplateColumns="2fr 2fr 2fr 2fr 2fr 2fr 1fr" fontSize="1em">
+        <Header style={{ display: 'grid', gridTemplateColumns: '2fr 2fr 2fr 2fr 2fr 2fr 1fr', fontSize: '1em' }}>
           <Link to="/">{t('home:title')}</Link>
           <Div>{t('home:blog')}</Div>
           <Link to="/resume">{t('home:aboutMe')}</Link>

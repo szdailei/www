@@ -3,13 +3,13 @@ import { TH, TD, TR, THead, TBody, Table } from '../styled/index.js';
 import makeid from '../lib/makeid.js';
 
 function TableNode(table) {
-  const padding = '3px 6px 3px 12px';
+  const padding = '6px 16px 6px 16px';
   const backgroundColor = 'linen';
 
   const tHeaders = [];
   table.header.forEach((header) => {
     tHeaders.push(
-      <TH key={makeid()} padding={padding} backgroundColor={backgroundColor}>
+      <TH key={makeid()} style={{ padding, backgroundColor }}>
         {header}
       </TH>
     );
@@ -26,14 +26,14 @@ function TableNode(table) {
     const dataCells = [];
     rowCells.forEach((cell) => {
       dataCells.push(
-        <TD key={makeid()} padding={padding}>
+        <TD key={makeid()} style={{ padding }}>
           {cell}
         </TD>
       );
     });
 
     const trNode = isRequiredBackground ? (
-      <TR key={makeid()} backgroundColor={backgroundColor}>
+      <TR key={makeid()} style={{ backgroundColor }}>
         {dataCells}
       </TR>
     ) : (

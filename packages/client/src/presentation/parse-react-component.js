@@ -10,7 +10,7 @@ import {
   isSelfCloseTag,
   getTextExceptTheFirstTag,
 } from './parse-react-component-utils.js';
-import { CreateComponent } from './Component.jsx';
+import MDXToReactHOC from './MDXToReactHOC.jsx';
 
 const contract = debug(REACT_PARSE);
 
@@ -27,7 +27,7 @@ function finishReactComponent(ctx) {
   }
 
   if (ctx.reactRoot.isFinished) {
-    const rootComponent = CreateComponent(ctx.reactRoot);
+    const rootComponent = MDXToReactHOC.createComponent(ctx.reactRoot)
     ctx.pageChildren.push(rootComponent);
     ctx.reactRoot = null;
   }

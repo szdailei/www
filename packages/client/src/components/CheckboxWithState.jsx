@@ -1,22 +1,24 @@
+/* eslint-disable react/forbid-prop-types */
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox } from '../styled/index.js';
 
-function CheckboxWithState({ checked, ...styles }) {
-  const [state, setState] = useState(checked);
-  const clickCheckbox = useCallback(
+const CheckboxWithState = React.forwardRef(({ label, checked, ...rest }, ref) => {
+  const [stateOfChecked, setStateOfChecked] = useState(checked);
+  const onClick = useCallback(
     (event) => {
       event.preventDefault();
-      setState(!state);
+      setStateOfChecked(!stateOfChecked);
     },
-    [state]
+    [stateOfChecked]
   );
 
   // eslint-disable-next-line react/jsx-props-no-spreading
-  return <Checkbox checked={state} onClick={clickCheckbox} {...styles} />;
-}
+  return <Checkbox {...rest} label={label} checked={stateOfChecked} onClick={onClick} ref={ref} />;
+});
 
 CheckboxWithState.propTypes = {
+  label: PropTypes.string.isRequired,
   checked: PropTypes.bool,
 };
 

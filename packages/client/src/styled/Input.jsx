@@ -1,29 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-function Input({ type, accept, onChange, placeholder, ...styles }) {
-  const objStyles = {
+const Input = React.forwardRef(({ ...rest }, ref) => {
+  const objStyle = {
     cursor: 'text',
     outline: 0,
     borderStyle: 'none none solid none',
-    ...styles,
+    ...rest.style,
   };
-  const Styled = styled.input(objStyles);
-  return <Styled type={type} accept={accept} onChange={onChange} placeholder={placeholder} />;
-}
-
-Input.propTypes = {
-  type: PropTypes.string,
-  accept: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  placeholder: PropTypes.string,
-};
-
-Input.defaultProps = {
-  type: 'text',
-  accept: null,
-  placeholder: null,
-};
+  const Styled = styled.input(objStyle);
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <Styled {...rest} ref={ref} />;
+});
 
 export default Input;

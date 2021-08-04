@@ -1,11 +1,10 @@
 /* eslint-disable no-param-reassign */
-import { getAttributes, getTagName } from './parse-react-component-utils.js';
-import { CreateComponent } from './Component.jsx';
+import { getStyle, getTagName } from './parse-react-component-utils.js';
+import MDXToReactHOC from './MDXToReactHOC.jsx';
 
 function createRoot() {
   return {
     tagName: null,
-    attributes: null,
     isFinished: false,
     curent: null,
     parent: null,
@@ -17,7 +16,7 @@ function createRoot() {
 function createNode(text) {
   const node = createRoot();
   node.tagName = getTagName(text);
-  node.attributes = getAttributes(text);
+  node.style = getStyle(text);
   node.isFinished = false;
 
   return node;
@@ -40,7 +39,7 @@ function addNode(root, node) {
 function finishNode(root, node) {
   node.isFinished = true;
 
-  const component = CreateComponent(node);
+  const component = MDXToReactHOC.createComponent(node);
   node.component = component;
 
   if (node.parent) node.parent.children.push(component);

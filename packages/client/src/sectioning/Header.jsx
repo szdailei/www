@@ -1,21 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-function Header({ children, ...styles }) {
-  const objStyles = {
+const Header = React.forwardRef(({ ...rest }, ref) => {
+  const objStyle = {
     gridArea: 'header',
     marginBottom: '0.4em',
     fontSize: '1.4em',
     fontWeight: '700',
-    ...styles,
+    ...rest.style,
   };
-  const StyledHeader = styled.header(objStyles);
-  return <StyledHeader>{children}</StyledHeader>;
-}
-
-Header.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+  const Styled = styled.header(objStyle);
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <Styled {...rest} ref={ref} />;
+});
 
 export default Header;

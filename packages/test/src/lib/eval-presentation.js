@@ -1,3 +1,12 @@
+import config from '../config.js';
+
+async function waitForDone(page) {
+  const maxTimeout = 5000;
+  await page.waitForSelector(config.LOADED_TAG, {
+    timeout: maxTimeout,
+  });
+}
+
 async function getFileNames(page) {
   const elements = await page.$$('a');
   const result = [];
@@ -17,6 +26,11 @@ async function getLinkByFileName(page, name) {
     if (name === result) return elements[i];
   }
   return null;
+}
+
+async function getDocumentHeight(page) {
+  const height = await page.evaluate(() => document.documentElement.scrollHeight);
+  return height;
 }
 
 async function getCurrentPageNum(page) {
@@ -76,12 +90,14 @@ async function isTitleExist(page) {
 }
 
 export {
+  waitForDone,
   getFileNames,
   getLinkByFileName,
   getCurrentPageNum,
   getDocumentTitle,
   getTextContentById,
   getTotalPagesNum,
+  getDocumentHeight,
   isFooterHidden,
   isFullscreen,
   isTitleExist,

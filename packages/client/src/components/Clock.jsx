@@ -1,7 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import { Span } from '../styled/index.js';
 
-function Clock({ ...styles }) {
+const Clock = React.forwardRef(({ ...props }, ref) => {
   const [date, setDate] = useState(new Date());
 
   useEffect(() => {
@@ -13,7 +14,11 @@ function Clock({ ...styles }) {
   });
 
   // eslint-disable-next-line react/jsx-props-no-spreading
-  return <Span {...styles}>🕒{date.toLocaleTimeString()} </Span>;
-}
+  return (
+    <Span {...props} ref={ref}>
+      🕒{date.toLocaleTimeString()}
+    </Span>
+  );
+});
 
 export default Clock;

@@ -31,19 +31,15 @@ function SignUp({ callback }) {
 
   return (
     <FlexContainer>
-      <GridContainer gridTemplateColumns="3fr  3fr 3fr" marginTop="2em">
-        <Div textAlign="right" marginRight="1em" fontSize="1.5em">
-          Username
-        </Div>
-        <Input onChange={inputUsername} fontSize="1.5em" placeholder="Username" />
+      <GridContainer style={{ gridTemplateColumns: '3fr 3fr 3fr', marginTop: '2em' }}>
+        <Div style={{ textAlign: 'right', marginRight: '1em', fontSize: '1.5em' }}>Username</Div>
+        <Input onChange={inputUsername} style={{ fontSize: '1.5em' }} placeholder="Username" />
       </GridContainer>
-      <GridContainer gridTemplateColumns="3fr  3fr 3fr" marginTop="2em">
-        <Div textAlign="right" marginRight="1em" fontSize="1.5em">
-          Password
-        </Div>
-        <Input onChange={inputPassword} fontSize="1.5em" placeholder="Password" />
+      <GridContainer style={{ gridTemplateColumns: '3fr 3fr 3fr', marginTop: '2em' }}>
+        <Div style={{ textAlign: 'right', marginRight: '1em', fontSize: '1.5em' }}>Password</Div>
+        <Input onChange={inputPassword} style={{ fontSize: '1.5em' }} placeholder="Password" />
       </GridContainer>
-      <Button margin="auto" onClick={submit} marginTop="2em">
+      <Button onClick={submit} style={{ marginTop: '2em' }}>
         Sign Up
       </Button>
     </FlexContainer>

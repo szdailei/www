@@ -7,8 +7,6 @@ const config = {
   VIEWPORT: {
     width: 1920,
     height: 1080,
-    expectedPdfWidth: 1440,
-    expectedPdfHeight: 810,
   },
   FONT_SIZE: 16,
 };

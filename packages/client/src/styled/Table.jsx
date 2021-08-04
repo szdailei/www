@@ -1,69 +1,45 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-function TH({ children, ...styles }) {
-  const Styled = styled.th(styles);
-  return <Styled>{children}</Styled>;
-}
+const TH = React.forwardRef(({ ...rest }, ref) => {
+  const Styled = styled.th(rest.style);
+  return <Styled {...rest} ref={ref} />;
+});
 
-TH.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+const TD = React.forwardRef(({ ...rest }, ref) => {
+  const Styled = styled.td(rest.style);
+  return <Styled {...rest} ref={ref} />;
+});
 
-function TD({ children, ...styles }) {
-  const Styled = styled.td(styles);
-  return <Styled>{children}</Styled>;
-}
-
-TD.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-function TR({ children, ...styles }) {
-  const objStyles = {
+const TR = React.forwardRef(({ ...rest }, ref) => {
+  const objStyle = {
     borderBottom: '1px solid',
-    ...styles,
+    ...rest.style,
   };
 
-  const Styled = styled.tr(objStyles);
-  return <Styled>{children}</Styled>;
-}
+  const Styled = styled.tr(objStyle);
+  return <Styled {...rest} ref={ref} />;
+});
 
-TR.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+const THead = React.forwardRef(({ ...rest }, ref) => {
+  const Styled = styled.thead(rest.style);
+  return <Styled {...rest} ref={ref} />;
+});
 
-function THead({ children, ...styles }) {
-  const Styled = styled.thead(styles);
-  return <Styled>{children}</Styled>;
-}
+const TBody = React.forwardRef(({ ...rest }, ref) => {
+  const Styled = styled.tbody(rest.style);
+  return <Styled {...rest} ref={ref} />;
+});
 
-THead.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-function TBody({ children, ...styles }) {
-  const Styled = styled.tbody(styles);
-  return <Styled>{children}</Styled>;
-}
-
-TBody.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-function Table({ children, ...styles }) {
-  const objStyles = {
+const Table = React.forwardRef(({ ...rest }, ref) => {
+  const objStyle = {
     borderCollapse: 'collapse',
-    ...styles,
+    ...rest.style,
   };
 
-  const Styled = styled.table(objStyles);
-  return <Styled>{children}</Styled>;
-}
-
-Table.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+  const Styled = styled.table(objStyle);
+  return <Styled {...rest} ref={ref} />;
+});
 
 export { TH, TD, TR, THead, TBody, Table };

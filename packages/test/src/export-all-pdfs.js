@@ -3,7 +3,7 @@ import fs from 'fs';
 import dotenv from 'dotenv-defaults';
 import puppeteer from 'puppeteer-core/lib/esm/puppeteer/node.js';
 import config from './config.js';
-import { getFileNames, getLinkByFileName, getTextContentById } from './lib/eval-presentation.js';
+import { waitForDone, getFileNames, getLinkByFileName, getTextContentById } from './lib/eval-presentation.js';
 import { gotoCourses } from './lib/goto-page.js';
 import { pdfByCoursesPage } from './lib/pdf.js';
 
@@ -44,7 +44,7 @@ async function createIntroMdx(fileNames) {
     const page = await gotoCourses(browser, config);
     const link = await getLinkByFileName(page, fileNames[i]);
     await link.click();
-    await page.waitForSelector(config.LOADED_TAG);
+    await waitForDone(page);
     const title = await getTextContentById(page, '#title');
     titles += `- ${title}\n`;
     titlesArray.push(title);
@@ -91,6 +91,7 @@ async function copyToTempFile(origFileNames, tempFileNames) {
   const browser = await puppeteer.launch({
     headless: true,
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    defaultViewport: { ...config.VIEWPORT },
   });
 
   const page = await gotoCourses(browser, config);

@@ -4,21 +4,26 @@ import { Div } from '../styled/index.js';
 import Clock from './Clock.jsx';
 import Timer from './Timer.jsx';
 
-function ClockOrTimer({ ...styles }) {
-  const [state, setState] = useState(true);
+const ClockOrTimer = React.forwardRef(({ ...rest }, ref) => {
+  const objStyle = {
+    cursor: 'pointer',
+    ...rest.style,
+  };
+
+  const [isClock, setIsClock] = useState(true);
   const onClick = useCallback(
     (event) => {
       event.preventDefault();
-      setState(!state);
+      setIsClock(!isClock);
     },
-    [state]
+    [isClock]
   );
 
   return (
-    <Div onClick={onClick} cursor="pointer">
-      {state ? <Clock {...styles} /> : <Timer {...styles} />}
+    <Div {...rest} onClick={onClick} style={objStyle} ref={ref}>
+      {isClock ? <Clock /> : <Timer />}
     </Div>
   );
-}
+});
 
 export default ClockOrTimer;

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Span } from '../styled/index.js';
 
-function Timer({ ...styles }) {
+function Timer(props) {
   const START_TIME = 0;
   const [counter, setCounter] = useState(START_TIME);
 
@@ -20,7 +20,7 @@ function Timer({ ...styles }) {
   });
 
   return (
-    <Span {...styles}>
+    <Span {...props}>
       ⏱️{timer.minutes.toString().padStart(2, '0')}:{timer.seconds.toString().padStart(2, '0')}
     </Span>
   );

@@ -1,18 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-function Main({ children, ...styles }) {
-  const objStyles = {
+const Main = React.forwardRef(({ ...rest }, ref) => {
+  const objStyle = {
     gridArea: 'main',
-    ...styles,
+    ...rest.style,
   };
-  const StyledMain = styled.main(objStyles);
-  return <StyledMain>{children}</StyledMain>;
-}
+  const Styled = styled.main(objStyle);
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <Styled {...rest} ref={ref} />;
+});
 
-Main.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export default Main;

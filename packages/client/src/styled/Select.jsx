@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -12,16 +13,18 @@ roles.forEach((role, key) => {
 });
 <Select onChange={selectRole} options={options} />
 */
-function Select({ onChange, options, ...styles }) {
-  const objStyles = {
-    ...styles,
-  };
-  const Styled = styled.select(objStyles);
-  return <Styled onChange={onChange}>{options}</Styled>;
-}
+
+const Select = React.forwardRef(({ options, ...rest }, ref) => {
+  const Styled = styled.select(rest.style);
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return (
+    <Styled {...rest} ref={ref}>
+      {options}
+    </Styled>
+  );
+});
 
 Select.propTypes = {
-  onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(PropTypes.node).isRequired,
 };
 

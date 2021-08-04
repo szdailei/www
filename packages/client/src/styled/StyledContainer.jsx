@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-function StyledContainer({ onClick, children, disabled, ...styles }) {
-  let objStyles;
+const StyledContainer = React.forwardRef(({ disabled, ...rest }, ref) => {
+  let objStyle;
   if (disabled) {
-    objStyles = {
-      ...styles,
+    objStyle = {
+      ...rest.style,
 
       cursor: 'not-allowed',
       backgroundColor: 'rgba(0, 0, 0, 0.06)',
@@ -14,20 +14,18 @@ function StyledContainer({ onClick, children, disabled, ...styles }) {
       opacity: '0.5',
     };
   } else {
-    objStyles = { ...styles };
+    objStyle = { ...rest.style };
   }
-  const Styled = styled.div(objStyles);
-  return <Styled onClick={onClick}>{children}</Styled>;
-}
+  const Styled = styled.div(objStyle);
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <Styled {...rest} ref={ref} />;
+});
 
 StyledContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-  onClick: PropTypes.func,
   disabled: PropTypes.bool,
 };
 
 StyledContainer.defaultProps = {
-  onClick: null,
   disabled: false,
 };
 

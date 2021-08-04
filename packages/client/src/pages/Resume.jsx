@@ -25,25 +25,21 @@ function Experiences({ experiences }) {
   const children = [];
   experiences.forEach((experience) => {
     const child = (
-      <StyledContainer key={makeid()} marginLeft="2em">
-        <Div fontSize="20px" fontWeight="600">
-          {experience.company}
-        </Div>
-        <GridContainer gridTemplateColumns="2fr 3fr" marginLeft="2.2em">
+      <StyledContainer key={makeid()} style={{ marginLeft: '2em' }}>
+        <Div style={{ fontSize: '20px', fontWeight: '600' }}>{experience.company}</Div>
+        <GridContainer style={{ gridTemplateColumns: '2fr 3fr', marginLeft: '2.2em' }}>
           <Div>{experience.timePeriod}</Div>
           <Div>{experience.position}</Div>
         </GridContainer>
-        <Div textIndent="2.2em">{experience.description}</Div>
+        <Div style={{ textIndent: '2.2em' }}>{experience.description}</Div>
       </StyledContainer>
     );
     children.push(child);
   });
 
   return (
-    <StyledContainer marginTop="8px">
-      <Div fontSize="22px" fontWeight="800">
-        工作经历
-      </Div>
+    <StyledContainer style={{ marginTop: '8px' }}>
+      <Div style={{ fontSize: '22px', fontWeight: '800' }}>工作经历</Div>
       {children}
     </StyledContainer>
   );
@@ -57,11 +53,9 @@ function Educations({ educations }) {
   const children = [];
   educations.forEach((education) => {
     const child = (
-      <StyledContainer key={makeid()} marginLeft="2em">
-        <Div fontSize="20px" fontWeight="600">
-          {education.school}
-        </Div>
-        <GridContainer gridTemplateColumns="4fr 1fr 5fr" marginLeft="2.2em">
+      <StyledContainer key={makeid()} style={{ marginLeft: '2em' }}>
+        <Div style={{ fontSize: '20px', fontWeight: '600' }}>{education.school}</Div>
+        <GridContainer style={{ gridTemplateColumns: '4fr 1fr 5fr', marginLeft: '2.2em' }}>
           <Div>{education.timePeriod}</Div>
           <Div>{education.degree}</Div>
           <Div>{education.description}</Div>
@@ -72,10 +66,8 @@ function Educations({ educations }) {
   });
 
   return (
-    <StyledContainer marginTop="8px">
-      <Div fontSize="22px" fontWeight="800">
-        教育经历
-      </Div>
+    <StyledContainer style={{ marginTop: '8px' }}>
+      <Div style={{ fontSize: '22px', fontWeight: '800' }}>教育经历</Div>
       {children}
     </StyledContainer>
   );
@@ -89,7 +81,7 @@ function Skills({ skills }) {
   const children = [];
   skills.forEach((skill) => {
     const child = (
-      <Span key={makeid()} marginLeft="2.2em">
+      <Span key={makeid()} style={{ marginLeft: '2.2em' }}>
         {skill.name}
       </Span>
     );
@@ -97,10 +89,8 @@ function Skills({ skills }) {
   });
 
   return (
-    <StyledContainer marginTop="8px">
-      <Div fontSize="22px" fontWeight="800" textIndent="0">
-        技能专长
-      </Div>
+    <StyledContainer style={{ marginTop: '8px' }}>
+      <Div style={{ fontSize: '22px', fontWeight: '800', textIndent: '0' }}>技能专长</Div>
       {children}
     </StyledContainer>
   );
@@ -123,22 +113,19 @@ function Resume() {
 
   const resume = JSON.parse(data.resume);
   return (
-    <Article margin="56px 48px 48px 64px">
-      <Section gridTemplateColumns="1fr" gridTemplateRows="auto auto" gridTemplateAreas={gridTemplateAreas}>
-        <Header fontWeight="500">
-          <GridContainer gridTemplateColumns="2fr 2fr 3fr">
+    <Article style={{ margin: '56px 48px 48px 64px' }}>
+      <Section style={{ gridTemplateColumns: '1fr', gridTemplateRows: 'auto auto', gridTemplateAreas }}>
+        <Header>
+          <GridContainer style={{ gridTemplateColumns: '2fr 2fr 3fr' }}>
             <Abbr
               onClick={gotoPdfUrl}
               title="GotoPdfUrl"
-              cursor="pointer"
-              fontSize="2em"
-              letterSpacing="0.5em"
-              marginLeft="0"
+              style={{ cursor: 'pointer', fontSize: '2em', letterSpacing: '0.5em', marginLeft: '0' }}
             >
               {resume.name}
             </Abbr>
-            <Div fontSize="1.2em">{resume.position}</Div>
-            <StyledContainer fontSize="20px">
+            <Div style={{ fontSize: '1.2em' }}>{resume.position}</Div>
+            <StyledContainer style={{ fontSize: '20px' }}>
               <Div>
                 <span role="img" aria-labelledby="Send a love letter">
                   ✉️
@@ -155,10 +142,10 @@ function Resume() {
           </GridContainer>
         </Header>
         <Main>
-          <Div textIndent="2.21em">{resume.about}</Div>
+          <Div style={{ textIndent: '2.21em' }}>{resume.about}</Div>
           <Experiences experiences={resume.experiences} />
           <Educations educations={resume.educations} />
-          <Skills marginLeft="2.2em" skills={resume.skills} />
+          <Skills style={{ marginLeft: '2.2em' }} skills={resume.skills} />
         </Main>
       </Section>
     </Article>

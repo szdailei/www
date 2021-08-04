@@ -53,13 +53,10 @@ pdf文件的页数等于胶片的页数，宽度和高度是屏幕的75%。`;
     async () => {
       await setFontSizes(page, config.FONT_SIZE);
       const fileName = firstFileName.substring(0, firstFileName.lastIndexOf('.'));
-      const options = {
-        path: `${config.PDFS_DIR}${fileName}.pdf`,
-        ...config.VIEWPORT,
-      };
-      await exportPdf(page, options, config);
+      const pdfFileName = `${config.PDFS_DIR}${fileName}.pdf`;
+      await exportPdf(page, pdfFileName, config.VIEWPORT);
     },
-    8000
+    30000
   );
 });
 

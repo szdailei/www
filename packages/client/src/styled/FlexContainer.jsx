@@ -1,20 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-function FlexContainer({ children, ...styles }) {
-  const objStyles = {
+const FlexContainer = React.forwardRef(({ ...rest }, ref) => {
+  const objStyle = {
     display: 'flex',
     flexDirection: 'column',
     flexFlow: 'column wrap',
-    ...styles,
+    ...rest.style,
   };
-  const Styled = styled.div(objStyles);
-  return <Styled>{children}</Styled>;
-}
-
-FlexContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+  const Styled = styled.div(objStyle);
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <Styled {...rest} ref={ref} />;
+});
 
 export default FlexContainer;

@@ -7,7 +7,7 @@ import HtmlNode from './HtmlNode.jsx';
 import TableNode from './TableNode.jsx';
 
 function MarkdownNode(token, children, parent) {
-  const hover = { fontWeight: 900, outline: '1px solid' };
+  const hover = { '&:hover': { fontWeight: 900, outline: '1px solid' } };
   const tokenText = trim(token.text);
   let node;
 
@@ -31,13 +31,13 @@ function MarkdownNode(token, children, parent) {
             element = <br />;
           }
           codes.push(
-            <Div key={makeid()} hover={hover}>
+            <Div key={makeid()} style={hover}>
               {element}
             </Div>
           );
         });
         node = (
-          <Div key={makeid()} borderStyle="solid">
+          <Div key={makeid()} style={{ borderStyle: 'solid' }}>
             <pre key={makeid()}>{codes}</pre>
           </Div>
         );
@@ -58,7 +58,7 @@ function MarkdownNode(token, children, parent) {
       break;
     case 'image':
       node = (
-        <Div key={makeid()} display="block" margin="0" textAlign="center">
+        <Div key={makeid()} style={{ display: 'block', margin: '0', textAlign: 'center' }}>
           <img
             key={makeid()}
             src={
@@ -123,13 +123,13 @@ function MarkdownNode(token, children, parent) {
     case 'text':
       if (parent && parent.type === 'paragraph' && parent.tokens && parent.tokens.length === 1) {
         node = (
-          <P key={makeid()} hover={hover}>
+          <P key={makeid()} style={hover}>
             {children}
           </P>
         );
       } else {
         node = (
-          <Span key={makeid()} hover={hover}>
+          <Span key={makeid()} style={hover}>
             {children}
           </Span>
         );
@@ -138,6 +138,7 @@ function MarkdownNode(token, children, parent) {
     default:
       throw new TypeError(`Unknown tag of ${token.type}`);
   }
+
   return node;
 }
 

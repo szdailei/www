@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { request } from '../lib/network.js';
 import { storageWebToken } from '../lib/security.js';
-import { FlexContainer, GridContainer, Div, Button, Input } from '../styled/index.js';
+import { GridContainer, Div, Button, Input } from '../styled/index.js';
 import { Article } from '../sectioning/index.js';
 
 function SignIn() {
@@ -38,27 +38,21 @@ function SignIn() {
 
   return (
     <Article>
-      <FlexContainer>
-        <Div textAlign="center">{serverResponse}</Div>
-        <GridContainer gridTemplateColumns="3fr  3fr 3fr" marginTop="2em">
-          <Div textAlign="right" marginRight="1em" fontSize="1.5em">
-            Username
-          </Div>
-          <Input onChange={inputUsername} fontSize="1.5em" placeholder="Username" />
-        </GridContainer>
-        <GridContainer gridTemplateColumns="3fr  3fr 3fr" marginTop="2em">
-          <Div textAlign="right" marginRight="1em" fontSize="1.5em">
-            Password
-          </Div>
-          <Input onChange={inputPassword} fontSize="1.5em" placeholder="Password" />
-        </GridContainer>
-        <GridContainer gridTemplateColumns="1fr 1fr" marginTop="2em">
-          <Button onClick={signIn} marginLeft="auto" marginRight="4em">
-            Sign In
-          </Button>
-          <Button onClick={cancel}>Cancel</Button>
-        </GridContainer>
-      </FlexContainer>
+      <Div style={{ textAlign: 'center' }}>{serverResponse}</Div>
+      <GridContainer style={{ gridTemplateColumns: '3fr 3fr 3fr', marginTop: '2em' }}>
+        <Div style={{ textAlign: 'right', marginRight: '1em', fontSize: '1.5em' }}>Username</Div>
+        <Input onChange={inputUsername} style={{ fontSize: '1.5em' }} placeholder="Username" />
+      </GridContainer>
+      <GridContainer style={{ gridTemplateColumns: '3fr 3fr 3fr', marginTop: '2em' }}>
+        <Div style={{ textAlign: 'right', marginRight: '1em', fontSize: '1.5em' }}>Password</Div>
+        <Input onChange={inputPassword} style={{ fontSize: '1.5em' }} placeholder="Password" />
+      </GridContainer>
+      <GridContainer style={{ gridTemplateColumns: '1fr 1fr', marginTop: '2em' }}>
+        <Button onClick={signIn} style={{ marginLeft: 'auto', marginRight: '4em' }}>
+          Sign In
+        </Button>
+        <Button onClick={cancel}>Cancel</Button>
+      </GridContainer>
     </Article>
   );
 }

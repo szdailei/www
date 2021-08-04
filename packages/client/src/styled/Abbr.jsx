@@ -1,30 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-function Abbr({ onClick, title, children, ...styles }) {
-  const objStyles = {
+const Abbr = React.forwardRef(({ ...rest }, ref) => {
+  const objStyle = {
     textDecoration: 'none',
-    ...styles,
+    ...rest.style,
   };
-  const Styled = styled.abbr(objStyles);
-  return (
-    <Styled title={title} onClick={onClick}>
-      {children}
-    </Styled>
-  );
-}
 
-Abbr.propTypes = {
-  onClick: PropTypes.func,
-  title: PropTypes.string,
-  children: PropTypes.node,
-};
-
-Abbr.defaultProps = {
-  onClick: null,
-  title: '',
-  children: '',
-};
+  const Styled = styled.abbr(objStyle);
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <Styled {...rest} ref={ref} />;
+});
 
 export default Abbr;

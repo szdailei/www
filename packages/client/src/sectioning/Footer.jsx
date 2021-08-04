@@ -1,21 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-function Footer({ children, ...styles }) {
-  const objStyles = {
+const Footer = React.forwardRef(({ ...rest }, ref) => {
+  const objStyle = {
     gridArea: 'footer',
-    marginTop: '0.3em',
-    marginBottom: '0.3em',
     fontSize: '0.7em',
-    ...styles,
+    ...rest.style,
   };
-  const StyledFooter = styled.footer(objStyles);
-  return <StyledFooter>{children}</StyledFooter>;
-}
-
-Footer.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+  const Styled = styled.footer(objStyle);
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <Styled {...rest} ref={ref} />;
+});
 
 export default Footer;

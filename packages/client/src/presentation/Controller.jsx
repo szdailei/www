@@ -10,7 +10,7 @@ function toggleFullScreen() {
   }
 }
 
-function Controller({ data }) {
+function Controller({ data, ...rest }) {
   const [currentPageCount, setCurrentPageCount] = useState(0);
   const [isAllPages, setIsAllPages] = useState(false);
 
@@ -112,7 +112,8 @@ function Controller({ data }) {
   }, [onKeyUp, onMouseUp]);
 
   const showData = isAllPages ? data : data[currentPageCount];
-  return <Article fontSize="1.8em">{showData}</Article>;
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <Article {...rest}>{showData}</Article>;
 }
 
 Controller.propTypes = {

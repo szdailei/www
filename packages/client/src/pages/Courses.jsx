@@ -17,7 +17,7 @@ function Courses() {
   data.getCourses.forEach((course) => {
     const href = `#${PRESENTATION_PATH}/${course.toString()}`;
     const child = (
-      <StyledContainer key={makeid()} margin="0.3em 0 0 2em" fontSize="1.5em" letterSpacing="2px">
+      <StyledContainer key={makeid()} style={{ margin: '0.3em 0 0 2em', fontSize: '1.5em', letterSpacing: '2px' }}>
         <a href={href}>{course.toString()}</a>
       </StyledContainer>
     );
@@ -30,9 +30,9 @@ function Courses() {
   `;
   return (
     <Article>
-      <Section gridTemplateColumns="1fr" gridTemplateRows="auto auto" gridTemplateAreas={gridTemplateAreas}>
+      <Section style={{ gridTemplateColumns: '1fr', gridTemplateRows: 'auto auto', gridTemplateAreas }}>
         <Header>Courses List</Header>
-        <Main marginTop="1em">{children}</Main>
+        <Main style={{ marginTop: '1em' }}>{children}</Main>
       </Section>
     </Article>
   );

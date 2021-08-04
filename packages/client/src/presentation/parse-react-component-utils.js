@@ -1,4 +1,5 @@
 import { isAlphabetical } from 'is-alphabetical';
+import { trim } from '../lib/markdown.js';
 
 function getTagName(text) {
   let tagName = '';
@@ -65,51 +66,52 @@ function getTextExceptTheFirstTag(text) {
   return parseText(text, tokens);
 }
 
-function removeQuote(text) {
-  let result = '';
-  for (let i = 0; i < text.length; i += 1) {
-    if (text[i] !== '"' && text[i] !== "'") {
-      result += text[i];
-    }
-  }
+function removeQuoteAtBeginningAndEnd(text) {
+  let result = trim(text);
+  if (result[0] === '"' || result[0] === "'") result = result.slice(1);
+  if (result[result.length - 1] === '"' || result[result.length - 1] === "'")
+    result = result.slice(0, result.length - 1);
   return result;
 }
 
-function getAttributes(text) {
-  const attributes = {};
+function getStyle(text) {
+  const style = {};
   let key;
   let value;
-  let attrsStr;
+  let styleStr;
 
-  const firstTextContent = getTheFirstTagTextContent(text);
-  if (!firstTextContent) return {};
+  const firstTextContent = trim(getTheFirstTagTextContent(text));
 
   const { length } = firstTextContent;
   if (length >= 2 && firstTextContent[length - 1] === '/' && firstTextContent[length - 2] === ' ') {
     // remove '/' if it is self closing tag
-    attrsStr = firstTextContent.slice(0, -2);
+    styleStr = firstTextContent.slice(0, -2);
   } else {
-    attrsStr = firstTextContent;
+    styleStr = firstTextContent;
   }
 
-  const tokens = attrsStr.split(' ');
+  const tokens = styleStr.split(' ');
 
   // The first is tag name, skip
   for (let i = 1; i < tokens.length; i += 1) {
     const pair = tokens[i].split('=');
     if (pair.length === 2) {
       key = pair[0].trim();
-      value = pair[1].trim();
+      value = removeQuoteAtBeginningAndEnd(pair[1]);
+
       if (value === 'true') value = true;
       if (value === 'false') value = false;
-      attributes[key] = value;
+      style[key] = value;
     }
     if (pair.length === 1) {
-      const mergedValue = removeQuote(`${value} ${pair}`);
-      attributes[key] = mergedValue;
+      const mergedValue = removeQuoteAtBeginningAndEnd(`${value} ${pair}`);
+      style[key] = mergedValue;
     }
   }
-  return attributes;
+
+  delete style.undefined;
+
+  return style;
 }
 
 function getTextFromChildren(children) {
@@ -171,7 +173,7 @@ function isReactTagAtBegginning(text) {
 }
 
 export {
-  getAttributes,
+  getStyle,
   getTagName,
   getTheFirstTagTextContent,
   getTextExceptTheFirstTag,

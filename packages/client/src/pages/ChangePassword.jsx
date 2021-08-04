@@ -32,10 +32,10 @@ function ChangePassword({ callback, name }) {
     <Article>
       <Div>Change Password For </Div>
       <Div>{name}</Div>
-      <Div textAlign="center" marginTop="8em">
-        <Input onChange={inputPassword} fontSize="1.5em" placeholder="New Password" />
-        <GridContainer gridTemplateColumns="1fr 1fr" marginTop="2em">
-          <Button onClick={submitNewPassword} marginLeft="auto" marginRight="4em">
+      <Div style={{ textAlign: 'center', marginTop: '8em' }}>
+        <Input onChange={inputPassword} style={{ fontSize: '1.5em', placeholder: 'New Password' }} />
+        <GridContainer style={{ gridTemplateColumns: '1fr 1fr', marginTop: '2em' }}>
+          <Button onClick={submitNewPassword} style={{ marginLeft: 'auto', marginRight: '4em' }}>
             Submit
           </Button>
           <Button onClick={cancel}>Cancel</Button>

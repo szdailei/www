@@ -31,8 +31,8 @@ function RolePermissions({ roles, permissions }) {
     });
 
     const child = (
-      <StyledContainer key={makeid()} marginLeft="2em">
-        <GridContainer gridTemplateColumns="1fr  1fr 1fr 1fr 1fr" fontSize="1em">
+      <StyledContainer key={makeid()} style={{ marginLeft: '2em' }}>
+        <GridContainer style={{ gridTemplateColumns: '1fr  1fr 1fr 1fr 1fr', fontSize: '1em' }}>
           <Div>{json.id}</Div>
           <Div>{json.name}</Div>
           <Div>{functionNames}</Div>
@@ -85,13 +85,13 @@ function Users({ callback, onModal, users, roles }) {
   users.forEach((user) => {
     const json = JSON.parse(user);
     const child = (
-      <StyledContainer key={makeid()} marginLeft="2em">
-        <GridContainer gridTemplateColumns="1fr 1fr 1fr 1fr 1fr 1fr">
+      <StyledContainer key={makeid()} style={{ marginLeft: '2em' }}>
+        <GridContainer style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr' }}>
           <Div>{json.id}</Div>
           <Div>{json.name}</Div>
           <Div>{json.role}</Div>
           <Div>{json.permission}</Div>
-          <Select onChange={selectRole} options={options} fontSize="1em" />
+          <Select onChange={selectRole} options={options} style={{ fontSize: '1em' }} />
           <Button onClick={changePassword} value={json.name}>
             Change Password
           </Button>
@@ -106,8 +106,8 @@ function Users({ callback, onModal, users, roles }) {
   return (
     <Div>
       <h1>User List</h1>
-      <StyledContainer key={makeid()} marginLeft="2em">
-        <GridContainer gridTemplateColumns="1fr 1fr 1fr 1fr 1fr 1fr">
+      <StyledContainer key={makeid()} style={{ marginLeft: '2em' }}>
+        <GridContainer style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr' }}>
           <Div>ID</Div>
           <Div>Name</Div>
           <Div>Role</Div>
@@ -127,7 +127,7 @@ Users.propTypes = {
 };
 
 function Status({ msg }) {
-  return <Div textAlign="center">{msg}</Div>;
+  return <Div style={{ textAlign: 'center' }}>{msg}</Div>;
 }
 
 Status.propTypes = {

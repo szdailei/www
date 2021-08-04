@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 /**
@@ -9,23 +8,20 @@ const gridTemplateAreas = `
 'main'
 'footer'
 `;
-<Section gridTemplateColumns="1fr" gridTemplateRows="auto 1fr auto" gridTemplateAreas={gridTemplateAreas}>
+<Section style={{gridTemplateColumns:"1fr", gridTemplateRows:"auto 1fr auto", gridTemplateAreas:{gridTemplateAreas}}}>
     <Header>{headerData}</Header>
     <Main>{mainData}</Main>
     <Footer>{footerData}</Footer>
 </Section>
 */
-function Section({ children, ...styles }) {
-  const objStyles = {
+const Section = React.forwardRef(({ ...rest }, ref) => {
+  const objStyle = {
     display: 'grid',
-    ...styles,
+    ...rest.style,
   };
-  const StyledSection = styled.section(objStyles);
-  return <StyledSection>{children}</StyledSection>;
-}
-
-Section.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+  const Styled = styled.section(objStyle);
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <Styled {...rest} ref={ref} />;
+});
 
 export default Section;

@@ -10,9 +10,9 @@ function createFooter(ctx) {
   const visibility = ctx.hasTitleInCurrentPage ? 'hidden' : 'visible';
 
   const footer = (
-    <Footer key={makeid()} visibility={visibility} display="grid" gridTemplateColumns="1fr auto">
-      <Div justifySelf="center">{footerNote}</Div>
-      <Div marginRight="2em">{pageNum}</Div>
+    <Footer key={makeid()} style={{ visibility, display: 'grid', gridTemplateColumns: '1fr auto' }}>
+      <Div style={{ justifySelf: 'center' }}>{footerNote}</Div>
+      <Div style={{ marginRight: '2em' }}>{pageNum}</Div>
     </Footer>
   );
   return footer;
@@ -20,7 +20,7 @@ function createFooter(ctx) {
 
 function createMain(ctx) {
   const main = (
-    <Main key={makeid()} margin="16px 16px 0 24px">
+    <Main key={makeid()} style={{ margin: '16px 16px 0 24px' }}>
       {ctx.pageChildren}
     </Main>
   );
@@ -31,7 +31,7 @@ function Page(ctx) {
   const main = createMain(ctx);
   const footer = createFooter(ctx);
 
-  const pageBreakAfter = ctx.currentPageNum === ctx.totalPagesNum ? 'avoid' : 'always';
+  const breakAfter = ctx.currentPageNum === ctx.totalPagesNum ? 'avoid' : 'all';
   const gridTemplateAreas = `
       'main'
       'footer'
@@ -39,11 +39,14 @@ function Page(ctx) {
   const page = (
     <Section
       key={makeid()}
-      minHeight="100vh"
-      pageBreakAfter={pageBreakAfter}
-      gridTemplateColumns="1fr"
-      gridTemplateRows="1fr auto"
-      gridTemplateAreas={gridTemplateAreas}
+      style={{
+        minHeight: '100vh',
+        breakInside:'avoid-page',
+        breakAfter: { breakAfter },
+        gridTemplateColumns: '1fr',
+        gridTemplateRows: 'auto 0fr',
+        gridTemplateAreas,
+      }}
     >
       {main}
       {footer}
