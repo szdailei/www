@@ -1,15 +1,13 @@
 import puppeteer from 'puppeteer-core';
 import dotenv from 'dotenv-defaults';
-import { gotoFirstPresentation } from '../lib/goto-page.js';
-import setFontSizes from '../lib/set-font-sizes.js';
+import { newCoursesPage, gotoFirstCourse } from '../lib/eval-courses.js';
 import setTitle from './set-title.js';
-import forwardBackward from './forward-backward.js';
-import exportPdf from './export-pdf.js';
+import testForwardBackward from './forward-backward.js';
+import testPdfBuffers from './export-pdf.js';
 import config from '../config.js';
 
 let browser;
 let page;
-let firstFileName;
 
 const ptReq = `@pain
   20200601，代磊使用PowerPoint写作ppt文件，使用PowerPoint播放ppt文件，
@@ -33,7 +31,7 @@ describe(ptReq, () => {
   到第一页时，按动PageUp键，currentPageNum等于1。
   到第一页时，按动End键，currentPageNum等于totalPagesNum。`;
   test(forwardBackwardContr, async () => {
-    await forwardBackward(page);
+    await testForwardBackward(page);
   });
 });
 
@@ -51,10 +49,7 @@ pdf文件的页数等于胶片的页数，宽度和高度是屏幕的75%。`;
   test(
     exportPdfContr,
     async () => {
-      await setFontSizes(page, config.FONT_SIZE);
-      const fileName = firstFileName.substring(0, firstFileName.lastIndexOf('.'));
-      const pdfFileName = `${config.PDFS_DIR}${fileName}.pdf`;
-      await exportPdf(page, pdfFileName, config.VIEWPORT);
+      await testPdfBuffers(page, config.VIEWPORT, config.FONT_SIZE);
     },
     30000
   );
@@ -67,9 +62,8 @@ beforeAll(async () => {
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
   });
 
-  const result = await gotoFirstPresentation(browser, config);
-  page = result.page;
-  firstFileName = result.firstFileName;
+  page = await newCoursesPage(browser, config);
+  await gotoFirstCourse(page);
 });
 
 afterAll(async () => {

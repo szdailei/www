@@ -1,14 +1,36 @@
 /* eslint-disable no-await-in-loop */
 import fs from 'fs';
 import { PDFDocument } from 'pdf-lib';
-import { waitForDone, getLinkByFileName, getTotalPagesNum, getDocumentHeight } from './eval-presentation.js';
-import setFontSizes from './set-font-sizes.js';
+import { waitForDone, getDocumentHeight } from './eval-common.js';
+import { getTotalPagesNum } from './eval-presentation.js';
 
-async function pdfByPresentation(page, pdfFileName, defaultViewPort) {
+async function setFontSizes(page, standardSize) {
+  const client = await page.target().createCDPSession();
+  await client.send('Page.enable');
+  await client.send('Page.setFontSizes', {
+    fontSizes: {
+      standard: standardSize,
+    },
+  });
+}
+
+async function exportPdfBuffersToFile(pdfFileName, pdfBuffers, totalPagesNum) {
+  const pdfDoc = await PDFDocument.create();
+  for (let i = 0; i < totalPagesNum; i += 1) {
+    const pdfBytes = await PDFDocument.load(pdfBuffers[i]);
+    const [firstPage] = await pdfDoc.copyPages(pdfBytes, [0]);
+    pdfDoc.addPage(firstPage);
+  }
+
+  const pdfBytes = await pdfDoc.save();
+  await fs.promises.writeFile(pdfFileName, pdfBytes);
+}
+
+async function createPdfBuffers(page, totalPagesNum, defaultViewPort, fontSize) {
   const viewPort = { ...defaultViewPort };
+  await setFontSizes(page, fontSize);
   await page.keyboard.up('Home');
   await page.mouse.move(0, 0);
-  const totalPagesNum = await getTotalPagesNum(page);
 
   const pdfBuffers = [];
   for (let i = 0; i < totalPagesNum; i += 1) {
@@ -23,27 +45,16 @@ async function pdfByPresentation(page, pdfFileName, defaultViewPort) {
     }
   }
 
-  const pdfDoc = await PDFDocument.create();
-  for (let i = 0; i < totalPagesNum; i += 1) {
-    const pdfBytes = await PDFDocument.load(pdfBuffers[i]);
-    const copiedPages = await pdfDoc.copyPages(pdfBytes, [0]);
-    pdfDoc.addPage(copiedPages[0]);
-  }
-
-  const pdfBytes = await pdfDoc.save();
-  await fs.promises.writeFile(pdfFileName, pdfBytes);
+  return pdfBuffers;
 }
 
-async function pdfByCoursesPage(page, origFileName, config) {
-  const link = await getLinkByFileName(page, origFileName);
-  await link.click();
-  await waitForDone(page);
-
-  await setFontSizes(page, config.FONT_SIZE);
+async function exportPdf(page, origFileName, config) {
+  const totalPagesNum = await getTotalPagesNum(page);
   const fileNameWithoutSuffix = origFileName.substring(0, origFileName.lastIndexOf('.'));
   const pdfFileName = `${config.PDFS_DIR}${fileNameWithoutSuffix}.pdf`;
 
-  await pdfByPresentation(page, pdfFileName, config.VIEWPORT);
+  const pdfBuffers = await createPdfBuffers(page, totalPagesNum, config.VIEWPORT, config.FONT_SIZE);
+  await exportPdfBuffersToFile(pdfFileName, pdfBuffers, totalPagesNum);
 }
 
-export { pdfByPresentation, pdfByCoursesPage };
+export { createPdfBuffers, exportPdf };

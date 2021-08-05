@@ -3,20 +3,9 @@ import fs from 'fs';
 import dotenv from 'dotenv-defaults';
 import puppeteer from 'puppeteer-core/lib/esm/puppeteer/node.js';
 import config from './config.js';
-import { waitForDone, getFileNames, getLinkByFileName, getTextContentById } from './lib/eval-presentation.js';
-import { gotoCourses } from './lib/goto-page.js';
-import { pdfByCoursesPage } from './lib/pdf.js';
-
-async function exportPdf(fileName) {
-  const browser = await puppeteer.launch({
-    headless: true,
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-  });
-
-  const page = await gotoCourses(browser, config);
-  await pdfByCoursesPage(page, fileName, config);
-  await browser.close();
-}
+import { waitForDone, getTextContentById } from './lib/eval-common.js';
+import { newCoursesPage, gotoCourse, getFileNames, getLinkByFileName } from './lib/eval-courses.js';
+import { exportPdf } from './lib/pdf.js';
 
 function getMdxWithoutClock(data) {
   const lines = data.split('\n');
@@ -41,7 +30,7 @@ async function createIntroMdx(fileNames) {
       headless: true,
       executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     });
-    const page = await gotoCourses(browser, config);
+    const page = await newCoursesPage(browser, config);
     const link = await getLinkByFileName(page, fileNames[i]);
     await link.click();
     await waitForDone(page);
@@ -85,18 +74,22 @@ async function copyToTempFile(origFileNames, tempFileNames) {
   }
 }
 
-(async () => {
-  await dotenv.config();
-
+async function getOrigFileNames() {
   const browser = await puppeteer.launch({
     headless: true,
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     defaultViewport: { ...config.VIEWPORT },
   });
 
-  const page = await gotoCourses(browser, config);
+  const page = await newCoursesPage(browser, config);
   const origFileNames = await getFileNames(page);
   await browser.close();
+  return origFileNames;
+}
+
+(async () => {
+  await dotenv.config();
+  const origFileNames = await getOrigFileNames();
 
   const tempFileNames = [];
   for (let i = 0; i < origFileNames.length; i += 1) {
@@ -108,7 +101,16 @@ async function copyToTempFile(origFileNames, tempFileNames) {
   tempFileNames.push(config.INTRO_FILE);
 
   tempFileNames.forEach(async (fileName) => {
-    await exportPdf(fileName);
+    const browser = await puppeteer.launch({
+      headless: true,
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    });
+
+    const page = await newCoursesPage(browser, config);
+    await gotoCourse(page, fileName);
+    await exportPdf(page, fileName, config);
+    await browser.close();
+
     await fs.promises.unlink(`${config.COURSES_DIR}${fileName}`);
 
     if (fileName === config.INTRO_FILE) return;

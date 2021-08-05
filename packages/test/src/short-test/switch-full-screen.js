@@ -1,6 +1,6 @@
-import { isFullscreen } from '../lib/eval-presentation.js';
+import { isFullscreen } from '../lib/eval-common.js';
 
-async function switchFullScreen(page) {
+async function testSwitchFullScreen(page) {
   const status = await isFullscreen(page);
   await page.keyboard.up('KeyF');
   await page.waitForTimeout(200);
@@ -11,4 +11,4 @@ async function switchFullScreen(page) {
   expect(await isFullscreen(page)).toBe(status);
 }
 
-export default switchFullScreen;
+export default testSwitchFullScreen;

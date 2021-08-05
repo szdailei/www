@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer-core';
 import dotenv from 'dotenv-defaults';
-import { gotoFirstPresentation } from '../lib/goto-page.js';
-import switchFullScreen from './switch-full-screen.js';
+import { newCoursesPage, gotoFirstCourse } from '../lib/eval-courses.js';
+import testSwitchFullScreen from './switch-full-screen.js';
 import config from '../config.js';
 
 let browser;
@@ -11,7 +11,7 @@ const ptFullScreenReq = `全屏演示。`;
 describe(ptFullScreenReq, () => {
   const switchFullScreenStepContr = `按动F键，在全屏和非全屏之间切换。`;
   test(switchFullScreenStepContr, async () => {
-    await switchFullScreen(page);
+    await testSwitchFullScreen(page);
   });
 });
 
@@ -22,8 +22,8 @@ beforeAll(async () => {
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
   });
 
-  const result = await gotoFirstPresentation(browser, config);
-  page = result.page;
+  page = await newCoursesPage(browser, config);
+  await gotoFirstCourse(page);
 });
 
 afterAll(async () => {
