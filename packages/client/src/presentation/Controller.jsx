@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useCallback,useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Article from './Article.jsx';
 
-function Controller({ pages}) {
+function Controller({ pages }) {
   const [currentPageCount, setCurrentPageCount] = useState(0);
 
   const onKeyUp = useCallback(
@@ -75,11 +75,7 @@ function Controller({ pages}) {
   }, [onKeyUp, onMouseUp]);
 
   const showData = pages[currentPageCount];
-  return (
-    <Article>
-      {showData}
-    </Article>
-  );
+  return <Article>{showData}</Article>;
 }
 
 Controller.propTypes = {

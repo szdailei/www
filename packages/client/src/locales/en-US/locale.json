@@ -14,7 +14,7 @@
     "admin": "Admin",
     "sign-in": "Sign In"
   },
-  "course": {
-    "req": "需求"
+  "courses": {
+    "list": "Courses List"
   }
 }

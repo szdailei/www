@@ -14,7 +14,7 @@
     "admin": "管理",
     "sign-in": "登录"
   },
-  "course": {
-    "req": "requirement"
+  "courses": {
+    "list": "课程清单"
   }
 }

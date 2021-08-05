@@ -1,5 +1,6 @@
 import React from 'react';
 import makeid from '../lib/makeid.js';
+import { t } from '../i18n/index.js';
 import { useRemoteData } from '../lib/network.js';
 import { PRESENTATION_PATH } from '../lib/path.js';
 import { StyledContainer } from '../styled/index.js';
@@ -31,7 +32,7 @@ function Courses() {
   return (
     <Article>
       <Section style={{ gridTemplateColumns: '1fr', gridTemplateRows: 'auto auto', gridTemplateAreas }}>
-        <Header>Courses List</Header>
+        <Header>{t('courses:list')}</Header>
         <Main style={{ marginTop: '1em' }}>{children}</Main>
       </Section>
     </Article>
