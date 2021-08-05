@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Div, Span } from '../styled/index.js';
+import { Div, Span, Label, Input } from '../styled/index.js';
 import { Title } from '../sectioning/index.js';
 import { Appear, CheckboxWithState, Clock, Timer, ClockOrTimer, Split } from '../components/index.js';
 import makeid from '../lib/makeid.js';
@@ -29,14 +29,18 @@ function MDXToReactHOC({ children, tag, style }) {
       return <Timer style={{ ...style }} />;
     case 'ClockOrTimer':
       return <ClockOrTimer style={{ ...style }} />;
-    case 'Header':
-      return <Span style={{ fontSize: '1.4em', fontWeight: '500', ...style }}>{children}</Span>;
-    case 'Footer':
-      return <Span>{children}</Span>;
     case 'Split':
       return <Split style={{ ...style }}>{children}</Split>;
+    case 'Input':
+      // Assume all params are props, none for style
+      return <Input {...style} />;
+    case 'Label':
+      return <Label style={{ ...style }}>{children}</Label>;
     case 'Div':
       return <Div style={{ ...style }}>{children}</Div>;
+      case 'Header':
+        return <Span style={{ fontSize: '1.4em', fontWeight: '500', ...style }}>{children}</Span>;
+      case 'Footer':
     case 'Span':
       return <Span style={{ ...style }}>{children}</Span>;
     case 'Title':

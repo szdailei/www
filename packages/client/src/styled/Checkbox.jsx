@@ -1,17 +1,9 @@
-/* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
-import Div from './Div';
-import GridContainer from './GridContainer';
-
-function CheckboxSymbol({ checked }) {
-  return <Div>{checked ? '☑' : '☐'}</Div>;
-}
-
-CheckboxSymbol.propTypes = {
-  checked: PropTypes.bool.isRequired,
-};
+import GridContainer from './GridContainer.jsx';
+import CheckboxSymbol from './CheckboxSymbol.jsx';
+import Label from './Label.jsx';
 
 /**
 @example
@@ -34,15 +26,17 @@ const Checkbox = React.forwardRef(({ label, checked, right, ...rest }, ref) => {
   if (right) {
     return (
       <GridContainer {...rest} style={objStyle} ref={ref}>
-        {label}
-        <CheckboxSymbol checked={checked} />
+        <Label>
+          {label} <CheckboxSymbol checked={checked} />
+        </Label>
       </GridContainer>
     );
   }
   return (
     <GridContainer {...rest} style={objStyle} ref={ref}>
-      <CheckboxSymbol checked={checked} />
-      {label}
+      <Label>
+        <CheckboxSymbol checked={checked} /> {label}
+      </Label>
     </GridContainer>
   );
 });

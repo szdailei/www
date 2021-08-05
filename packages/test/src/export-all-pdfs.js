@@ -7,16 +7,25 @@ import { waitForDone, getTextContentById } from './lib/eval-common.js';
 import { newCoursesPage, gotoCourse, getFileNames, getLinkByFileName } from './lib/eval-courses.js';
 import { exportPdf } from './lib/pdf.js';
 
-function getMdxWithoutClock(data) {
-  const lines = data.split('\n');
+function getMdxWithoutClockAndTimer(text) {
+  const uselessTags = [
+    '<Clock></Clock>',
+    '<Clock />',
+    '<Clock>',
+    '<Timer></Timer>',
+    '<Timer />',
+    '<Timer>',
+    '<ClockOrTimer></ClockOrTimer>',
+    '<ClockOrTimer />',
+    '<ClockOrTimer>',
+  ];
+
+  const regex = new RegExp(uselessTags.join('|'), 'g');
+
+  const lines = text.split('\n');
   let result = '';
   for (let i = 0; i < lines.length; i += 1) {
-    lines[i] = lines[i].replace('<Clock></Clock>', '');
-    lines[i] = lines[i].replace('<Clock />', '');
-    lines[i] = lines[i].replace('<Timer></Timer>', '');
-    lines[i] = lines[i].replace('<Timer />', '');
-    lines[i] = lines[i].replace('<ClockOrTimer></ClockOrTimer>', '');
-    lines[i] = lines[i].replace('<ClockOrTimer />', '');
+    lines[i] = lines[i].replace(regex, '');
     result += `${lines[i]}\n`;
   }
   return result;
@@ -69,7 +78,7 @@ ${titles}
 async function copyToTempFile(origFileNames, tempFileNames) {
   for (let i = 0; i < origFileNames.length; i += 1) {
     let data = await fs.promises.readFile(`${config.COURSES_DIR}${origFileNames[i]}`, 'utf8');
-    data = getMdxWithoutClock(data);
+    data = getMdxWithoutClockAndTimer(data);
     await fs.promises.writeFile(`${config.COURSES_DIR}${tempFileNames[i]}`, data);
   }
 }
@@ -89,6 +98,7 @@ async function getOrigFileNames() {
 
 (async () => {
   await dotenv.config();
+
   const origFileNames = await getOrigFileNames();
 
   const tempFileNames = [];

@@ -1,5 +1,6 @@
 import { isAlphabetical } from 'is-alphabetical';
 import { trim } from '../lib/markdown.js';
+import emptyTags from '../lib/empty-tags.js';
 
 function getTagName(text) {
   let tagName = '';
@@ -144,6 +145,14 @@ function isOpeningTagAtBegginning(text) {
   return true;
 }
 
+function isEmptyTagAtBeginning(text) {
+  const tagName = getTagName(text);
+  for (let i = 0; i < emptyTags.length; i += 1) {
+    if (emptyTags[i] === tagName) return true;
+  }
+  return false;
+}
+
 function isClosingTagAtBeginning(text) {
   if (text[0] === '<' && text[1] === '/') return true;
   return false;
@@ -160,6 +169,8 @@ function isClosingTagAtEnd(text) {
 }
 
 function isSelfCloseTag(text) {
+  if (isEmptyTagAtBeginning(text)) return true;
+
   const firstTagTextContent = getTheFirstTagTextContent(text);
   if (firstTagTextContent[firstTagTextContent.length - 1] === '/') return true;
 
@@ -179,6 +190,7 @@ export {
   getTextExceptTheFirstTag,
   getTextFromChildren,
   isClosingTagAtBeginning,
+  isEmptyTagAtBeginning,
   isClosingTagAtEnd,
   isReactTagAtBegginning,
   isOpeningTagAtBegginning,
