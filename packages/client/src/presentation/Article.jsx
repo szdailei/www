@@ -1,13 +1,18 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
-import Controller from './Controller.jsx';
+import { Article as RealArticle } from '../sectioning/index.js';
 
-function Article({ data }) {
-  return <Controller data={data} style={{ fontSize: '1.8em' }} />;
+function Article({ children, ...rest }) {
+  return (
+    <RealArticle style={{ fontSize: '1.6em' }} {...rest}>
+      {children}
+    </RealArticle>
+  );
 }
 
 Article.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.element).isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default Article;

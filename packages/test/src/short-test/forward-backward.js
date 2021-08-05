@@ -8,13 +8,13 @@ async function testForwardBackward(page) {
   expect(await isFooterHidden(page)).toBe(await isTitleExist(page));
 
   for (count; count < totalPagesNum; count += 1) {
-    await page.keyboard.up('Space');
+    await page.keyboard.up('PageDown');
     expect(await isFooterHidden(page)).toBe(await isTitleExist(page));
     expect(await getCurrentPageNum(page)).toBe(count + 1);
   }
 
   expect(await getCurrentPageNum(page)).toBe(totalPagesNum);
-  await page.keyboard.up('Space');
+  await page.keyboard.up('PageDown');
   expect(await getCurrentPageNum(page)).toBe(totalPagesNum);
 
   await page.keyboard.up('Home');

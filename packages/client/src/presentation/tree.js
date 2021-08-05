@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { getStyle, getTagName } from './parse-react-component-utils.js';
+import { getParams, getTagName } from './parse-react-component-utils.js';
 import MDXToReactHOC from './MDXToReactHOC.jsx';
 
 function createRoot() {
@@ -16,7 +16,7 @@ function createRoot() {
 function createNode(text) {
   const node = createRoot();
   node.tagName = getTagName(text);
-  node.style = getStyle(text);
+  node.params = getParams(text);
   node.isFinished = false;
 
   return node;

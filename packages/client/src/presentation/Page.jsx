@@ -27,21 +27,24 @@ function createMain(ctx) {
   return main;
 }
 
-function Page(ctx) {
+function Page() {}
+
+Page.createPage = (ctx) => {
   const main = createMain(ctx);
   const footer = createFooter(ctx);
 
-  const breakAfter = ctx.currentPageNum === ctx.totalPagesNum ? 'avoid' : 'all';
+  const { currentPageNum, totalPagesNum } = ctx;
+  const breakAfter = currentPageNum === totalPagesNum ? 'avoid' : 'all';
   const gridTemplateAreas = `
       'main'
       'footer'
       `;
-  const page = (
+  return (
     <Section
       key={makeid()}
       style={{
         minHeight: '100vh',
-        breakInside:'avoid-page',
+        breakInside: 'avoid-page',
         breakAfter: { breakAfter },
         gridTemplateColumns: '1fr',
         gridTemplateRows: 'auto 0fr',
@@ -52,7 +55,6 @@ function Page(ctx) {
       {footer}
     </Section>
   );
-  return page;
-}
+};
 
 export default Page;

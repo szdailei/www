@@ -18,24 +18,36 @@ import Label from './Label.jsx';
   return <Checkbox label={label} checked={stateOfChecked} onClick={onClick} {...rest} ref={ref} />;
 */
 const Checkbox = React.forwardRef(({ label, checked, right, ...rest }, ref) => {
-  const objStyle = {
+  const labelStyle = {
     cursor: 'pointer',
     ...rest.style,
   };
 
+  const checkboxSymbolstyle = {};
+  checkboxSymbolstyle.fontSize = labelStyle.fontSize;
+
+  const { onClick } = rest;
+  const gridContainerStyle = {};
+
   if (right) {
+    gridContainerStyle.gridTemplateColumns = labelStyle.gridTemplateColumns || 'auto max-content';
     return (
-      <GridContainer {...rest} style={objStyle} ref={ref}>
-        <Label>
-          {label} <CheckboxSymbol checked={checked} />
+      <GridContainer onClick={onClick} style={gridContainerStyle}>
+        <Label {...rest} style={labelStyle} ref={ref}>
+          {label}
         </Label>
+        <CheckboxSymbol checked={checked} style={checkboxSymbolstyle} />
       </GridContainer>
     );
   }
+
+  gridContainerStyle.gridTemplateColumns = labelStyle.gridTemplateColumns || 'max-content auto';
+  labelStyle.marginLeft = labelStyle.marginLeft || '0.3em';
   return (
-    <GridContainer {...rest} style={objStyle} ref={ref}>
-      <Label>
-        <CheckboxSymbol checked={checked} /> {label}
+    <GridContainer onClick={onClick} style={gridContainerStyle}>
+      <CheckboxSymbol checked={checked} style={checkboxSymbolstyle} />
+      <Label {...rest} style={labelStyle} ref={ref}>
+        {label}
       </Label>
     </GridContainer>
   );

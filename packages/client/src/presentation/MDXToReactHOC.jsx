@@ -1,50 +1,62 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Div, Span, Label, Input } from '../styled/index.js';
+import { Button, Div, Span, Input, Label } from '../styled/index.js';
 import { Title } from '../sectioning/index.js';
 import { Appear, CheckboxWithState, Clock, Timer, ClockOrTimer, Split } from '../components/index.js';
 import makeid from '../lib/makeid.js';
 import { getTextFromChildren } from './parse-react-component-utils.js';
 
-function MDXToReactHOC({ children, tag, style }) {
+function MDXToReactHOC({ children, tag, params }) {
+  let props;
   switch (tag) {
     case 'Appear': {
-      const { hover, wrap, ...restStyle } = style;
+      const { hover, wrap, ...restParams } = params;
+      props = { hover, wrap };
       return (
-        <Appear hover={hover} wrap={wrap} style={restStyle}>
+        <Appear {...props} style={restParams}>
           {children}
         </Appear>
       );
     }
     case 'Checkbox': {
-      const { checked, right, ...restStyle } = style;
-      return (
-        <CheckboxWithState label={getTextFromChildren(children)} checked={checked} right={right} style={restStyle} />
-      );
+      const label = getTextFromChildren(children);
+      const { checked, right, ...restParams } = params;
+      props = { label, checked, right };
+      return <CheckboxWithState {...props} style={restParams} />;
     }
     case 'Clock':
-      return <Clock style={{ ...style }} />;
+      return <Clock style={params} />;
     case 'Timer':
-      return <Timer style={{ ...style }} />;
+      return <Timer style={params} />;
     case 'ClockOrTimer':
-      return <ClockOrTimer style={{ ...style }} />;
+      return <ClockOrTimer style={params} />;
     case 'Split':
-      return <Split style={{ ...style }}>{children}</Split>;
-    case 'Input':
-      // Assume all params are props, none for style
-      return <Input {...style} />;
-    case 'Label':
-      return <Label style={{ ...style }}>{children}</Label>;
+      return <Split style={params}>{children}</Split>;
     case 'Div':
-      return <Div style={{ ...style }}>{children}</Div>;
-      case 'Header':
-        return <Span style={{ fontSize: '1.4em', fontWeight: '500', ...style }}>{children}</Span>;
-      case 'Footer':
+      return <Div style={params}>{children}</Div>;
+    case 'Header':
+      return <Span style={{ fontSize: '1.4em', fontWeight: '500', ...params }}>{children}</Span>;
+    case 'Footer':
     case 'Span':
-      return <Span style={{ ...style }}>{children}</Span>;
+      return <Span style={params}>{children}</Span>;
     case 'Title':
-      return <Title style={{ ...style }}>{getTextFromChildren(children)}</Title>;
+      return <Title style={params}>{getTextFromChildren(children)}</Title>;
+    case 'Button':
+      props = params;
+      return <Button {...props}>{children}</Button>;
+    case 'Input':
+      props = params;
+      return <Input {...props} />;
+    case 'Label': {
+      const { htmlFor, ...restParams } = params;
+      props = { htmlFor };
+      return (
+        <Label {...props} style={restParams}>
+          {children}
+        </Label>
+      );
+    }
     default:
       throw new TypeError(`Unknown tag of ${tag}`);
   }
@@ -54,12 +66,12 @@ MDXToReactHOC.propTypes = {
   children: PropTypes.node.isRequired,
   tag: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  style: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
 };
 
 MDXToReactHOC.createComponent = (node) => {
   const component = (
-    <MDXToReactHOC key={makeid()} tag={node.tagName} style={node.style}>
+    <MDXToReactHOC key={makeid()} tag={node.tagName} params={node.params}>
       {node.children}
     </MDXToReactHOC>
   );

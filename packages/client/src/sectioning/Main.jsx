@@ -11,5 +11,4 @@ const Main = React.forwardRef(({ ...rest }, ref) => {
   return <Styled {...rest} ref={ref} />;
 });
 
-
 export default Main;

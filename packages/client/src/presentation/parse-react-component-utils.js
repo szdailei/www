@@ -75,23 +75,23 @@ function removeQuoteAtBeginningAndEnd(text) {
   return result;
 }
 
-function getStyle(text) {
-  const style = {};
+function getParams(text) {
+  const params = {};
   let key;
   let value;
-  let styleStr;
+  let paramsStr;
 
   const firstTextContent = trim(getTheFirstTagTextContent(text));
 
   const { length } = firstTextContent;
   if (length >= 2 && firstTextContent[length - 1] === '/' && firstTextContent[length - 2] === ' ') {
     // remove '/' if it is self closing tag
-    styleStr = firstTextContent.slice(0, -2);
+    paramsStr = firstTextContent.slice(0, -2);
   } else {
-    styleStr = firstTextContent;
+    paramsStr = firstTextContent;
   }
 
-  const tokens = styleStr.split(' ');
+  const tokens = paramsStr.split(' ');
 
   // The first is tag name, skip
   for (let i = 1; i < tokens.length; i += 1) {
@@ -102,17 +102,17 @@ function getStyle(text) {
 
       if (value === 'true') value = true;
       if (value === 'false') value = false;
-      style[key] = value;
+      params[key] = value;
     }
     if (pair.length === 1) {
       const mergedValue = removeQuoteAtBeginningAndEnd(`${value} ${pair}`);
-      style[key] = mergedValue;
+      params[key] = mergedValue;
     }
   }
 
-  delete style.undefined;
+  delete params.undefined;
 
-  return style;
+  return params;
 }
 
 function getTextFromChildren(children) {
@@ -183,8 +183,36 @@ function isReactTagAtBegginning(text) {
   return isCapitalLetter(text[2]);
 }
 
+function addBlankLines(markdown) {
+  const lines = trim(markdown).split('\n');
+  let result = lines[0];
+  let isInsideCode = false;
+  for (let i = 1; i < lines.length; i += 1) {
+    if (lines[i].indexOf('```') === 0) isInsideCode = !isInsideCode;
+    const trimedLine = trim(lines[i]);
+    if (!isInsideCode && isReactTagAtBegginning(trimedLine)) {
+      result += `\n\n${trimedLine}\n`;
+    } else {
+      result += `\n${lines[i]}`;
+    }
+  }
+
+  return result;
+}
+
+function modifyTokenIfMultiTagsInOneLine(tokens) {
+  tokens.forEach((token) => {
+    if (token.type === 'paragraph' && token.text[0] === '<') {
+      // eslint-disable-next-line no-param-reassign
+      token.type = 'html';
+    }
+  });
+}
+
 export {
-  getStyle,
+  addBlankLines,
+  modifyTokenIfMultiTagsInOneLine,
+  getParams,
   getTagName,
   getTheFirstTagTextContent,
   getTextExceptTheFirstTag,

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { Div, Input } from '../styled/index.js';
-import parseMarkdown from './parse-markdown.js';
-import Article from './Article.jsx';
+import createPages from './create-pages.js';
+import Controller from './Controller.jsx';
 
 const reader = new FileReader();
 
 function PresentationOfLocalData() {
-  const [data, setData] = useState();
+  const [markdown, setMarkdown] = useState();
 
   function onLoadEndOfReadFile(event) {
     event.preventDefault();
     reader.removeEventListener('load', onLoadEndOfReadFile);
-    setData(event.target.result);
+    setMarkdown(event.target.result);
   }
 
   function οnChangeOfInputFile(event) {
@@ -20,7 +20,7 @@ function PresentationOfLocalData() {
     reader.readAsText(event.target.files[0]);
   }
 
-  if (!data) {
+  if (!markdown) {
     return (
       <div>
         <Div style={{ marginBottom: '2em', fontSize: '1.5em', fontWeight: '600' }}>
@@ -32,8 +32,8 @@ function PresentationOfLocalData() {
     );
   }
 
-  const parsedResult = parseMarkdown(data);
-  return <Article data={parsedResult} />;
+  const pages = createPages(markdown);
+  return <Controller pages={pages} />;
 }
 
 export default PresentationOfLocalData;

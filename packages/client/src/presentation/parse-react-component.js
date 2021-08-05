@@ -27,7 +27,7 @@ function finishReactComponent(ctx) {
   }
 
   if (ctx.reactRoot.isFinished) {
-    const rootComponent = MDXToReactHOC.createComponent(ctx.reactRoot)
+    const rootComponent = MDXToReactHOC.createComponent(ctx.reactRoot);
     ctx.pageChildren.push(rootComponent);
     ctx.reactRoot = null;
   }

@@ -3,7 +3,8 @@ import marked from 'marked';
 import { debug, color, START_COLOR, MD_PARSE } from '../lib/debug.js';
 import { trim } from '../lib/markdown';
 import {
-  isReactTagAtBegginning,
+  addBlankLines,
+  modifyTokenIfMultiTagsInOneLine,
   isOpeningTagAtBegginning,
   isSelfCloseTag,
   getTheFirstTagTextContent,
@@ -20,32 +21,6 @@ import { getCurrentNode } from './tree.js';
 import Page from './Page.jsx';
 
 const contract = debug(MD_PARSE);
-
-function addBlankLines(markdown) {
-  const lines = trim(markdown).split('\n');
-  let result = lines[0];
-  let isInsideCode = false;
-  for (let i = 1; i < lines.length; i += 1) {
-    if (lines[i].indexOf('```') === 0) isInsideCode = !isInsideCode;
-    const trimedLine = trim(lines[i]);
-    if (!isInsideCode && isReactTagAtBegginning(trimedLine)) {
-      result += `\n\n${trimedLine}\n`;
-    } else {
-      result += `\n${lines[i]}`;
-    }
-  }
-
-  return result;
-}
-
-function modifyTokenTypeIfMultiTagsInOneLine(tokens) {
-  tokens.forEach((token) => {
-    if (token.type === 'paragraph' && token.text[0] === '<') {
-      // eslint-disable-next-line no-param-reassign
-      token.type = 'html';
-    }
-  });
-}
 
 function createTotalPagesNum(tokens) {
   let totalCount = 1;
@@ -66,13 +41,14 @@ function finishOnePage(ctx, pages) {
     }
   }
 
-  pages.push(Page(ctx));
+  const page = Page.createPage(ctx);
+  pages.push(page);
 }
 
-function parseMarkdown(markdown) {
+function createPages(markdown) {
   const formattedMarkdown = addBlankLines(markdown);
   const tokens = marked.lexer(formattedMarkdown);
-  modifyTokenTypeIfMultiTagsInOneLine(tokens);
+  modifyTokenIfMultiTagsInOneLine(tokens);
 
   const pages = [];
   const context = {
@@ -156,4 +132,4 @@ function parseMarkdown(markdown) {
   return pages;
 }
 
-export default parseMarkdown;
+export default createPages;

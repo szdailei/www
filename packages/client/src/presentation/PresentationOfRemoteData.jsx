@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useRemoteData } from '../lib/network.js';
-import parseMarkdown from './parse-markdown.js';
-import Article from './Article.jsx';
+import createPages from  './create-pages.js';
+import Controller from './Controller.jsx';
 
 function PresentationOfRemoteData() {
   const { course } = useParams();
@@ -11,8 +11,9 @@ function PresentationOfRemoteData() {
   const { data } = useRemoteData(query);
   if (!data) return null;
 
-  const parsedResult = parseMarkdown(data.getCourse);
-  return <Article data={parsedResult} />;
+  const markdown = data.getCourse;
+  const pages = createPages(markdown);
+  return <Controller pages={pages} />;
 }
 
 export default PresentationOfRemoteData;
