@@ -1,5 +1,4 @@
 import Appear from './Appear.jsx';
-import CheckboxWithState from './CheckboxWithState.jsx';
 import Clock from './Clock.jsx';
 import Timer from './Timer.jsx';
 import ClockOrTimer from './ClockOrTimer.jsx';
@@ -8,4 +7,4 @@ import Error from './Error.jsx';
 import Loading from './Loading.jsx';
 import NotFound from './NotFound.jsx';
 
-export { Appear, CheckboxWithState, Clock, Timer, ClockOrTimer, Split, Error, Loading, NotFound };
+export { Appear, Clock, Timer, ClockOrTimer, Split, Error, Loading, NotFound };

@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Div, Span, Input, Label } from '../styled/index.js';
+import { Button, Checkbox, Div, Span, Input, Label } from '../styled/index.js';
 import { Title } from '../sectioning/index.js';
-import { Appear, CheckboxWithState, Clock, Timer, ClockOrTimer, Split } from '../components/index.js';
+import { Appear, Clock, Timer, ClockOrTimer, Split } from '../components/index.js';
 import makeid from '../lib/makeid.js';
 import { getTextFromChildren } from './parse-react-component-utils.js';
 
@@ -23,7 +23,7 @@ function MDXToReactHOC({ children, tag, params }) {
       const label = getTextFromChildren(children);
       const { checked, right, ...restParams } = params;
       props = { label, checked, right };
-      return <CheckboxWithState {...props} style={restParams} />;
+      return <Checkbox {...props} style={restParams} />;
     }
     case 'Clock':
       return <Clock style={params} />;

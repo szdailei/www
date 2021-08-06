@@ -104,7 +104,7 @@ ExampleContainer.propTypes = {
 ExampleContainer.createComponent = (createPages) => <ExampleContainer key={makeid()} createPages={createPages} />;
 
 function isRequiredParseOnTop(tag) {
-  const ExampleContainerTag = '<Demo>';
+  const ExampleContainerTag = '<Example>';
   if (tag === ExampleContainerTag) return true;
   return false;
 }
