@@ -1,11 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { getParams, getTagName } from './parse-react-component-utils.js';
-import MDXToReactHOC from './MDXToReactHOC.jsx';
 
 function createRoot() {
   return {
     tagName: null,
-    isFinished: false,
     curent: null,
     parent: null,
     nodeList: [],
@@ -17,8 +15,6 @@ function createNode(text) {
   const node = createRoot();
   node.tagName = getTagName(text);
   node.params = getParams(text);
-  node.isFinished = false;
-
   return node;
 }
 
@@ -29,19 +25,15 @@ function getCurrentNode(root) {
   return root;
 }
 
-function addNode(root, node) {
+function addNodeToNodeList(root, node) {
   const current = getCurrentNode(root);
   node.parent = current;
   current.nodeList.push(node);
   root.current = node;
 }
 
-function finishNode(root, node) {
-  node.isFinished = true;
-
-  const component = MDXToReactHOC.createComponent(node);
+function addComponentToChildren(root, node, component) {
   node.component = component;
-
   if (node.parent) node.parent.children.push(component);
 
   if (node.parent && node.parent.parent) {
@@ -51,4 +43,4 @@ function finishNode(root, node) {
   }
 }
 
-export { createNode, addNode, getCurrentNode, finishNode };
+export { createNode, addNodeToNodeList, addComponentToChildren, getCurrentNode };

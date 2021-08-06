@@ -1,7 +1,6 @@
 /* eslint-disable no-continue */
 import marked from 'marked';
 import { debug, color, START_COLOR, MD_PARSE } from '../lib/debug.js';
-import { trim } from '../lib/markdown';
 import {
   addBlankLines,
   modifyTokenIfMultiTagsInOneLine,
@@ -11,14 +10,16 @@ import {
   getTextExceptTheFirstTag,
 } from './parse-react-component-utils.js';
 import recursiveParseMarkedToken from './recursive-parse-marked-token.js';
+import { closeReactComponent } from './close-react-component.js';
 import {
   isParsingReactComponent,
-  finishReactComponent,
+  getTokensByMarkdown,
   openReactCompenent,
   recursiveSpliceChildren,
-} from './parse-react-component.js';
-import { getCurrentNode } from './tree.js';
+} from './open-react-component.js';
+import { getCurrentNode, addComponentToChildren } from './tree.js';
 import Page from './Page.jsx';
+import { ExampleContainer,isRequiredParseOnTop } from './Example.jsx';
 
 const contract = debug(MD_PARSE);
 
@@ -51,7 +52,7 @@ function createPages(markdown) {
   modifyTokenIfMultiTagsInOneLine(tokens);
 
   const pages = [];
-  const context = {
+  const ctx = {
     pageChildren: [],
     reactRoot: null,
     hasTitleInCurrentPage: false,
@@ -64,10 +65,10 @@ function createPages(markdown) {
   for (let i = 0; i < tokens.length; i += 1) {
     const token = tokens[i];
     if (token.type === 'hr') {
-      finishOnePage(context, pages);
-      context.pageChildren = [];
-      context.currentPageNum += 1;
-      context.hasTitleInCurrentPage = false;
+      finishOnePage(ctx, pages);
+      ctx.pageChildren = [];
+      ctx.currentPageNum += 1;
+      ctx.hasTitleInCurrentPage = false;
       continue;
     }
 
@@ -79,33 +80,33 @@ function createPages(markdown) {
       if (isOpeningTagAtBegginning(node.text)) {
         let text;
         if (textExceptTheFirstTag) {
+          // Only parse the first tag attributes, textExceptTheFirstTag will be getTokensByMarkdown and insert it after current token.
           text = `<${getTheFirstTagTextContent(node.text)}>`;
         } else {
           text = node.text;
         }
-        openReactCompenent(context, text);
+        openReactCompenent(ctx, text);
       }
 
-      if (!isOpeningTagAtBegginning(node.text) || isSelfCloseTag(node.text)) {
-        finishReactComponent(context);
+      if (isRequiredParseOnTop(node.text)) {
+        const currentNode = getCurrentNode(ctx.reactRoot);
+        const component = ExampleContainer.createComponent(createPages);
+        addComponentToChildren(ctx.reactRoot, currentNode, component);
+
+        if (ctx.reactRoot === currentNode) {
+          ctx.pageChildren.push(component);
+          ctx.reactRoot = null;
+        }
         continue;
       }
 
-      if (textExceptTheFirstTag) {
-        const origTokensForTextExceptTheFirstTag = marked.lexer(trim(textExceptTheFirstTag));
-        let tokensForTextExceptTheFirstTag;
-        if (
-          origTokensForTextExceptTheFirstTag.length &&
-          origTokensForTextExceptTheFirstTag.length === 1 &&
-          origTokensForTextExceptTheFirstTag[0].type === 'paragraph' &&
-          origTokensForTextExceptTheFirstTag[0].tokens
-        ) {
-          tokensForTextExceptTheFirstTag = origTokensForTextExceptTheFirstTag[0].tokens;
-        } else {
-          tokensForTextExceptTheFirstTag = origTokensForTextExceptTheFirstTag;
-        }
+      if (!isOpeningTagAtBegginning(node.text) || isSelfCloseTag(node.text)) {
+        closeReactComponent(ctx);
+      }
 
-        tokens.splice(i + 1, 0, ...tokensForTextExceptTheFirstTag);
+      if (textExceptTheFirstTag) {
+        const tokensOfTextExceptTheFirstTag = getTokensByMarkdown(textExceptTheFirstTag);
+        tokens.splice(i + 1, 0, ...tokensOfTextExceptTheFirstTag);
         continue;
       }
       continue;
@@ -115,19 +116,19 @@ function createPages(markdown) {
       recursiveSpliceChildren(node.props.children);
     }
 
-    if (isParsingReactComponent(context)) {
+    if (isParsingReactComponent(ctx)) {
       contract('@require React节点里面有MD节点 \n%O\n@ensure 把MD节点push进React节点', node.props);
-      const currentNode = getCurrentNode(context.reactRoot);
+      const currentNode = getCurrentNode(ctx.reactRoot);
       currentNode.children.push(node);
       continue;
     }
 
     contract('@require 独立的MD节点 \n%O\n@ensure 把MD节点push进Page节点', node.props);
-    context.pageChildren.push(node);
+    ctx.pageChildren.push(node);
   }
 
   contract('@require 结束解析MD\n@ensure 把剩余节点push进Page节点');
-  finishOnePage(context, pages);
+  finishOnePage(ctx, pages);
 
   return pages;
 }

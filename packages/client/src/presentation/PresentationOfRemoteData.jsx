@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useRemoteData } from '../lib/network.js';
-import createPages from './create-pages.js';
+import createPages from './create-pages.jsx';
 import Controller from './Controller.jsx';
 
 function PresentationOfRemoteData() {

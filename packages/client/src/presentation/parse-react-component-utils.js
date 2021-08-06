@@ -64,7 +64,8 @@ function getTextExceptTheFirstTag(text) {
     startChars: ['>'],
     endChars: null,
   };
-  return parseText(text, tokens);
+  const result = parseText(text, tokens);
+  return trim(result);
 }
 
 function removeQuoteAtBeginningAndEnd(text) {

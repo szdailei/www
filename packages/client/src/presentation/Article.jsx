@@ -5,7 +5,7 @@ import { Article as RealArticle } from '../sectioning/index.js';
 
 function Article({ children, ...rest }) {
   return (
-    <RealArticle style={{ fontSize: '1.6em' }} {...rest}>
+    <RealArticle style={{ fontSize: '1.8em' }} {...rest}>
       {children}
     </RealArticle>
   );

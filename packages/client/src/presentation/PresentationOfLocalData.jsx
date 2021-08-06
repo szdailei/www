@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Div, Input } from '../styled/index.js';
-import createPages from './create-pages.js';
+import createPages from './create-pages.jsx';
 import Controller from './Controller.jsx';
 
 const reader = new FileReader();

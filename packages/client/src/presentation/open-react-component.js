@@ -1,16 +1,14 @@
 import marked from 'marked';
 import { debug, color, START_COLOR, REACT_PARSE } from '../lib/debug.js';
-import { trim } from '../lib/markdown.js';
 import recursiveParseMarkedToken from './recursive-parse-marked-token.js';
-import { createNode, addNode, getCurrentNode, finishNode } from './tree.js';
+import { createNode, addNodeToNodeList, getCurrentNode } from './tree.js';
 import {
-  isClosingTagAtBeginning,
   isClosingTagAtEnd,
   isOpeningTagAtBegginning,
   isSelfCloseTag,
   getTextExceptTheFirstTag,
 } from './parse-react-component-utils.js';
-import MDXToReactHOC from './MDXToReactHOC.jsx';
+import { closeReactComponent } from './close-react-component.js';
 
 const contract = debug(REACT_PARSE);
 
@@ -18,54 +16,32 @@ function isParsingReactComponent(ctx) {
   return ctx.reactRoot;
 }
 
-function finishReactComponent(ctx) {
-  const currentNode = getCurrentNode(ctx.reactRoot);
-
-  finishNode(ctx.reactRoot, currentNode);
-  if (currentNode.tagName === 'Title') {
-    ctx.hasTitleInCurrentPage = true;
+function getTokensByMarkdown(markdown) {
+  const origTokens = marked.lexer(markdown);
+  let tokens;
+  if (origTokens.length && origTokens.length === 1 && origTokens[0].type === 'paragraph' && origTokens[0].tokens) {
+    tokens = origTokens[0].tokens;
+  } else {
+    tokens = origTokens;
   }
-
-  if (ctx.reactRoot.isFinished) {
-    const rootComponent = MDXToReactHOC.createComponent(ctx.reactRoot);
-    ctx.pageChildren.push(rootComponent);
-    ctx.reactRoot = null;
-  }
-}
-
-function finishMultiReactComponents(ctx, origText) {
-  let text = origText;
-  if (!text || text.length < 4) return;
-
-  while (isClosingTagAtBeginning(text)) {
-    finishReactComponent(ctx);
-
-    text = trim(getTextExceptTheFirstTag(text));
-    if (!text || text.length < 4) return;
-  }
+  return tokens;
 }
 
 function openReactCompenent(ctx, text) {
   contract('@require React Opening tag \n%s', color(text, START_COLOR));
   const node = createNode(text);
-  const textExceptTheFirstTag = trim(getTextExceptTheFirstTag(text));
+  const textExceptTheFirstTag = getTextExceptTheFirstTag(text);
 
   if (!ctx.reactRoot) {
     contract('@require ctx.reactRoot不存在 \n@ensure  新增ctx.reactRoot');
     ctx.reactRoot = node;
   } else {
     contract('@require ctx.reactRoot存在 \n@ensure  ctx.reactRoot添加子节点');
-    addNode(ctx.reactRoot, node);
+    addNodeToNodeList(ctx.reactRoot, node);
   }
 
   if (textExceptTheFirstTag) {
-    const origTokens = marked.lexer(textExceptTheFirstTag);
-    let tokens;
-    if (origTokens.length && origTokens.length === 1 && origTokens[0].type === 'paragraph' && origTokens[0].tokens) {
-      tokens = origTokens[0].tokens;
-    } else {
-      tokens = origTokens;
-    }
+    const tokens = getTokensByMarkdown(textExceptTheFirstTag);
 
     contract('@require React tag里有MD \n%s\n@ensure 解析为%d个token%O', textExceptTheFirstTag, tokens.length, tokens);
     tokens.forEach((token) => {
@@ -79,7 +55,7 @@ function openReactCompenent(ctx, text) {
           openReactCompenent(ctx, subNode.text);
         } else {
           contract('@require React Closing tag \n%s\n@ensure 结束解析React子节点文本', subNode.text);
-          finishReactComponent(ctx);
+          closeReactComponent(ctx);
         }
         return;
       }
@@ -125,7 +101,7 @@ function recursiveSpliceChildren(children) {
             isClosingTagAtEnd(children[i].text)
           ) {
             const currentNode = getCurrentNode(ctx.reactRoot);
-            finishReactComponent(ctx);
+            closeReactComponent(ctx);
 
             if (!htmlStartIndex) {
               htmlStartIndex = 0;
@@ -148,10 +124,4 @@ function recursiveSpliceChildren(children) {
   }
 }
 
-export {
-  isParsingReactComponent,
-  finishReactComponent,
-  finishMultiReactComponents,
-  openReactCompenent,
-  recursiveSpliceChildren,
-};
+export { isParsingReactComponent, getTokensByMarkdown, openReactCompenent, recursiveSpliceChildren };

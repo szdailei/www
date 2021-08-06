@@ -14,6 +14,7 @@ import P from './P.jsx';
 import Select from './Select.jsx';
 import Span from './Span.jsx';
 import { TH, TD, TR, THead, TBody, Table } from './Table.jsx';
+import TextArea from './TextArea.jsx';
 
 export {
   FlexContainer,
@@ -37,4 +38,5 @@ export {
   THead,
   TBody,
   Table,
+  TextArea,
 };

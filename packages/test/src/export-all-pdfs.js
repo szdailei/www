@@ -9,13 +9,10 @@ import { exportPdf } from './lib/pdf.js';
 
 function getMdxWithoutClockAndTimer(text) {
   const uselessTags = [
-    '<Clock></Clock>',
     '<Clock />',
     '<Clock>',
-    '<Timer></Timer>',
     '<Timer />',
     '<Timer>',
-    '<ClockOrTimer></ClockOrTimer>',
     '<ClockOrTimer />',
     '<ClockOrTimer>',
   ];
