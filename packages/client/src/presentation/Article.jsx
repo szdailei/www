@@ -1,18 +1,28 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useState, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import { Article as RealArticle } from '../sectioning/index.js';
 
-function Article({ children, ...rest }) {
+const Article = React.forwardRef(({ pages, ...rest }, ref) => {
+  const [currentPageCount, setCurrentPageCount] = useState(0);
+
+  useImperativeHandle(ref, () => ({
+    getCurrentPageCount: () => currentPageCount,
+    setCurrentPageCount: (count) => {
+      setCurrentPageCount(count);
+    },
+  }));
+
+  const showData = pages[currentPageCount];
   return (
-    <RealArticle style={{ fontSize: '1.8em' }} {...rest}>
-      {children}
+    <RealArticle style={{ fontSize: '1.8em' }} {...rest} ref={ref}>
+      {showData}
     </RealArticle>
   );
-}
+});
 
 Article.propTypes = {
-  children: PropTypes.node.isRequired,
+  pages: PropTypes.arrayOf(PropTypes.element).isRequired,
 };
 
 export default Article;

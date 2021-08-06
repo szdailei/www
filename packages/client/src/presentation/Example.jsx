@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Button, Div, GridContainer, TextArea } from '../styled/index.js';
 import makeid from '../lib/makeid.js';
 
-const Example = React.forwardRef((props, ref) => {
+const Example = React.forwardRef((_, ref) => {
   const [children, setChildren] = useState();
 
   useImperativeHandle(ref, () => ({
@@ -16,44 +16,81 @@ const Example = React.forwardRef((props, ref) => {
   return <Div ref={ref}>{children}</Div>;
 });
 
-const SubmitButton = React.forwardRef(({ createPages, textAreaRef, exampleRef }, ref) => {
+const ParseMessage = React.forwardRef((_, ref) => {
+  const [children, setChildren] = useState();
+
+  useImperativeHandle(ref, () => ({
+    setChildren: (parseMessage) => {
+      setChildren(parseMessage);
+    },
+  }));
+
+  return <Div ref={ref}>{children}</Div>;
+});
+
+const ParseButton = React.forwardRef(({ createPages, textAreaRef, exampleRef, parseMessageRef }, ref) => {
   const onClick = useCallback(
     (event) => {
       event.preventDefault();
-      // eslint-disable-next-line no-use-before-define
-      const pages = createPages(textAreaRef.current.value);
-      const firstPageMain = pages[0].props.children[0];
+      let firstPageMain;
+      let elementCount;
+
+      try {
+        const pages = createPages(textAreaRef.current.value);
+        const [firstPage] = pages;
+        [firstPageMain] = firstPage.props.children;
+        elementCount = firstPageMain.props.children.length;
+      } catch (error) {
+        firstPageMain = error.toString();
+        elementCount = 0;
+      }
+
+      const parseMessage = <Div style={{ color: 'red', fontSize: '0.8em' }}>解析出{elementCount}个元素</Div>;
+
+      parseMessageRef.current.setChildren(parseMessage);
       exampleRef.current.setChildren(firstPageMain);
     },
-    [createPages, textAreaRef, exampleRef]
+    [createPages, textAreaRef, exampleRef, parseMessageRef]
   );
 
   return (
-    <Button onClick={onClick} ref={ref}>
-      演示
+    <Button onClick={onClick} style={{ marginLeft: '0.5em', marginRight: '0.5em' }} ref={ref}>
+      解析
     </Button>
   );
 });
 
-SubmitButton.propTypes = {
+ParseButton.propTypes = {
   createPages: PropTypes.func.isRequired,
   textAreaRef: PropTypes.object.isRequired,
   exampleRef: PropTypes.object.isRequired,
+  parseMessageRef: PropTypes.object.isRequired,
 };
 
 function ExampleContainer({ createPages }) {
   const textAreaRef = useRef();
   const exampleRef = useRef();
+  const parseMessageRef = useRef();
+
+  const onKeyUp = useCallback((event) => {
+    event.nativeEvent.stopImmediatePropagation();
+  }, []);
 
   const gridContainerStyle = {
-    gridTemplateColumns: 'auto min-content',
+    gridTemplateColumns: 'auto min-content max-content',
   };
 
   return (
     <>
       <GridContainer style={gridContainerStyle}>
-        <TextArea ref={textAreaRef} />
-        <SubmitButton createPages={createPages} textAreaRef={textAreaRef} exampleRef={exampleRef} />
+        <TextArea onKeyUp={onKeyUp} ref={textAreaRef} />
+        <ParseButton
+          createPages={createPages}
+          textAreaRef={textAreaRef}
+          exampleRef={exampleRef}
+          parseMessageRef={parseMessageRef}
+        />
+        <ParseMessage ref={parseMessageRef} />
       </GridContainer>
       <Example ref={exampleRef} />
     </>
@@ -72,4 +109,4 @@ function isRequiredParseOnTop(tag) {
   return false;
 }
 
-export { Example, SubmitButton, ExampleContainer, isRequiredParseOnTop };
+export { ExampleContainer, isRequiredParseOnTop };

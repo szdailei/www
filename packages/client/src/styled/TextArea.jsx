@@ -1,13 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-param-reassign */
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import styled from '@emotion/styled';
 
 const TextArea = React.forwardRef(({ ...rest }, ref) => {
-  useEffect(() => {
-    ref.current.focus();
-  });
-
   const minRows = 5;
   const onChange = useCallback((event) => {
     const currentRows = event.target.value.split('\n').length;

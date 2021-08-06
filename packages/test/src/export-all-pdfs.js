@@ -8,14 +8,7 @@ import { newCoursesPage, gotoCourse, getFileNames, getLinkByFileName } from './l
 import { exportPdf } from './lib/pdf.js';
 
 function getMdxWithoutClockAndTimer(text) {
-  const uselessTags = [
-    '<Clock />',
-    '<Clock>',
-    '<Timer />',
-    '<Timer>',
-    '<ClockOrTimer />',
-    '<ClockOrTimer>',
-  ];
+  const uselessTags = ['<Clock />', '<Clock>', '<Timer />', '<Timer>', '<ClockOrTimer />', '<ClockOrTimer>'];
 
   const regex = new RegExp(uselessTags.join('|'), 'g');
 

@@ -1,31 +1,53 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Article from './Article.jsx';
 
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else if (document.exitFullscreen) {
+    document.exitFullscreen();
+  }
+}
+
 function Controller({ pages }) {
-  const [currentPageCount, setCurrentPageCount] = useState(0);
+  const articleRef = useRef();
+
+  const getCurrentPageCount = useCallback(() => articleRef.current.getCurrentPageCount(), []);
+  const setCurrentPageCount = useCallback((newCount) => {
+    articleRef.current.setCurrentPageCount(newCount);
+  }, []);
 
   const onKeyUp = useCallback(
     (event) => {
       switch (event.code) {
-        case 'PageUp':
+        case 'KeyF':
           event.preventDefault();
-          if (currentPageCount > 0) {
-            setCurrentPageCount(currentPageCount - 1);
+          if (document.fullscreenEnabled) toggleFullScreen();
+          break;
+        case 'PageUp':
+        case 'Numpad9':
+          event.preventDefault();
+          if (getCurrentPageCount() > 0) {
+            setCurrentPageCount(getCurrentPageCount() - 1);
           }
           break;
         case 'PageDown':
+        case 'Numpad3':
+        case 'Space':
           event.preventDefault();
-          if (currentPageCount < pages.length - 1) {
-            setCurrentPageCount(currentPageCount + 1);
+          if (getCurrentPageCount() < pages.length - 1) {
+            setCurrentPageCount(getCurrentPageCount() + 1);
           }
           break;
         case 'Home':
+        case 'Numpad7':
           event.preventDefault();
           setCurrentPageCount(0);
           break;
         case 'End':
+        case 'Numpad1':
           event.preventDefault();
           setCurrentPageCount(pages.length - 1);
           break;
@@ -33,7 +55,7 @@ function Controller({ pages }) {
           break;
       }
     },
-    [pages, currentPageCount]
+    [pages, getCurrentPageCount, setCurrentPageCount]
   );
 
   // The MouseEvent.button read-only property indicates which button was pressed on the mouse to trigger the event.
@@ -47,24 +69,25 @@ function Controller({ pages }) {
       switch (event.button) {
         case 3:
           event.preventDefault();
-          if (currentPageCount > 0) {
-            setCurrentPageCount(currentPageCount - 1);
+          if (getCurrentPageCount() > 0) {
+            setCurrentPageCount(getCurrentPageCount() - 1);
           }
           break;
         case 4:
           event.preventDefault();
-          if (currentPageCount < pages.length - 1) {
-            setCurrentPageCount(currentPageCount + 1);
+          if (getCurrentPageCount() < pages.length - 1) {
+            setCurrentPageCount(getCurrentPageCount() + 1);
           }
           break;
         default:
           break;
       }
     },
-    [pages, currentPageCount]
+    [pages, getCurrentPageCount, setCurrentPageCount]
   );
 
   useEffect(() => {
+    setCurrentPageCount(0);
     document.addEventListener('keyup', onKeyUp);
     document.addEventListener('mouseup', onMouseUp);
 
@@ -72,10 +95,9 @@ function Controller({ pages }) {
       document.removeEventListener('keyup', onKeyUp);
       document.removeEventListener('mouseup', onMouseUp);
     };
-  }, [onKeyUp, onMouseUp]);
+  }, [onKeyUp, onMouseUp, setCurrentPageCount]);
 
-  const showData = pages[currentPageCount];
-  return <Article>{showData}</Article>;
+  return <Article pages={pages} ref={articleRef} />;
 }
 
 Controller.propTypes = {

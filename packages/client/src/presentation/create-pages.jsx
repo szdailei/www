@@ -19,7 +19,7 @@ import {
 } from './open-react-component.js';
 import { getCurrentNode, addComponentToChildren } from './tree.js';
 import Page from './Page.jsx';
-import { ExampleContainer,isRequiredParseOnTop } from './Example.jsx';
+import { ExampleContainer, isRequiredParseOnTop } from './Example.jsx';
 
 const contract = debug(MD_PARSE);
 
