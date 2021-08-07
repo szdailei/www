@@ -34,11 +34,16 @@ const Appear = React.forwardRef(({ children, hover, wrap, ...rest }, ref) => {
     eventHandles = { onClick };
   }
 
-  const secondChildContainerStyle = { width: 'fit-content', ...children[1].props.style };
+  const secondChildContainerStyle = { ...children[1].props.style };
+  secondChildContainerStyle.width = secondChildContainerStyle.width || 'fit-content';
   const secondChildContainer = stateOfShown ? <Div style={secondChildContainerStyle}>{children[1]}</Div> : null;
-  const containerDivStyle = { width: 'fit-content', ...objStyle };
 
-  const firstChildContainerStyle = { width: 'fit-content', ...children[0].props.style };
+  const containerDivStyle = { width: 'fit-content', ...objStyle };
+  containerDivStyle.width = containerDivStyle.width || 'fit-content';
+
+  const firstChildContainerStyle = { ...children[0].props.style };
+  firstChildContainerStyle.width = firstChildContainerStyle.width || 'fit-content';
+
   let firstChildContainer;
   if (wrap) {
     firstChildContainer = <Div style={firstChildContainerStyle}> {children[0]}</Div>;
