@@ -39,7 +39,7 @@ const Checkbox = React.forwardRef(({ label, checked, right, ...rest }, ref) => {
         <Label {...rest} style={labelStyle}>
           {label}
         </Label>
-        <CheckboxSymbol style={checkboxSymbolStyle} ref={checkboxSymbolRef} />
+        <CheckboxSymbol checked={checked} style={checkboxSymbolStyle} ref={checkboxSymbolRef} />
       </GridContainer>
     );
   }
@@ -48,7 +48,7 @@ const Checkbox = React.forwardRef(({ label, checked, right, ...rest }, ref) => {
   labelStyle.marginLeft = labelStyle.marginLeft || '0.3em';
   return (
     <GridContainer onClick={onClick} style={gridContainerStyle} ref={ref}>
-      <CheckboxSymbol style={checkboxSymbolStyle} ref={checkboxSymbolRef} />
+      <CheckboxSymbol checked={checked} style={checkboxSymbolStyle} ref={checkboxSymbolRef} />
       <Label {...rest} style={labelStyle}>
         {label}
       </Label>

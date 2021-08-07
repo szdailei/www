@@ -1,6 +1,6 @@
 /* eslint-disable no-continue */
 import marked from 'marked';
-import { debug, color, START_COLOR, MD_PARSE } from '../lib/debug.js';
+import { debug, MD_PARSE } from '../lib/debug.js';
 import {
   addBlankLines,
   modifyTokenIfMultiTagsInOneLine,
@@ -19,7 +19,7 @@ import {
 } from './open-react-component.js';
 import { getCurrentNode, addComponentToChildren } from './tree.js';
 import Page from './Page.jsx';
-import { ExampleContainer, isRequiredParseOnTop } from './Example.jsx';
+import { ExampleContainer, isExampleTag } from './Example.jsx';
 
 const contract = debug(MD_PARSE);
 
@@ -61,7 +61,7 @@ function createPages(markdown) {
     totalPagesNum: createTotalPagesNum(tokens),
   };
 
-  contract('@require MD \n%s\n@ensure 解析为%d个token%O', color(markdown, START_COLOR), tokens.length, tokens);
+  contract('@require MD \n%s\n@ensure 解析为%d个token%O', markdown, tokens.length, tokens);
   for (let i = 0; i < tokens.length; i += 1) {
     const token = tokens[i];
     if (token.type === 'hr') {
@@ -88,7 +88,7 @@ function createPages(markdown) {
         openReactCompenent(ctx, text);
       }
 
-      if (isRequiredParseOnTop(node.text)) {
+      if (isExampleTag(node.text)) {
         const currentNode = getCurrentNode(ctx.reactRoot);
         const component = ExampleContainer.createComponent(createPages);
         addComponentToChildren(ctx.reactRoot, currentNode, component);

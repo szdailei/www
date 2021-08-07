@@ -1,5 +1,5 @@
 import marked from 'marked';
-import { debug, color, START_COLOR, REACT_PARSE } from '../lib/debug.js';
+import { debug, REACT_PARSE } from '../lib/debug.js';
 import recursiveParseMarkedToken from './recursive-parse-marked-token.js';
 import { createNode, addNodeToNodeList, getCurrentNode } from './tree.js';
 import {
@@ -28,7 +28,7 @@ function getTokensByMarkdown(markdown) {
 }
 
 function openReactCompenent(ctx, text) {
-  contract('@require React Opening tag \n%s', color(text, START_COLOR));
+  contract('@require React Opening tag \n%s', text);
   const node = createNode(text);
   const textExceptTheFirstTag = getTextExceptTheFirstTag(text);
 
@@ -36,7 +36,7 @@ function openReactCompenent(ctx, text) {
     contract('@require ctx.reactRoot不存在 \n@ensure  新增ctx.reactRoot');
     ctx.reactRoot = node;
   } else {
-    contract('@require ctx.reactRoot存在 \n@ensure  ctx.reactRoot添加子节点');
+    contract('@require ctx.reactRoot存在 \n\t\tensure  ctx.reactRoot添加子节点');
     addNodeToNodeList(ctx.reactRoot, node);
   }
 
@@ -61,6 +61,7 @@ function openReactCompenent(ctx, text) {
       }
 
       if (subNode.props) {
+        contract('@require React文本被解析成%s个children\n\t\t@ensure 递归寻找children里的ReactTag，解析后修改children', subNode.props.children.length);
         // eslint-disable-next-line no-use-before-define
         recursiveSpliceChildren(subNode.props.children);
         const currentNode = getCurrentNode(ctx.reactRoot);

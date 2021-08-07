@@ -24,7 +24,7 @@ import Span from './Span.jsx';
 
   return (
     <GridContainer onClick={onClick} style={gridContainerStyle} ref={ref}>
-      <CheckboxSymbol style={checkboxSymbolStyle} ref={checkboxSymbolRef} />
+      <CheckboxSymbol checked={checked} style={checkboxSymbolStyle} ref={checkboxSymbolRef} />
       <Label {...rest} style={labelStyle}>
         {label}
       </Label>
@@ -35,7 +35,7 @@ const CheckboxSymbol = React.forwardRef(({ checked, ...rest }, ref) => {
   const [stateOfChecked, setStateOfChecked] = useState(checked);
 
   useImperativeHandle(ref, () => ({
-    isChecked: () => stateOfChecked === true,
+    isChecked: () => stateOfChecked,
     setChecked: (newState) => {
       setStateOfChecked(newState);
     },
@@ -44,17 +44,13 @@ const CheckboxSymbol = React.forwardRef(({ checked, ...rest }, ref) => {
   const objStyle = { cursor: 'pointer', ...rest.style };
   return (
     <Span {...rest} style={objStyle} ref={ref}>
-      {stateOfChecked ? '☑' : '☐'}{' '}
+      {stateOfChecked ? '☑' : '☐'}
     </Span>
   );
 });
 
 CheckboxSymbol.propTypes = {
-  checked: PropTypes.bool,
-};
-
-CheckboxSymbol.defaultProps = {
-  checked: false,
+  checked: PropTypes.bool.isRequired,
 };
 
 export default CheckboxSymbol;

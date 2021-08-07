@@ -80,10 +80,14 @@ function ExampleContainer({ createPages }) {
     gridTemplateColumns: 'auto min-content max-content',
   };
 
+  const textAreaStyle = {
+    caretColor: 'red',
+  };
+
   return (
     <>
       <GridContainer style={gridContainerStyle}>
-        <TextArea onKeyUp={onKeyUp} ref={textAreaRef} />
+        <TextArea onKeyUp={onKeyUp} style={textAreaStyle} ref={textAreaRef} />
         <ParseButton
           createPages={createPages}
           textAreaRef={textAreaRef}
@@ -103,10 +107,10 @@ ExampleContainer.propTypes = {
 
 ExampleContainer.createComponent = (createPages) => <ExampleContainer key={makeid()} createPages={createPages} />;
 
-function isRequiredParseOnTop(tag) {
+function isExampleTag(tag) {
   const ExampleContainerTag = '<Example>';
   if (tag === ExampleContainerTag) return true;
   return false;
 }
 
-export { ExampleContainer, isRequiredParseOnTop };
+export { ExampleContainer, isExampleTag };
