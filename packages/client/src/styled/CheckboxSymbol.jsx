@@ -7,19 +7,19 @@ import Span from './Span.jsx';
 @example
   const checkboxSymbolRef = useRef();
   useImperativeHandle(ref, () => ({
-    getStateOfChecked: () => checkboxSymbolRef.current.getStateOfChecked(),
-    setStateOfChecked: (newState) => {
-      checkboxSymbolRef.current.setStateOfChecked(newState);
+    isChecked: () => checkboxSymbolRef.current.isChecked(),
+    setChecked: (newState) => {
+      checkboxSymbolRef.current.setChecked(newState);
     },
   }));
 
   useEffect(() => {
-    checkboxSymbolRef.current.setStateOfChecked(checked);
+    checkboxSymbolRef.current.setChecked(checked);
   }, [checked]);
 
   function onClick() {
-    const currentState = checkboxSymbolRef.current.getStateOfChecked();
-    checkboxSymbolRef.current.setStateOfChecked(!currentState);
+    const isChecked = checkboxSymbolRef.current.isChecked();
+    checkboxSymbolRef.current.setChecked(!isChecked);
   }
 
   return (
@@ -35,8 +35,8 @@ const CheckboxSymbol = React.forwardRef(({ checked, ...rest }, ref) => {
   const [stateOfChecked, setStateOfChecked] = useState(checked);
 
   useImperativeHandle(ref, () => ({
-    getStateOfChecked: () => stateOfChecked,
-    setStateOfChecked: (newState) => {
+    isChecked: () => stateOfChecked === true,
+    setChecked: (newState) => {
       setStateOfChecked(newState);
     },
   }));

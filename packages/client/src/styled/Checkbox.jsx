@@ -5,34 +5,22 @@ import GridContainer from './GridContainer.jsx';
 import CheckboxSymbol from './CheckboxSymbol.jsx';
 import Label from './Label.jsx';
 
-/**
-@example
-  const [stateOfChecked, setStateOfChecked] = useState(checked);
-  const onClick = useCallback(
-    (event) => {
-      event.preventDefault();
-      setStateOfChecked(!stateOfChecked);
-    },
-    [stateOfChecked]
-  );
-  return <Checkbox label={label} checked={stateOfChecked} onClick={onClick} {...rest} ref={ref} />;
-*/
 const Checkbox = React.forwardRef(({ label, checked, right, ...rest }, ref) => {
   const checkboxSymbolRef = useRef();
   useImperativeHandle(ref, () => ({
-    getStateOfChecked: () => checkboxSymbolRef.current.getStateOfChecked(),
-    setStateOfChecked: (newState) => {
-      checkboxSymbolRef.current.setStateOfChecked(newState);
+    isChecked: () => checkboxSymbolRef.current.isChecked(),
+    setChecked: (newState) => {
+      checkboxSymbolRef.current.setChecked(newState);
     },
   }));
 
   useEffect(() => {
-    checkboxSymbolRef.current.setStateOfChecked(checked);
+    checkboxSymbolRef.current.setChecked(checked);
   }, [checked]);
 
   function onClick() {
-    const currentState = checkboxSymbolRef.current.getStateOfChecked();
-    checkboxSymbolRef.current.setStateOfChecked(!currentState);
+    const isChecked = checkboxSymbolRef.current.isChecked();
+    checkboxSymbolRef.current.setChecked(!isChecked);
   }
 
   const labelStyle = {
