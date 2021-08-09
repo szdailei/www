@@ -33,7 +33,7 @@ function ChangePassword({ callback, name }) {
       <Div>Change Password For </Div>
       <Div>{name}</Div>
       <Div style={{ textAlign: 'center', marginTop: '8em' }}>
-        <Input onChange={inputPassword} style={{ fontSize: '1.5em', placeholder: 'New Password' }} />
+        <Input onChange={inputPassword} placeholder="New Password" style={{ fontSize: '1.5em' }} />
         <GridContainer style={{ gridTemplateColumns: '1fr 1fr', marginTop: '2em' }}>
           <Button onClick={submitNewPassword} style={{ marginLeft: 'auto', marginRight: '4em' }}>
             Submit

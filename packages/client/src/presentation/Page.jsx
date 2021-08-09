@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import makeid from '../lib/makeid.js';
 import { Div } from '../styled/index.js';
 import { Section, Main, Footer } from '../sectioning/index.js';
@@ -27,14 +28,7 @@ function createMain(ctx) {
   return main;
 }
 
-function Page() {}
-
-Page.createPage = (ctx) => {
-  const main = createMain(ctx);
-  const footer = createFooter(ctx);
-
-  const { currentPageNum, totalPagesNum } = ctx;
-  const breakAfter = currentPageNum === totalPagesNum ? 'avoid' : 'all';
+function Page({ main, footer, breakAfter }) {
   const gridTemplateAreas = `
       'main'
       'footer'
@@ -45,7 +39,7 @@ Page.createPage = (ctx) => {
       style={{
         minHeight: '100vh',
         breakInside: 'avoid-page',
-        breakAfter: { breakAfter },
+        breakAfter,
         gridTemplateColumns: '1fr',
         gridTemplateRows: 'auto 0fr',
         gridTemplateAreas,
@@ -55,6 +49,22 @@ Page.createPage = (ctx) => {
       {footer}
     </Section>
   );
+}
+
+Page.propTypes = {
+  main: PropTypes.node.isRequired,
+  footer: PropTypes.node.isRequired,
+  breakAfter: PropTypes.string.isRequired,
+};
+
+Page.createPage = (ctx) => {
+  const main = createMain(ctx);
+  const footer = createFooter(ctx);
+
+  const { currentPageNum, totalPagesNum } = ctx;
+  const breakAfter = currentPageNum === totalPagesNum ? 'avoid' : 'all';
+
+  return <Page main={main} footer={footer} breakAfter={breakAfter} />;
 };
 
 export default Page;

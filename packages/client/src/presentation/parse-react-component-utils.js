@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 import { isAlphabetical } from 'is-alphabetical';
 import { trim } from '../lib/markdown.js';
 import emptyTags from '../lib/empty-tags.js';
@@ -68,48 +69,74 @@ function getTextExceptTheFirstTag(text) {
   return trim(result);
 }
 
-function removeQuoteAtBeginningAndEnd(text) {
-  let result = trim(text);
-  if (result[0] === '"' || result[0] === "'") result = result.slice(1);
-  if (result[result.length - 1] === '"' || result[result.length - 1] === "'")
-    result = result.slice(0, result.length - 1);
-  return result;
+function getTextWithoutTagName(textWithTagName) {
+  const lines = textWithTagName.split(' ');
+  let { length } = lines;
+
+  if (lines[lines.length - 1] === '/') length -= 1; // skip '/' in self close tag
+
+  let textWithoutTagName = lines[1]; // lines[0] is tag name, skip it
+  for (let i = 2; i < length; i += 1) {
+    if (lines[i] === '') continue;
+    textWithoutTagName += ` ${lines[i]}`;
+  }
+
+  return trim(textWithoutTagName);
+}
+
+function getPairs(textWithoutTagName) {
+  const pairs = [];
+  let insideSingleQuote = false;
+  let insideDoubleQuote = false;
+
+  let pair = '';
+  for (let i = 0; i < textWithoutTagName.length; i += 1) {
+    const char = textWithoutTagName[i];
+    if (char === "'") {
+      insideSingleQuote = !insideSingleQuote;
+      continue;
+    }
+    if (char === '"') {
+      insideDoubleQuote = !insideDoubleQuote;
+      continue;
+    }
+    if (char === ' ') {
+      if (insideSingleQuote || insideDoubleQuote) {
+        pair += char;
+      } else {
+        pairs.push(pair);
+        pair = '';
+      }
+    } else {
+      pair += char;
+    }
+  }
+  pairs.push(pair);
+  return pairs;
 }
 
 function getParams(text) {
-  const params = {};
-  let key;
-  let value;
-  let paramsStr;
-
   const firstTextContent = trim(getTheFirstTagTextContent(text));
 
-  const { length } = firstTextContent;
-  if (length >= 2 && firstTextContent[length - 1] === '/' && firstTextContent[length - 2] === ' ') {
-    // remove '/' if it is self closing tag
-    paramsStr = firstTextContent.slice(0, -2);
-  } else {
-    paramsStr = firstTextContent;
-  }
+  const textWithoutTagName = getTextWithoutTagName(firstTextContent);
 
-  const tokens = paramsStr.split(' ');
+  if (!textWithoutTagName) return {};
 
-  // The first is tag name, skip
-  for (let i = 1; i < tokens.length; i += 1) {
-    const pair = tokens[i].split('=');
-    if (pair.length === 2) {
-      key = pair[0].trim();
-      value = removeQuoteAtBeginningAndEnd(pair[1]);
+  const pairs = getPairs(textWithoutTagName);
+  const params = {};
 
+  pairs.forEach((pair) => {
+    const tokens = pair.split('=');
+    const key = tokens[0];
+    let value = tokens[1];
+    if (value) {
       if (value === 'true') value = true;
       if (value === 'false') value = false;
       params[key] = value;
+    } else {
+      params[key] = true;
     }
-    if (pair.length === 1) {
-      const mergedValue = removeQuoteAtBeginningAndEnd(`${value} ${pair}`);
-      params[key] = mergedValue;
-    }
-  }
+  });
 
   delete params.undefined;
 

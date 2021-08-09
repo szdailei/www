@@ -2,12 +2,18 @@ import React from 'react';
 import makeid from '../lib/makeid.js';
 import { convertSrcToLocal, convertSrcToServer, removeBlankLine, trim } from '../lib/markdown.js';
 import { Div, Heading, P, Span } from '../styled/index.js';
+import { SyntaxHighlighter } from '../components/index.js';
 import { isReactTagAtBegginning } from './parse-react-component-utils.js';
 import HtmlNode from './HtmlNode.jsx';
 import TableNode from './TableNode.jsx';
 
 function MarkdownNode(token, children, parent) {
-  const hover = { '&:hover': { fontWeight: 900, outline: '1px solid' } };
+  const hoverStyle = {
+    '&:hover': {
+      fontWeight: 900,
+      outline: '1px solid',
+    },
+  };
   const tokenText = trim(token.text);
   let node;
 
@@ -23,24 +29,7 @@ function MarkdownNode(token, children, parent) {
           text: tokenText,
         };
       } else {
-        const lines = tokenText.split('\n');
-        const codes = [];
-        lines.forEach((line) => {
-          let element = line;
-          if (trim(line) === '') {
-            element = <br />;
-          }
-          codes.push(
-            <Div key={makeid()} style={hover}>
-              {element}
-            </Div>
-          );
-        });
-        node = (
-          <Div key={makeid()} style={{ borderStyle: 'solid' }}>
-            <pre key={makeid()}>{codes}</pre>
-          </Div>
-        );
+        node = <SyntaxHighlighter key={makeid()} style={{ borderStyle: 'solid' }} code={tokenText} />;
       }
       break;
     case 'del':
@@ -123,13 +112,13 @@ function MarkdownNode(token, children, parent) {
     case 'text':
       if (parent && parent.type === 'paragraph' && parent.tokens && parent.tokens.length === 1) {
         node = (
-          <P key={makeid()} style={hover}>
+          <P key={makeid()} style={hoverStyle}>
             {children}
           </P>
         );
       } else {
         node = (
-          <Span key={makeid()} style={hover}>
+          <Span key={makeid()} style={hoverStyle}>
             {children}
           </Span>
         );

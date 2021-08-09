@@ -3,8 +3,6 @@ import GridContainer from './GridContainer.jsx';
 import StyledContainer from './StyledContainer.jsx';
 import Abbr from './Abbr.jsx';
 import Button from './Button.jsx';
-import Checkbox from './Checkbox.jsx';
-import CheckboxSymbol from './CheckboxSymbol.jsx';
 import Div from './Div.jsx';
 import Heading from './Heading.jsx';
 import Input from './Input.jsx';
@@ -22,8 +20,6 @@ export {
   StyledContainer,
   Abbr,
   Button,
-  Checkbox,
-  CheckboxSymbol,
   Div,
   Heading,
   Input,

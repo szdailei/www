@@ -26,8 +26,7 @@
     "start": "yarn start:static & yarn start:api & yarn start:gateway"
   },
   "dependencies": {
-    "dotenv-defaults": "^2.0.1",
-    "lodash": "^4.17.21"
+    "dotenv-defaults": "^2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",
@@ -46,6 +45,7 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "html-inline": "^1.2.0",
+    "lodash": "^4.17.21",
     "mkdirp": "^1.0.4",
     "nodemon": "^2.0.12",
     "prettier": "^2.3.2",
@@ -60,6 +60,7 @@
   "prettier": {
     "printWidth": 120,
     "semi": true,
-    "singleQuote": true
+    "singleQuote": true,
+    "embeddedLanguageFormatting":"off"
   }
 }

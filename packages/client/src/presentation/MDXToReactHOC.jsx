@@ -1,30 +1,30 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Checkbox, Div, Span, Input, Label } from '../styled/index.js';
+import { Button, Div, Span, Input, Label } from '../styled/index.js';
 import { Title } from '../sectioning/index.js';
 import { Appear, Clock, Timer, ClockOrTimer, Split } from '../components/index.js';
 import makeid from '../lib/makeid.js';
 import { getTextFromChildren } from './parse-react-component-utils.js';
 
+function destructuringParams(propNames, params) {
+  const clonedParams = { ...params };
+  const props = {};
+  propNames.forEach((propName) => {
+    if (clonedParams[propName]) {
+      props[propName] = clonedParams[propName];
+      delete clonedParams[propName];
+    }
+  });
+  const result = {
+    props,
+    rest: clonedParams,
+  };
+  return result;
+}
+
 function MDXToReactHOC({ children, tag, params }) {
-  let props;
   switch (tag) {
-    case 'Appear': {
-      const { hover, wrap, ...restParams } = params;
-      props = { hover, wrap };
-      return (
-        <Appear {...props} style={restParams}>
-          {children}
-        </Appear>
-      );
-    }
-    case 'Checkbox': {
-      const label = getTextFromChildren(children);
-      const { checked, right, ...restParams } = params;
-      props = { label, checked, right };
-      return <Checkbox {...props} style={restParams} />;
-    }
     case 'Clock':
       return <Clock style={params} />;
     case 'Timer':
@@ -43,16 +43,38 @@ function MDXToReactHOC({ children, tag, params }) {
     case 'Title':
       return <Title style={params}>{getTextFromChildren(children)}</Title>;
     case 'Button':
-      props = params;
-      return <Button {...props}>{children}</Button>;
-    case 'Input':
-      props = params;
-      return <Input {...props} />;
-    case 'Label': {
-      const { htmlFor, ...restParams } = params;
-      props = { htmlFor };
+      return <Button {...params}>{children}</Button>;
+    case 'Appear': {
+      const propNames = ['id', 'hover', 'wrap'];
+      const { props, rest } = destructuringParams(propNames, params);
       return (
-        <Label {...props} style={restParams}>
+        <Appear {...props} style={rest}>
+          {children}
+        </Appear>
+      );
+    }
+    case 'Input': {
+      const propNames = [
+        'id',
+        'autoComplete',
+        'autoFocus',
+        'type',
+        'name',
+        'checked',
+        'placeholder',
+        'readOnly',
+        'required',
+        'size',
+        'src',
+      ];
+      const { props, rest } = destructuringParams(propNames, params);
+      return <Input {...props} style={rest} />;
+    }
+    case 'Label': {
+      const propNames = ['id', 'htmlFor'];
+      const { props, rest } = destructuringParams(propNames, params);
+      return (
+        <Label {...props} style={rest}>
           {children}
         </Label>
       );

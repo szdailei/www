@@ -61,7 +61,10 @@ function openReactCompenent(ctx, text) {
       }
 
       if (subNode.props) {
-        contract('@require React文本被解析成%s个children\n\t\t@ensure 递归寻找children里的ReactTag，解析后修改children', subNode.props.children.length);
+        contract(
+          '@require React文本被解析成%s个children\n\t\t@ensure 递归寻找children里的ReactTag，解析后修改children',
+          subNode.props.children.length
+        );
         // eslint-disable-next-line no-use-before-define
         recursiveSpliceChildren(subNode.props.children);
         const currentNode = getCurrentNode(ctx.reactRoot);
@@ -71,7 +74,8 @@ function openReactCompenent(ctx, text) {
   }
 }
 
-function recursiveSpliceChildren(children) {
+function recursiveSpliceChildren(origChildren) {
+  let children = origChildren;
   const ctx = {
     pageChildren: [],
     reactRoot: null,
@@ -79,7 +83,6 @@ function recursiveSpliceChildren(children) {
 
   while (children) {
     if (children.length === 1 && children[0].props) {
-      // eslint-disable-next-line no-param-reassign
       children = children[0].props.children;
     } else {
       let htmlStartIndex;
