@@ -29,7 +29,7 @@ function MarkdownNode(token, children, parent) {
           text: tokenText,
         };
       } else {
-        node = <SyntaxHighlighter key={makeid()} style={{ borderStyle: 'solid' }} code={tokenText} />;
+        node = <SyntaxHighlighter key={makeid()} style={{ borderStyle: 'solid' }} code={tokenText} lang={token.lang} />;
       }
       break;
     case 'del':

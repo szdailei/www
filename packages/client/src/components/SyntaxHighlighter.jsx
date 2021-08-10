@@ -6,7 +6,12 @@ import Highlight, { defaultProps } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/vsLight';
 import makeid from '../lib/makeid';
 
-function SyntaxHighlighter({ code }) {
+function SyntaxHighlighter({ code, lang }) {
+  let language = lang;
+  if (!lang || lang === '') {
+    language = 'jsx';
+  }
+
   const Pre = styled.pre`
 padding: 0.5em;
 margin: 1em 0;
@@ -47,7 +52,7 @@ display: table-cell;
     );
   }
   return (
-    <Highlight {...defaultProps} theme={theme} code={code} language="jsx">
+    <Highlight {...defaultProps} theme={theme} code={code} language={language}>
       {render}
     </Highlight>
   );
@@ -55,6 +60,11 @@ display: table-cell;
 
 SyntaxHighlighter.propTypes = {
   code: PropTypes.string.isRequired,
+  lang: PropTypes.string,
+};
+
+SyntaxHighlighter.defaultProps = {
+  lang: 'jsx',
 };
 
 export default SyntaxHighlighter;
