@@ -213,11 +213,11 @@ function isReactTagAtBegginning(text) {
 
 function addBlankLines(markdown) {
   const lines = trim(markdown).split('\n');
-  let result = lines[0];
+  let result = '';
   let isInsideCode = false;
-  for (let i = 1; i < lines.length; i += 1) {
-    if (lines[i].indexOf('```') === 0) isInsideCode = !isInsideCode;
+  for (let i = 0; i < lines.length; i += 1) {
     const trimedLine = trim(lines[i]);
+    if (trimedLine.indexOf('```') !== -1) isInsideCode = !isInsideCode;
     if (!isInsideCode && isReactTagAtBegginning(trimedLine)) {
       result += `\n\n${trimedLine}\n`;
     } else {
@@ -225,7 +225,7 @@ function addBlankLines(markdown) {
     }
   }
 
-  return result;
+  return trim(result);
 }
 
 function modifyTokenIfMultiTagsInOneLine(tokens) {

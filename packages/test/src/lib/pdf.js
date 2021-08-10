@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import fs from 'fs';
 import { PDFDocument } from 'pdf-lib';
-import { waitForDone, getDocumentHeight } from './eval-common.js';
+import { waitForDone, getDocumentViewPort } from './eval-common.js';
 import { getTotalPagesNum } from './eval-presentation.js';
 
 async function setFontSizes(page, standardSize) {
@@ -34,7 +34,8 @@ async function createPdfBuffers(page, totalPagesNum, defaultViewPort, fontSize) 
 
   const pdfBuffers = [];
   for (let i = 0; i < totalPagesNum; i += 1) {
-    const height = await getDocumentHeight(page);
+    const { width, height } = await getDocumentViewPort(page);
+    viewPort.width = width;
     viewPort.height = height;
 
     const buffer = await page.pdf(viewPort);

@@ -7,9 +7,12 @@ async function waitForDone(page) {
   });
 }
 
-async function getDocumentHeight(page) {
-  const height = await page.evaluate(() => document.documentElement.scrollHeight);
-  return height;
+async function getDocumentViewPort(page) {
+  const viewPort = await page.evaluate(() => ({
+    width: document.documentElement.scrollWidth,
+    height: document.documentElement.scrollHeight,
+  }));
+  return viewPort;
 }
 
 async function getDocumentTitle(page) {
@@ -42,4 +45,4 @@ async function isTitleExist(page) {
   }
 }
 
-export { waitForDone, getDocumentHeight, getDocumentTitle, getTextContentById, isFullscreen, isTitleExist };
+export { waitForDone, getDocumentViewPort, getDocumentTitle, getTextContentById, isFullscreen, isTitleExist };

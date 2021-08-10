@@ -2,7 +2,7 @@ import React from 'react';
 import makeid from '../lib/makeid.js';
 import { convertSrcToLocal, convertSrcToServer, removeBlankLine, trim } from '../lib/markdown.js';
 import { Div, Heading, P, Span } from '../styled/index.js';
-import { SyntaxHighlighter } from '../components/index.js';
+import { PrismCode } from '../components/index.js';
 import { isReactTagAtBegginning } from './parse-react-component-utils.js';
 import HtmlNode from './HtmlNode.jsx';
 import TableNode from './TableNode.jsx';
@@ -29,7 +29,7 @@ function MarkdownNode(token, children, parent) {
           text: tokenText,
         };
       } else {
-        node = <SyntaxHighlighter key={makeid()} style={{ borderStyle: 'solid' }} code={tokenText} lang={token.lang} />;
+        node = <PrismCode key={makeid()} style={{ borderStyle: 'solid' }} code={tokenText} language={token.lang} />;
       }
       break;
     case 'del':
