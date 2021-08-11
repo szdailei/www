@@ -20,6 +20,7 @@
     "build:gateway": "yarn workspace @dailei/api-gateway build",
     "build:client": "yarn workspace @dailei/client build",
     "build": "yarn build:static && yarn build:api && yarn build:gateway && yarn build:client",
+    "deploy":"cp packages/client/dist/local/local-presentation.html ../www-data/storage/local-presentation.html",
     "start:static": "yarn workspace @dailei/static-server start",
     "start:api": "yarn workspace @dailei/api-server start",
     "start:gateway": "yarn workspace @dailei/api-gateway start",

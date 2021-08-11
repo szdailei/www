@@ -38,7 +38,7 @@ const ParseButton = React.forwardRef(({ createPages, textAreaRef, exampleRef, pa
       try {
         const pages = createPages(textAreaRef.current.value);
         const [firstPage] = pages;
-        [firstPageMain] = firstPage.props.children;
+        firstPageMain = { ...firstPage.props.main };
         elementCount = firstPageMain.props.children.length;
       } catch (error) {
         firstPageMain = error.toString();
@@ -107,10 +107,8 @@ ExampleContainer.propTypes = {
 
 ExampleContainer.createComponent = (createPages) => <ExampleContainer key={makeid()} createPages={createPages} />;
 
-function isExampleTag(tag) {
-  const ExampleContainerTag = '<Example>';
-  if (tag === ExampleContainerTag) return true;
-  return false;
+function isExampleTag(tagName) {
+  return tagName === 'Example';
 }
 
 export { ExampleContainer, isExampleTag };

@@ -6,6 +6,7 @@ import {
   modifyTokenIfMultiTagsInOneLine,
   isOpeningTagAtBegginning,
   isSelfCloseTag,
+  getTagName,
   getTheFirstTagTextContent,
   getTextExceptTheFirstTag,
 } from './parse-react-component-utils.js';
@@ -80,7 +81,7 @@ function createPages(markdown) {
       if (isOpeningTagAtBegginning(node.text)) {
         let text;
         if (textExceptTheFirstTag) {
-          // Only parse the first tag attributes, textExceptTheFirstTag will be getTokensByMarkdown and insert it after current token.
+          // Only parse the first tag name and params, textExceptTheFirstTag will be getTokensByMarkdown and insert it after current token.
           text = `<${getTheFirstTagTextContent(node.text)}>`;
         } else {
           text = node.text;
@@ -88,7 +89,8 @@ function createPages(markdown) {
         openReactCompenent(ctx, text);
       }
 
-      if (isExampleTag(node.text)) {
+      const tagName = getTagName(node.text);
+      if (isExampleTag(tagName)) {
         const currentNode = getCurrentNode(ctx.reactRoot);
         const component = ExampleContainer.createComponent(createPages);
         addComponentToChildren(ctx.reactRoot, currentNode, component);

@@ -13,7 +13,7 @@
     "copy:local": "mkdirp dist/local/tmp && cp -r public/* dist/local/tmp",
     "dev": "yarn clean && yarn copy:www && yarn rollup --watch -c rollup.config.www.js",
     "dev:debug": "cp src/__debug__/*.md dist && yarn rollup --watch -c rollup.config.debug.js",
-    "inline": "yarn html-inline -i dist/local/tmp/index.html -o ../../../www-data/storage/local-presentation.html && rimraf dist/local/tmp",
+    "inline": "yarn html-inline -i dist/local/tmp/index.html -o dist/local/local-presentation.html && rimraf dist/local/tmp",
     "build:www": "yarn copy:www && yarn rollup -c rollup.config.www.js",
     "build:local": "yarn copy:local && yarn rollup -c rollup.config.local.js && yarn inline",
     "build:debug": "cp src/__debug__/*.md dist && yarn rollup -c rollup.config.debug.js",
