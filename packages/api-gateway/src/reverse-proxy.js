@@ -2,6 +2,9 @@ import http from 'http';
 import httpProxy from 'http-proxy';
 import rules from './rules.js';
 
+/**
+@require res.headersSent is false
+*/
 function sendResponse(res, code, msg) {
   res.writeHead(code, { 'Content-Type': 'text/plain; charset=utf-8', 'Content-Length': msg.length });
   res.end(msg);
@@ -13,9 +16,11 @@ function handleProxyError(err, _, res) {
 
 function reverseProxy(req, res) {
   req.on('error', (err) => {
+    if (res.headersSent) return
     sendResponse(res, 400, err.toString());
   });
 
+  if (res.headersSent) return
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') {
     res.writeHead(200, {

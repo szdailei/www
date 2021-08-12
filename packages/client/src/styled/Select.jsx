@@ -13,7 +13,6 @@ roles.forEach((role, key) => {
 });
 <Select onChange={selectRole} options={options} />
 */
-
 const Select = React.forwardRef(({ options, ...rest }, ref) => {
   const Styled = styled.select(rest.style);
   // eslint-disable-next-line react/jsx-props-no-spreading

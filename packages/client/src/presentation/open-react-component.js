@@ -27,6 +27,12 @@ function getTokensByMarkdown(markdown) {
   return tokens;
 }
 
+/*
+@require  ctx isn't null, and text has React open tag at beginning.
+@ensure   
+  1. Create reactRoot or addNode to current nodeList.
+  2. Remove first react open tag and recursiveParse rest text.
+*/
 function openReactCompenent(ctx, text) {
   contract('@require React Opening tag \n%s', text);
   const node = createNode(text);
