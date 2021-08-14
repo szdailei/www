@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { Div } from '../styled/index.js';
 
 const Appear = React.forwardRef(({ children, hover, wrap, ...rest }, ref) => {
-  const objStyle = rest.style;
+  const objStyle = {
+    cursor: 'pointer',
+    ...rest.style,
+  };
   const [stateOfShown, setStateOfShown] = useState(false);
 
   const onMouseEnter = useCallback((event) => {
@@ -39,9 +42,12 @@ const Appear = React.forwardRef(({ children, hover, wrap, ...rest }, ref) => {
   const firstChildContainerStyle = { ...children[0].props.style };
   firstChildContainerStyle.width = firstChildContainerStyle.width || 'fit-content';
 
-  const secondChildContainerStyle = { ...children[1].props.style };
-  secondChildContainerStyle.width = secondChildContainerStyle.width || 'fit-content';
-  const secondChildContainer = stateOfShown ? <Div style={secondChildContainerStyle}>{children[1]}</Div> : null;
+ // const secondChildContainerStyle = { ...children[1].props.style };
+
+//  secondChildContainerStyle.width = secondChildContainerStyle.width || 'fit-content';
+secondChildContainerStyle.width = secondChildContainerStyle.width || 'fit-content';
+    
+const secondChildContainer = stateOfShown ? <Div style={secondChildContainerStyle}>{children[1]}</Div> : null;
 
   let firstChildContainer;
   if (wrap) {
