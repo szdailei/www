@@ -19,11 +19,9 @@
     "@babel/plugin-transform-runtime": "^7.12.1",
     "babel-jest": "^27.0.6",
     "cli-table": "^0.3.1",
-    "dotenv-defaults": "^2.0.1",
     "jest": "^27.0.6",
     "jest-html-reporters": "^2.1.1",
     "minimist": "^1.2.5",
-    "pdf-lib": "^1.16.0",
-    "puppeteer-core": "^10.2.0"
+    "pdf-lib": "^1.16.0"
   }
 }

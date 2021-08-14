@@ -42,12 +42,12 @@ const Appear = React.forwardRef(({ children, hover, wrap, ...rest }, ref) => {
   const firstChildContainerStyle = { ...children[0].props.style };
   firstChildContainerStyle.width = firstChildContainerStyle.width || 'fit-content';
 
- // const secondChildContainerStyle = { ...children[1].props.style };
+  // const secondChildContainerStyle = { ...children[1].props.style };
 
-//  secondChildContainerStyle.width = secondChildContainerStyle.width || 'fit-content';
-secondChildContainerStyle.width = secondChildContainerStyle.width || 'fit-content';
-    
-const secondChildContainer = stateOfShown ? <Div style={secondChildContainerStyle}>{children[1]}</Div> : null;
+  //  secondChildContainerStyle.width = secondChildContainerStyle.width || 'fit-content';
+  secondChildContainerStyle.width = secondChildContainerStyle.width || 'fit-content';
+
+  const secondChildContainer = stateOfShown ? <Div style={secondChildContainerStyle}>{children[1]}</Div> : null;
 
   let firstChildContainer;
   if (wrap) {

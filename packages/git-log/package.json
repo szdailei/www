@@ -13,12 +13,6 @@
     "log": "yarn prepare && yarn rollup -c rollup.config.git-log.js && yarn inline && rm reports/index.html reports/app.js && chromium reports/git-log.html"
   },
   "dependencies": {
-    "@emotion/react": "^11.4.0",
-    "@emotion/styled": "^11.3.0",
-    "dotenv-defaults": "^2.0.1",
-    "gitlog": "^4.0.4",
-    "prop-types": "^15.7.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "gitlog": "^4.0.4"
   }
 }

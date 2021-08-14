@@ -17,7 +17,6 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "dotenv-defaults": "^2.0.1",
     "mime": "^2.5.2 ",
     "quick-lru": "^6.0.0"
   }

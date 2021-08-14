@@ -27,7 +27,14 @@
     "start": "yarn start:static & yarn start:api & yarn start:gateway"
   },
   "dependencies": {
-    "dotenv-defaults": "^2.0.1"
+    "dotenv-defaults": "^2.0.1",
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
+    "loglevel": "^1.7.1",
+    "prop-types": "^15.7.2",
+    "puppeteer-core": "^10.2.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",
