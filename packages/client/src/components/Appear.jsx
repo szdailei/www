@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { Div } from '../styled/index.js';
 
 const Appear = React.forwardRef(({ children, hover, wrap, ...rest }, ref) => {
+  const firstChild = children[0];
+  const restChildren = children.slice(1, children.length);
   const objStyle = {
     cursor: 'pointer',
     ...rest.style,
@@ -42,16 +44,11 @@ const Appear = React.forwardRef(({ children, hover, wrap, ...rest }, ref) => {
   const firstChildContainerStyle = { ...children[0].props.style };
   firstChildContainerStyle.width = firstChildContainerStyle.width || 'fit-content';
 
-  // const secondChildContainerStyle = { ...children[1].props.style };
-
-  //  secondChildContainerStyle.width = secondChildContainerStyle.width || 'fit-content';
-  secondChildContainerStyle.width = secondChildContainerStyle.width || 'fit-content';
-
-  const secondChildContainer = stateOfShown ? <Div style={secondChildContainerStyle}>{children[1]}</Div> : null;
+  const secondChildContainer = stateOfShown ? <Div>{restChildren}</Div> : null;
 
   let firstChildContainer;
   if (wrap) {
-    firstChildContainer = <Div style={firstChildContainerStyle}> {children[0]}</Div>;
+    firstChildContainer = <Div style={firstChildContainerStyle}> {firstChild}</Div>;
     return (
       <Div {...rest} style={containerDivStyle} {...eventHandles} ref={ref}>
         {firstChildContainer}
