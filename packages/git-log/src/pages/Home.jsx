@@ -16,9 +16,9 @@ function Home({ repo, locale, users }) {
   'main'
   `;
   return (
-    <Article>
-      <Section gridTemplateColumns="1fr" gridTemplateRows="auto auto" gridTemplateAreas={gridTemplateAreas}>
-        <Header fontSize="1.3em" display="grid" gridTemplateColumns="auto auto">
+    <Article style={{ fontSize: '1.7em' }}>
+      <Section style={{ gridTemplateColumns: '1fr', gridTemplateRows: 'auto auto', gridTemplateAreas }}>
+        <Header style={{ fontSize: '1.3em', display: 'grid', gridTemplateColumns: 'auto auto' }}>
           <Span>Repo path</Span>
           <Span>{repo}</Span>
         </Header>

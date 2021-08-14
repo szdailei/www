@@ -35,7 +35,7 @@ function sendResponse(res, code, msg, length) {
 }
 
 function notFound(res) {
-  if (res.headersSent) return
+  if (res.headersSent) return;
   res.setHeader('Content-Type', 'text/plain');
   sendResponse(res, 404, http.STATUS_CODES[404], http.STATUS_CODES[404].length);
 }
@@ -192,7 +192,7 @@ async function resolveFile(req, res, fileName) {
     return;
   }
 
-  if (res.headersSent) return
+  if (res.headersSent) return;
   if (stats.isFile()) {
     const mimeType = getContentType(fileName);
     const encoding = getContentEncoding(req.headers['accept-encoding'], stats.size, mimeType);
@@ -213,7 +213,7 @@ async function resolveFile(req, res, fileName) {
 }
 
 function resolveUrl(req, res, rootDir) {
-  if (res.headersSent) return
+  if (res.headersSent) return;
   const fileName = path.join(rootDir, decodeURI(req.url));
   switch (req.method) {
     case 'GET':
@@ -248,11 +248,11 @@ function staticServer(port, rootDir) {
   http
     .createServer((req, res) => {
       req.on('error', (err) => {
-        if (res.headersSent) return
+        if (res.headersSent) return;
         res.setHeader('Content-Type', 'text/plain; charset=utf-8');
         sendResponse(res, 400, err.toString(), err.toString().length);
       });
-      if (res.headersSent) return
+      if (res.headersSent) return;
       resolveUrl(req, res, rootDir);
     })
     .listen(port);

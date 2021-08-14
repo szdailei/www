@@ -21,18 +21,20 @@ function User({ commits, repo, locale }) {
     <>
       <hr />
       <Section
-        marginTop="24px"
-        gridTemplateColumns="1fr"
-        gridTemplateRows="auto auto"
-        gridTemplateAreas={gridTemplateAreas}
+        style={{
+          marginTop: '24px',
+          gridTemplateColumns: '1fr',
+          gridTemplateRows: 'auto auto',
+          gridTemplateAreas,
+        }}
       >
-        <Header fontSize="1.2em" display="grid" gridTemplateColumns="1fr 1fr 4fr">
+        <Header style={{ fontSize: '1.2em', display: 'grid', gridTemplateColumns: '1fr 1fr 4fr' }}>
           <Span>Committer</Span>
-          <Span color="red">{name}</Span>
-          <Span color="red">{email}</Span>
+          <Span style={{ color: 'red' }}>{name}</Span>
+          <Span style={{ color: 'red' }}>{email}</Span>
         </Header>
-        <Main marginLeft="1em" display="grid" gridTemplateRows="auto auto">
-          <Span width="70%" display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap="40px">
+        <Main style={{ marginLeft: '1em', display: 'grid', gridTemplateRows: 'auto auto' }}>
+          <Span style={{ width: '70%', display: 'grid', gridTemplateColumns: '1fr 1fr', gridColumnGap: '40px' }}>
             <Span>Commit Date</Span>
             <Span>Author</Span>
           </Span>

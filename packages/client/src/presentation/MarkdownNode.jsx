@@ -1,7 +1,7 @@
 import React from 'react';
 import makeid from '../lib/makeid.js';
 import { convertSrcToLocal, convertSrcToServer, removeBlankLine, trim } from '../lib/markdown.js';
-import { Div, Heading, P, Span } from '../styled/index.js';
+import { Heading, P, Span } from '../styled/index.js';
 import { PrismCode } from '../components/index.js';
 import { isReactTagAtBegginning } from './parse-react-component-utils.js';
 import HtmlNode from './HtmlNode.jsx';
@@ -47,18 +47,17 @@ function MarkdownNode(token, children, parent) {
       break;
     case 'image':
       node = (
-        <Div key={makeid()} style={{ display: 'block', margin: '0', textAlign: 'center' }}>
-          <img
-            key={makeid()}
-            src={
-              window.location.protocol === 'file:'
-                ? convertSrcToLocal(token.href, 'img')
-                : convertSrcToServer(token.href, 'img')
-            }
-            alt={tokenText}
-            title={token.title}
-          />
-        </Div>
+        <img
+          key={makeid()}
+          src={
+            window.location.protocol === 'file:'
+              ? convertSrcToLocal(token.href, 'img')
+              : convertSrcToServer(token.href, 'img')
+          }
+          alt={tokenText}
+          title={token.title}
+          style={{ display: 'block', margin: 'auto' }}
+        />
       );
       break;
     case 'link':

@@ -18,22 +18,21 @@ function Commit({ commit, repo, locale }) {
   return (
     <>
       <hr />
-      <Section gridTemplateColumns="1fr" gridTemplateRows="auto auto" gridTemplateAreas={gridTemplateAreas}>
+      <Section style={{ gridTemplateColumns: '1fr', gridTemplateRows: 'auto auto', gridTemplateAreas }}>
         <Header
-          width="70%"
-          fontSize="1.1em"
-          display="grid"
-          gridTemplateColumns="1fr 1fr"
-          color="blue"
-          gridColumnGap="40px"
+          style={{
+            fontSize: '1.1em',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            color: 'blue',
+            gridColumnGap: '40px',
+          }}
         >
           <Span>{localeDate}</Span>
           <Span>{commit.authorName}</Span>
         </Header>
-        <Main display="grid" gridTemplateRows="auto auto auto">
-          <Span fontSize="1.1em" fontWeight="500">
-            {commit.subject}
-          </Span>
+        <Main style={{ display: 'grid', gridTemplateRows: 'auto auto auto' }}>
+          <Span style={{ fontSize: '1.1em', fontWeight: '500' }}>{commit.subject}</Span>
           <Span>{commit.body}</Span>
           <Popup />
         </Main>
