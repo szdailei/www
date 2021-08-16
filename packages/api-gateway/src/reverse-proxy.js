@@ -16,11 +16,17 @@ function handleProxyError(err, _, res) {
 
 function reverseProxy(req, res) {
   req.on('error', (err) => {
-    if (res.headersSent) return;
+    if (res.headersSent) {
+      res.end();
+      return;
+    }
     sendResponse(res, 400, err.toString());
   });
 
-  if (res.headersSent) return;
+  if (res.headersSent) {
+    res.end();
+    return;
+  }
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') {
     res.writeHead(200, {
