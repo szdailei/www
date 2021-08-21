@@ -2,7 +2,8 @@
 import React, { useCallback } from 'react';
 import styled from '@emotion/styled';
 
-const TextArea = React.forwardRef(({ ...rest }, ref) => {
+// eslint-disable-next-line react/prop-types
+const TextArea = React.forwardRef(({ style, ...rest }, ref) => {
   const minRows = 5;
   const onChange = useCallback((event) => {
     const currentRows = event.target.value.split('\n').length;
@@ -15,7 +16,7 @@ const TextArea = React.forwardRef(({ ...rest }, ref) => {
     transition: 'all 0.3s',
     outline: '0px',
     border: '1px dashed',
-    ...rest.style,
+    ...style,
 
     '&:focus': {
       border: '1px double blue',

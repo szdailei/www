@@ -14,10 +14,11 @@ const gridTemplateAreas = `
     <Footer>{footerData}</Footer>
 </Section>
 */
-const Section = React.forwardRef(({ ...rest }, ref) => {
+// eslint-disable-next-line react/prop-types
+const Section = React.forwardRef(({ style, ...rest }, ref) => {
   const objStyle = {
     display: 'grid',
-    ...rest.style,
+    ...style,
   };
   const Styled = styled.section(objStyle);
   // eslint-disable-next-line react/jsx-props-no-spreading

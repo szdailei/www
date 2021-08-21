@@ -3,7 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-const Title = React.forwardRef(({ children, ...rest }, ref) => {
+// eslint-disable-next-line react/prop-types
+const Title = React.forwardRef(({ children, style, ...rest }, ref) => {
   document.title = children;
 
   const containerStyle = {
@@ -15,7 +16,7 @@ const Title = React.forwardRef(({ children, ...rest }, ref) => {
   const itemStyle = {
     fontSize: '3em',
     fontWeight: '700',
-    ...rest.style,
+    ...style,
   };
   const StyledContainer = styled.div(containerStyle);
   const StyledItem = styled.div(itemStyle);

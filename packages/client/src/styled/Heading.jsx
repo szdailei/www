@@ -3,21 +3,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-const Heading = React.forwardRef(({ depth, ...rest }, ref) => {
+// eslint-disable-next-line react/prop-types
+const Heading = React.forwardRef(({ depth, style, ...rest }, ref) => {
   let Styled;
-  let objStyle = { ...rest.style };
+  let objStyle = { ...style };
   switch (depth) {
     case 1:
       objStyle = {
         fontSize: '1.4em',
-        ...rest.style,
+        ...style,
       };
       Styled = styled.h1(objStyle);
       break;
     case 2:
       objStyle = {
         fontSize: '1.3em',
-        ...rest.style,
+        ...style,
       };
       Styled = styled.h2(objStyle);
       break;

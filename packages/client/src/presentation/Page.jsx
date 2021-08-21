@@ -28,7 +28,7 @@ function createMain(ctx) {
   return main;
 }
 
-function Page({ main, footer, breakAfter }) {
+function Page({ main, footer }) {
   const gridTemplateAreas = `
       'main'
       'footer'
@@ -38,8 +38,6 @@ function Page({ main, footer, breakAfter }) {
       key={makeid()}
       style={{
         minHeight: '100vh',
-        breakInside: 'avoid-page',
-        breakAfter,
         gridTemplateColumns: '1fr',
         gridTemplateRows: 'auto 0fr',
         gridTemplateAreas,
@@ -54,17 +52,13 @@ function Page({ main, footer, breakAfter }) {
 Page.propTypes = {
   main: PropTypes.node.isRequired,
   footer: PropTypes.node.isRequired,
-  breakAfter: PropTypes.string.isRequired,
 };
 
 Page.createPage = (ctx) => {
   const main = createMain(ctx);
   const footer = createFooter(ctx);
 
-  const { currentPageNum, totalPagesNum } = ctx;
-  const breakAfter = currentPageNum === totalPagesNum ? 'avoid' : 'all';
-
-  return <Page main={main} footer={footer} breakAfter={breakAfter} />;
+  return <Page main={main} footer={footer} />;
 };
 
 export default Page;

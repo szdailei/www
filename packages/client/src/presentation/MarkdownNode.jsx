@@ -29,7 +29,7 @@ function MarkdownNode(token, children, parent) {
           text: tokenText,
         };
       } else {
-        node = <PrismCode key={makeid()} style={{ borderStyle: 'solid' }} code={tokenText} language={token.lang} />;
+        node = <PrismCode key={makeid()} code={tokenText} language={token.lang} />;
       }
       break;
     case 'del':

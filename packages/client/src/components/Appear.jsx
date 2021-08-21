@@ -3,12 +3,13 @@ import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Div } from '../styled/index.js';
 
-const Appear = React.forwardRef(({ children, hover, wrap, ...rest }, ref) => {
+// eslint-disable-next-line react/prop-types
+const Appear = React.forwardRef(({ children, hover, wrap, style, ...rest }, ref) => {
   const firstChild = children[0];
   const restChildren = children.slice(1, children.length);
   const objStyle = {
     cursor: 'pointer',
-    ...rest.style,
+    ...style,
   };
   const [stateOfShown, setStateOfShown] = useState(false);
 

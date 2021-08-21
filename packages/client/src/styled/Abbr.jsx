@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-const Abbr = React.forwardRef(({ ...rest }, ref) => {
+// eslint-disable-next-line react/prop-types
+const Abbr = React.forwardRef(({ style, ...rest }, ref) => {
   const objStyle = {
     textDecoration: 'none',
-    ...rest.style,
+    ...style,
   };
 
   const Styled = styled.abbr(objStyle);

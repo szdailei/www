@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-const Button = React.forwardRef(({ ...rest }, ref) => {
+// eslint-disable-next-line react/prop-types
+const Button = React.forwardRef(({ style, ...rest }, ref) => {
   const objStyle = {
     cursor: 'pointer',
     width: 'fit-content',
@@ -9,7 +10,7 @@ const Button = React.forwardRef(({ ...rest }, ref) => {
     padding: '4px 8px',
     borderRadius: '4px',
     backgroundColor: '#f86e67',
-    ...rest.style,
+    ...style,
   };
 
   const Styled = styled.div(objStyle);

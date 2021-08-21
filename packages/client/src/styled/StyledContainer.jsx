@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-const StyledContainer = React.forwardRef(({ disabled, ...rest }, ref) => {
+// eslint-disable-next-line react/prop-types
+const StyledContainer = React.forwardRef(({ disabled, style, ...rest }, ref) => {
   let objStyle;
   if (disabled) {
     objStyle = {
-      ...rest.style,
+      ...style,
 
       cursor: 'not-allowed',
       backgroundColor: 'rgba(0, 0, 0, 0.06)',
@@ -14,7 +15,7 @@ const StyledContainer = React.forwardRef(({ disabled, ...rest }, ref) => {
       opacity: '0.5',
     };
   } else {
-    objStyle = { ...rest.style };
+    objStyle = { ...style };
   }
   const Styled = styled.div(objStyle);
   // eslint-disable-next-line react/jsx-props-no-spreading

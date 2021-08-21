@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-const Footer = React.forwardRef(({ ...rest }, ref) => {
+// eslint-disable-next-line react/prop-types
+const Footer = React.forwardRef(({ style, ...rest }, ref) => {
   const objStyle = {
     gridArea: 'footer',
     fontSize: '0.7em',
-    ...rest.style,
+    ...style,
   };
   const Styled = styled.footer(objStyle);
   // eslint-disable-next-line react/jsx-props-no-spreading

@@ -19,8 +19,8 @@ function PrismCode({ code, language }) {
   }, []);
   return (
     <div>
-      <pre className="line-numbers">
-        <code className={`language-${lang}`}>{code}</code>
+      <pre className={`language-${lang} line-numbers`}>
+        <code>{code}</code>
       </pre>
     </div>
   );

@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-const Main = React.forwardRef(({ ...rest }, ref) => {
+// eslint-disable-next-line react/prop-types
+const Main = React.forwardRef(({ style, ...rest }, ref) => {
   const objStyle = {
     gridArea: 'main',
-    ...rest.style,
+    ...style,
   };
   const Styled = styled.main(objStyle);
   // eslint-disable-next-line react/jsx-props-no-spreading

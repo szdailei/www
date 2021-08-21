@@ -15,7 +15,7 @@ const Article = React.forwardRef(({ pages, ...rest }, ref) => {
 
   const showData = pages[currentPageCount];
   return (
-    <RealArticle style={{ fontSize: '1.8em' }} {...rest} ref={ref}>
+    <RealArticle style={{ fontSize: '1.8em', lineHeight: '1.8' }} {...rest} ref={ref}>
       {showData}
     </RealArticle>
   );

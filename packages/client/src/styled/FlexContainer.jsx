@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-const FlexContainer = React.forwardRef(({ ...rest }, ref) => {
+// eslint-disable-next-line react/prop-types
+const FlexContainer = React.forwardRef(({ style, ...rest }, ref) => {
   const objStyle = {
     display: 'flex',
     flexDirection: 'column',
     flexFlow: 'column wrap',
-    ...rest.style,
+    ...style,
   };
   const Styled = styled.div(objStyle);
   // eslint-disable-next-line react/jsx-props-no-spreading
