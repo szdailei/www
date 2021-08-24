@@ -179,14 +179,6 @@ function sendFile(res, fileName, etag, mimeType, encoding) {
 }
 
 async function resolveFile(req, res, fileName) {
-  try {
-    // eslint-disable-next-line no-bitwise
-    await fs.promises.access(fileName, fs.constants.F_OK | fs.constants.R_OK);
-  } catch (error) {
-    notFound(res);
-    return;
-  }
-
   let stats;
   try {
     stats = await fs.promises.stat(fileName);
