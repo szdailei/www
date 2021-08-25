@@ -58,9 +58,9 @@ ${titles}
     const footer = `\n\n<Footer>${titlesArray[i]}</Footer>\n\n`;
     const data = await fs.promises.readFile(`${config.COURSES_DIR}${fileNames[i]}`, 'utf8');
     const pages = data.split('---');
-    intro += `---${pages[1]}${footer}---${pages[2]}${footer}---${pages[pages.length - 2]}${footer}---${
-      pages[pages.length - 1]
-    }${footer}`;
+    intro += `---${pages[1]}${footer}---${pages[2]}${footer}---${pages[pages.length - 3]}${footer}---${
+      pages[pages.length - 2]
+    }${footer}---${pages[pages.length - 1]}${footer}`;
   }
   await fs.promises.writeFile(`${config.COURSES_DIR}${config.INTRO_FILE}`, intro);
 }
