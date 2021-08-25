@@ -34,7 +34,7 @@ async function createIntroMdx(fileNames) {
     await link.click();
     await waitForDone(page);
     const title = await getTextContentById(page, '#title');
-    titles += `- ${title}\n`;
+    titles += `1. ${title}\n`;
     titlesArray.push(title);
     await browser.close();
   }
@@ -51,6 +51,18 @@ async function createIntroMdx(fileNames) {
 
 ${titles}
 
+<br>
+
+<hr>
+
+<br>
+
+- 每门课各摘录5页，分别是：
+  1. 课程介绍
+  1. 目录
+  1. 总结
+  1. 错误行为检查表
+  1. 回顾
 
 `;
 
