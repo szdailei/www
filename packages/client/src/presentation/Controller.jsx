@@ -64,7 +64,7 @@ function Controller({ pages }) {
   // 2: Secondary button pressed, usually the right button
   // 3: Fourth button, typically the Browser Back button
   // 4: Fifth button, typically the Browser Forward button
-  const onMouseUp = useCallback(
+  const onPointerUp = useCallback(
     (event) => {
       switch (event.button) {
         case 3:
@@ -89,15 +89,13 @@ function Controller({ pages }) {
   useEffect(() => {
     setCurrentPageCount(0);
     document.addEventListener('keyup', onKeyUp);
-    document.addEventListener('mouseup', onMouseUp);
 
     return () => {
       document.removeEventListener('keyup', onKeyUp);
-      document.removeEventListener('mouseup', onMouseUp);
     };
-  }, [onKeyUp, onMouseUp, setCurrentPageCount]);
+  }, [onKeyUp, setCurrentPageCount]);
 
-  return <Article pages={pages} ref={articleRef} />;
+  return <Article pages={pages} onPointerUp={onPointerUp} ref={articleRef} />;
 }
 
 Controller.propTypes = {

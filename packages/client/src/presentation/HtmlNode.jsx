@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import makeid from '../lib/makeid.js';
-import { Div, Span } from '../styled/index.js';
 import { convertSrcToLocal, convertSrcToServer, trim } from '../lib/markdown.js';
+import { Div, Span } from '../styled/index.js';
+import { VideoJS } from '../components/index.js';
 
 function camelCase(name) {
   let camelName = name;
@@ -62,8 +63,8 @@ function recursiveParseElement(element) {
 
   let node;
   let src;
-  let defaultProps;
-  let props;
+  let options;
+
   switch (element.nodeName) {
     case 'BR':
       node = <br key={makeid()} />;
@@ -111,22 +112,17 @@ function recursiveParseElement(element) {
       node = <u key={makeid()}>{children}</u>;
       break;
     case 'VIDEO':
-      defaultProps = {
+      options = {
+        crossOrigin : 'anonymous',
         controls: true,
-        preload: 'auto',
-      };
-      if (window.location.protocol !== 'file:') {
-        defaultProps.crossOrigin = 'anonymous';
-      }
-      props = {
-        ...defaultProps,
-        ...attributes,
+        preload:"auto",
+        width:attributes.width,
+        height: attributes.height
       };
       node = (
-        // eslint-disable-next-line jsx-a11y/media-has-caption
-        <video key={makeid()} {...props}>
+        <VideoJS key={makeid()} options={options}>
           {children}
-        </video>
+        </VideoJS>
       );
       break;
     case '#text':
