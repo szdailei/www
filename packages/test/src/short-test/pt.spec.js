@@ -9,7 +9,8 @@ import config from '../config.js';
 let browser;
 let page;
 
-const ptReq = `@pain
+const ptReq = `
+@pain
   20200601，代磊使用PowerPoint写作ppt文件，使用PowerPoint播放ppt文件，
   在胶片格式上浪费时间多、并且只能使用Windows。
 @expect
@@ -35,7 +36,8 @@ describe(ptReq, () => {
   });
 });
 
-const exportPdfReq = `@pain
+const exportPdfReq = `
+@pain
   20200601，代磊将ppt导出为pdf时，纸张大小不可调、阅读不方便。
 @expect
   20201111，代磊将md导出pdf时，将要设置适合屏幕阅读的宽度和高度。

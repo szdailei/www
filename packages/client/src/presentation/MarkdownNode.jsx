@@ -14,7 +14,7 @@ function MarkdownNode(token, children, parent) {
       outline: '1px solid',
     },
   };
-  const tokenText = trim(token.text);
+  const trimedText = trim(token.text);
   let node;
 
   switch (token.type) {
@@ -22,21 +22,21 @@ function MarkdownNode(token, children, parent) {
       node = <blockquote key={makeid()}>{children}</blockquote>;
       break;
     case 'code':
-      if (token.codeBlockStyle === 'indented' && isReactTagAtBegginning(tokenText)) {
+      if (token.codeBlockStyle === 'indented' && isReactTagAtBegginning(trimedText)) {
         node = {
           error: 'react-component',
           type: token.type,
-          text: tokenText,
+          text: trimedText,
         };
       } else {
-        node = <PrismCode key={makeid()} code={tokenText} language={token.lang} />;
+        node = <PrismCode key={makeid()} code={token.text} language={token.lang} />;
       }
       break;
     case 'del':
       node = <span key={makeid()}>{token.raw}</span>;
       break;
     case 'em':
-      node = <em key={makeid()}>{tokenText}</em>;
+      node = <em key={makeid()}>{trimedText}</em>;
       break;
     case 'heading':
       node = (
@@ -54,7 +54,7 @@ function MarkdownNode(token, children, parent) {
               ? convertSrcToLocal(token.href, 'img')
               : convertSrcToServer(token.href, 'img')
           }
-          alt={tokenText}
+          alt={trimedText}
           title={token.title}
           style={{ display: 'block', margin: 'auto' }}
         />
@@ -78,20 +78,20 @@ function MarkdownNode(token, children, parent) {
       node = <li key={makeid()}>{children}</li>;
       break;
     case 'html':
-      if (isReactTagAtBegginning(tokenText)) {
+      if (isReactTagAtBegginning(trimedText)) {
         node = {
           error: 'react-component',
           type: token.type,
-          text: tokenText,
+          text: trimedText,
         };
       } else {
-        node = HtmlNode(tokenText);
+        node = HtmlNode(trimedText);
       }
       break;
     case 'paragraph':
       if (children.length === 1) {
         if (children[0].type === 'span') {
-          node = <p key={makeid()}>{removeBlankLine(tokenText)}</p>;
+          node = <p key={makeid()}>{removeBlankLine(trimedText)}</p>;
         } else {
           [node] = children;
         }
