@@ -10,15 +10,10 @@ let browser;
 let page;
 
 const ptReq = `
-@pain
-  20200601，代磊使用PowerPoint写作ppt文件，使用PowerPoint播放ppt文件，
-  在胶片格式上浪费时间多、并且只能使用Windows。
-@expect
-  20201111，代磊将要使用Linux的VSCode写作mdx文件，将要使用浏览器演示mdx文件，聚集文本内容。
-@status
-  20200601，MS Office将ppt文件解析为专有播放组件在PowerPoint播放。
-@goal
-  20201111，在http://127.0.0.1上，浏览器将mdx文件解析为React组件，将要在浏览器显示。`;
+@pain   20200601，代磊使用PowerPoint写作ppt文件，使用PowerPoint播放ppt文件，在胶片格式上浪费时间多、并且只能使用Windows。
+@expect 20201111，代磊将要使用Linux的VSCode写作mdx文件，将要使用浏览器演示mdx文件，聚集文本内容。
+@status 20200601，MS Office将ppt文件解析为专有播放组件在PowerPoint播放。
+@goal   20201111，在http://127.0.0.1上，浏览器将mdx文件解析为React组件，将要在浏览器显示。`;
 describe(ptReq, () => {
   const setTitleContr = `document.title设置为胶片首页的Title`;
   test(setTitleContr, async () => {
