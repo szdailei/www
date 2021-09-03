@@ -27,7 +27,7 @@ const VideoJS = ({ options, children }) => {
   }, [options]);
 
   return (
-    <div data-vjs-player>
+    <div data-vjs-player style={{margin:'auto'}}>
       <video ref={videoRef} className="video-js vjs-big-play-centered">
         {children}
       </video>
