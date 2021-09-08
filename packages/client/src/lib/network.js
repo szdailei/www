@@ -68,7 +68,7 @@ function setDownloadServerUrl(json) {
   config.downloadServerUrl = `${json.downloadProtocol}//${hostname}:${json.downloadServerPort}`;
 }
 
-async function request(queryOrMutation) {
+async function request(query) {
   const endpoint = getApiGatewayEndPoint();
   const client = new GraphQLClient(endpoint, {
     mode: 'cors',
@@ -81,7 +81,7 @@ async function request(queryOrMutation) {
   let data;
   let error;
   try {
-    data = await client.request(queryOrMutation);
+    data = await client.request(query);
   } catch (err) {
     error = err;
   }
