@@ -119,31 +119,31 @@ function useRemoteConfig() {
 }
 
 function useRemoteData(query) {
-  const [data, setData] = useState();
-  const [error, setError] = useState();
+  const [result, setResult] = useState();
 
   function reFetch() {
-    setData(null);
+    setResult(null);
   }
 
   useEffect(() => {
     let isMounted = true;
     async function getRemoteData() {
-      const result = await request(query);
       if (!isMounted) return;
-      if (result.data) {
-        setData(result.data);
-      }
-      if (result.error) {
-        setError(result.error);
-      }
+      setResult(await request(query));
     }
-    if (query && !data) getRemoteData();
+    if (query && !result) getRemoteData();
 
     return () => {
       isMounted = false;
     };
-  }, [data, error, query]);
+  }, [result, query]);
+
+  let data;
+  let error;
+  if (result) {
+    data = result.data;
+    error = result.error;
+  }
 
   return { data, error, reFetch };
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import makeid from '../lib/makeid.js';
@@ -54,7 +54,7 @@ RolePermissions.propTypes = {
   permissions: PropTypes.PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-function Users({ messageRef, onSuccess, users, roles }) {
+function Users({ messageRef, onSuccessOfDeleteUser, users, roles }) {
   const navigate = useNavigate();
   const options = [<Option key={roles.length + 1} value="Select..." label="Select..." />];
   roles.forEach((role, key) => {
@@ -78,9 +78,9 @@ function Users({ messageRef, onSuccess, users, roles }) {
         msg = 'Delete User Failure';
       }
       messageRef.current.setChildren(msg);
-      if (onSuccess && data && data.deleteUser) onSuccess();
+      if (onSuccessOfDeleteUser && data && data.deleteUser) onSuccessOfDeleteUser();
     },
-    [messageRef, onSuccess]
+    [messageRef, onSuccessOfDeleteUser]
   );
 
   const changePassword = useCallback(
@@ -133,36 +133,52 @@ Users.propTypes = {
   messageRef: PropTypes.object.isRequired,
   users: PropTypes.arrayOf(PropTypes.string).isRequired,
   roles: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onSuccess: PropTypes.func,
+  onSuccessOfDeleteUser: PropTypes.func,
 };
 
 Users.defaultProps = {
-  onSuccess: null,
+  onSuccessOfDeleteUser: null,
 };
 
-function Admin() {
+const RolesAndUsers = React.forwardRef(({ messageRef }, ref) => {
   const query = '{getUsers getUserRoles getRoles getPermissions}';
   const { data, error, reFetch } = useRemoteData(query);
 
-  const messageRef = useRef();
-
-  function onSuccessOfCreateUser() {
-    reFetch();
-  }
-
-  function onSuccessOfDeleteUser() {
-    reFetch();
-  }
+  useImperativeHandle(ref, () => ({
+    reFetch: () => {
+      reFetch();
+    },
+  }));
 
   if (error) return <Error error={error} />;
   if (!data) return null;
 
   return (
+    <Div ref={ref}>
+      <RolePermissions roles={data.getRoles} permissions={data.getPermissions} />
+      <Users messageRef={messageRef} onSuccessOfDeleteUser={reFetch} users={data.getUsers} roles={data.getRoles} />
+    </Div>
+  );
+});
+
+RolesAndUsers.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  messageRef: PropTypes.object.isRequired,
+};
+
+function Admin() {
+  const messageRef = useRef();
+  const RolesAndUsersRef = useRef();
+
+  function onSuccessOfCreateUser() {
+    RolesAndUsersRef.current.reFetch();
+  }
+
+  return (
     <Article>
       <Message style={{ marginBottom: '2em' }} ref={messageRef} />
-      <SignUp messageRef={messageRef} onSuccess={onSuccessOfCreateUser} />
-      <RolePermissions roles={data.getRoles} permissions={data.getPermissions} />
-      <Users messageRef={messageRef} onSuccess={onSuccessOfDeleteUser} users={data.getUsers} roles={data.getRoles} />
+      <SignUp messageRef={messageRef} onSuccessOfCreateUser={onSuccessOfCreateUser} />
+      <RolesAndUsers messageRef={messageRef} ref={RolesAndUsersRef} />
     </Article>
   );
 }

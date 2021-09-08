@@ -4,7 +4,7 @@ import { request } from '../lib/network.js';
 import { FlexContainer, Button } from '../styled/index.js';
 import { SignInInput } from '../components/index.js';
 
-function SignUp({ onSuccess, messageRef }) {
+function SignUp({ onSuccessOfCreateUser, messageRef }) {
   const userNameRef = useRef();
   const passwordRef = useRef();
 
@@ -22,8 +22,8 @@ function SignUp({ onSuccess, messageRef }) {
     }
 
     messageRef.current.setChildren(msg);
-    if (onSuccess && data && data.createUser) onSuccess();
-  }, [messageRef, onSuccess]);
+    if (onSuccessOfCreateUser && data && data.createUser) onSuccessOfCreateUser();
+  }, [messageRef, onSuccessOfCreateUser]);
 
   return (
     <FlexContainer>
@@ -38,11 +38,11 @@ function SignUp({ onSuccess, messageRef }) {
 SignUp.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   messageRef: PropTypes.object.isRequired,
-  onSuccess: PropTypes.func,
+  onSuccessOfCreateUser: PropTypes.func,
 };
 
 SignUp.defaultProps = {
-  onSuccess: null,
+  onSuccessOfCreateUser: null,
 };
 
 export default SignUp;
