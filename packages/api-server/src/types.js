@@ -7,15 +7,12 @@ type Query {
     getUserRoles: [String]
     getPermissions: [String]
     createUser(name:String, password:String):Boolean
-    changePassword(name: String!, password:String!):Boolean
+    deleteUser(name:String): Boolean
+    changePassword(name: String, password:String):Boolean
     getWebToken(name:String, password:String):String
     log(data:String): Boolean
     pdf(url:String!): String    
     sortAcceptLanguage: String
     resume(name: String): String
 }
-
-type Mutation {
-    deleteUser(name: String!): Boolean
-  }
 `;

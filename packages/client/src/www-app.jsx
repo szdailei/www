@@ -11,9 +11,11 @@ import {
   RESUME_PATH,
   COURSES_PATH,
   SIGN_IN_PATH,
+  CHANGE_PASSWORD_PATH,
   PRESENTATION_PATH,
 } from './lib/path';
 import Presentation from './presentation/Presentation';
+import ChangePassword from './pages/ChangePassword';
 
 function App() {
   const { ready, error } = useRemoteConfig();
@@ -30,6 +32,7 @@ function App() {
         <Route path={RESUME_PATH} element={<Resume />} />
         <Route path={COURSES_PATH} element={<Courses />} />
         <Route path={SIGN_IN_PATH} element={<SignIn />} />
+        <Route path={CHANGE_PASSWORD_PATH} element={<ChangePassword />} />
         <Route path={presentationPath} element={<Presentation />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

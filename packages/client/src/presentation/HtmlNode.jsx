@@ -113,11 +113,11 @@ function recursiveParseElement(element) {
       break;
     case 'VIDEO':
       options = {
-        crossOrigin : 'anonymous',
+        crossOrigin: 'anonymous',
         controls: true,
-        preload:"auto",
-        width:attributes.width,
-        height: attributes.height
+        preload: 'auto',
+        width: attributes.width,
+        height: attributes.height,
       };
       node = (
         <VideoJS key={makeid()} options={options}>

@@ -18,12 +18,12 @@ const Title = React.forwardRef(({ children, style, ...rest }, ref) => {
     fontWeight: '700',
     ...style,
   };
-  const StyledContainer = styled.div(containerStyle);
+  const Styled = styled.div(containerStyle);
   const StyledItem = styled.div(itemStyle);
   return (
-    <StyledContainer {...rest} ref={ref}>
+    <Styled {...rest} ref={ref}>
       <StyledItem id="title">{children}</StyledItem>
-    </StyledContainer>
+    </Styled>
   );
 });
 

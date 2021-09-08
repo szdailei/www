@@ -1,53 +1,50 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useCallback, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { request } from '../lib/network.js';
-import { GridContainer, Div, Button, Input } from '../styled/index.js';
+import { Button, Div } from '../styled/index.js';
 import { Article } from '../sectioning/index.js';
+import { Message, SignInInput } from '../components/index.js';
 
-function ChangePassword({ callback, name }) {
-  let password;
+function ChangePassword() {
+  const { userName } = useParams();
+  const navigate = useNavigate();
+  const userNameRef = useRef();
+  const passwordRef = useRef();
+  const messageRef = useRef();
 
-  function inputPassword(event) {
-    password = event.target.value;
-  }
-
-  async function submitNewPassword() {
-    const query = `{changePassword(name:"${name}" password:"${password}")}`;
+  const submitNewPassword = useCallback(async () => {
+    const query = `{changePassword(name:"${userNameRef.current.value}" password:"${passwordRef.current.value}")}`;
     const { data, error } = await request(query);
-    if (error) callback(error);
-    if (data) {
-      if (data.changePassword) {
-        callback('Change Password Success', true);
-      } else {
-        callback('Change Password Failure');
-      }
-    }
-  }
 
-  async function cancel() {
-    callback('');
-  }
+    let msg;
+    if (data && data.changePassword) {
+      msg = 'Change Password Success';
+    } else if (error) {
+      msg = error.response.errors[0].message;
+    } else {
+      msg = 'Change Password Failure';
+    }
+    messageRef.current.setChildren(msg);
+  }, []);
+
+  const gotoRoot = useCallback(async () => {
+    navigate('/');
+  }, [navigate]);
 
   return (
-    <Article>
-      <Div>Change Password For </Div>
-      <Div>{name}</Div>
-      <Div style={{ textAlign: 'center', marginTop: '8em' }}>
-        <Input onChange={inputPassword} placeholder="New Password" style={{ fontSize: '1.5em' }} />
-        <GridContainer style={{ gridTemplateColumns: '1fr 1fr', marginTop: '2em' }}>
-          <Button onClick={submitNewPassword} style={{ marginLeft: 'auto', marginRight: '4em' }}>
-            Submit
-          </Button>
-          <Button onClick={cancel}>Cancel</Button>
-        </GridContainer>
+    <Article style={{ textAlign: 'center' }}>
+      <SignInInput userNameRef={userNameRef} passwordRef={passwordRef} userName={userName} />
+      <Div style={{ textAlign: 'center', marginTop: '2em' }}>
+        <Button onClick={submitNewPassword} style={{ display: 'inline-block', marginRight: '4em' }}>
+          Change Password
+        </Button>
+        <Button onClick={gotoRoot} style={{ display: 'inline-block' }}>
+          Cancel
+        </Button>
       </Div>
+      <Message style={{ marginTop: '2em' }} ref={messageRef} />
     </Article>
   );
 }
-
-ChangePassword.propTypes = {
-  callback: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-};
 
 export default ChangePassword;

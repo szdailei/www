@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import makeid from '../lib/makeid.js';
 import { request, useRemoteData } from '../lib/network.js';
-import { FlexContainer, GridContainer, StyledContainer, Div, Button, Option, Select } from '../styled/index.js';
+import { FlexContainer, GridContainer, Div, Button, Option, Select } from '../styled/index.js';
 import { Article } from '../sectioning/index.js';
-import { Error } from '../components/index.js';
-import ChangePassword from './ChangePassword.jsx';
+import { Error, Message } from '../components/index.js';
 import SignUp from './SignUp.jsx';
 
 function selectRole() {}
@@ -31,13 +31,13 @@ function RolePermissions({ roles, permissions }) {
     });
 
     const child = (
-      <StyledContainer key={makeid()} style={{ marginLeft: '2em' }}>
+      <FlexContainer key={makeid()} style={{ marginLeft: '2em' }}>
         <GridContainer style={{ gridTemplateColumns: '1fr  1fr 1fr 1fr 1fr', fontSize: '1em' }}>
           <Div>{json.id}</Div>
           <Div>{json.name}</Div>
           <Div>{functionNames}</Div>
         </GridContainer>
-      </StyledContainer>
+      </FlexContainer>
     );
     rolesChildren.push(child);
   });
@@ -54,7 +54,8 @@ RolePermissions.propTypes = {
   permissions: PropTypes.PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-function Users({ callback, onModal, users, roles }) {
+function Users({ messageRef, onSuccess, users, roles }) {
+  const navigate = useNavigate();
   const options = [<Option key={roles.length + 1} value="Select..." label="Select..." />];
   roles.forEach((role, key) => {
     // eslint-disable-next-line react/no-array-index-key
@@ -62,30 +63,38 @@ function Users({ callback, onModal, users, roles }) {
     options.push(option);
   });
 
-  async function deleteUser(event) {
-    const mutation = `mutation {
-    deleteUser(name:"${event.target.getAttribute('value')}")
-    }`;
-    const { data, error } = await request(mutation);
-    if (error) callback(error);
-    if (data) {
-      if (data.deleteUser) {
-        callback('Delete User Success', true);
-      } else {
-        callback('Delete User Failure');
-      }
-    }
-  }
+  const deleteUser = useCallback(
+    async (event) => {
+      const query = `{deleteUser(name:"${event.target.getAttribute('value')}")}`;
 
-  function changePassword(event) {
-    onModal(event.target.getAttribute('value'));
-  }
+      const { data, error } = await request(query);
+
+      let msg;
+      if (data && data.deleteUser) {
+        msg = 'Delete User Success';
+      } else if (error) {
+        msg = error.response.errors[0].message;
+      } else {
+        msg = 'Delete User Failure';
+      }
+      messageRef.current.setChildren(msg);
+      if (onSuccess && data && data.deleteUser) onSuccess();
+    },
+    [messageRef, onSuccess]
+  );
+
+  const changePassword = useCallback(
+    async (event) => {
+      navigate(`/change-password/${event.target.getAttribute('value')}`);
+    },
+    [navigate]
+  );
 
   const usersChildren = [];
   users.forEach((user) => {
     const json = JSON.parse(user);
     const child = (
-      <StyledContainer key={makeid()} style={{ marginLeft: '2em' }}>
+      <FlexContainer key={makeid()} style={{ marginLeft: '2em' }}>
         <GridContainer style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr' }}>
           <Div>{json.id}</Div>
           <Div>{json.name}</Div>
@@ -99,74 +108,61 @@ function Users({ callback, onModal, users, roles }) {
             Delete User
           </Button>
         </GridContainer>
-      </StyledContainer>
+      </FlexContainer>
     );
     usersChildren.push(child);
   });
   return (
     <Div>
       <h1>User List</h1>
-      <StyledContainer key={makeid()} style={{ marginLeft: '2em' }}>
+      <FlexContainer style={{ marginLeft: '2em' }}>
         <GridContainer style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr' }}>
           <Div>ID</Div>
           <Div>Name</Div>
           <Div>Role</Div>
           <Div>Permission</Div>
         </GridContainer>
-      </StyledContainer>
+      </FlexContainer>
       {usersChildren}
     </Div>
   );
 }
 
 Users.propTypes = {
-  callback: PropTypes.func.isRequired,
-  onModal: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  messageRef: PropTypes.object.isRequired,
   users: PropTypes.arrayOf(PropTypes.string).isRequired,
   roles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onSuccess: PropTypes.func,
 };
 
-function Status({ msg }) {
-  return <Div style={{ textAlign: 'center' }}>{msg}</Div>;
-}
-
-Status.propTypes = {
-  msg: PropTypes.string.isRequired,
+Users.defaultProps = {
+  onSuccess: null,
 };
 
 function Admin() {
-  const [userIsRequiredToChangePassword, setUsername] = useState(null);
-  const [message, setMessage] = useState('');
   const query = '{getUsers getUserRoles getRoles getPermissions}';
   const { data, error, reFetch } = useRemoteData(query);
 
-  function callback(msg, isSuccess) {
-    if (isSuccess) {
-      reFetch();
-    }
-    setMessage(msg);
+  const messageRef = useRef();
+
+  function onSuccessOfCreateUser() {
+    reFetch();
   }
 
-  function modalCallback(msg) {
-    setUsername(null);
-    setMessage(msg);
+  function onSuccessOfDeleteUser() {
+    reFetch();
   }
 
   if (error) return <Error error={error} />;
   if (!data) return null;
 
-  if (userIsRequiredToChangePassword) {
-    return <ChangePassword name={userIsRequiredToChangePassword} callback={modalCallback} />;
-  }
-
   return (
     <Article>
-      <FlexContainer>
-        <Status msg={message} />
-        <SignUp callback={callback} />
-        <RolePermissions roles={data.getRoles} permissions={data.getPermissions} />
-        <Users callback={callback} onModal={setUsername} users={data.getUsers} roles={data.getRoles} />
-      </FlexContainer>
+      <Message style={{ marginBottom: '2em' }} ref={messageRef} />
+      <SignUp messageRef={messageRef} onSuccess={onSuccessOfCreateUser} />
+      <RolePermissions roles={data.getRoles} permissions={data.getPermissions} />
+      <Users messageRef={messageRef} onSuccess={onSuccessOfDeleteUser} users={data.getUsers} roles={data.getRoles} />
     </Article>
   );
 }

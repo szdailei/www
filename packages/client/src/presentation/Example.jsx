@@ -1,8 +1,9 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { useState, useCallback, useImperativeHandle, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Div, GridContainer, TextArea } from '../styled/index.js';
 import makeid from '../lib/makeid.js';
+import { Button, Div, GridContainer, TextArea } from '../styled/index.js';
+import { Message } from '../components/index.js';
 
 const Example = React.forwardRef((_, ref) => {
   const [children, setChildren] = useState();
@@ -16,19 +17,7 @@ const Example = React.forwardRef((_, ref) => {
   return <Div ref={ref}>{children}</Div>;
 });
 
-const ParseMessage = React.forwardRef((_, ref) => {
-  const [children, setChildren] = useState();
-
-  useImperativeHandle(ref, () => ({
-    setChildren: (parseMessage) => {
-      setChildren(parseMessage);
-    },
-  }));
-
-  return <Div ref={ref}>{children}</Div>;
-});
-
-const ParseButton = React.forwardRef(({ createPages, textAreaRef, exampleRef, parseMessageRef }, ref) => {
+const ParseButton = React.forwardRef(({ createPages, textAreaRef, exampleRef, messageRef }, ref) => {
   const onClick = useCallback(
     (event) => {
       event.preventDefault();
@@ -47,10 +36,10 @@ const ParseButton = React.forwardRef(({ createPages, textAreaRef, exampleRef, pa
 
       const parseMessage = <Div style={{ color: 'red', fontSize: '0.8em' }}>解析出{elementCount}个元素</Div>;
 
-      parseMessageRef.current.setChildren(parseMessage);
+      messageRef.current.setChildren(parseMessage);
       exampleRef.current.setChildren(firstPageMain);
     },
-    [createPages, textAreaRef, exampleRef, parseMessageRef]
+    [createPages, textAreaRef, exampleRef, messageRef]
   );
 
   return (
@@ -64,13 +53,13 @@ ParseButton.propTypes = {
   createPages: PropTypes.func.isRequired,
   textAreaRef: PropTypes.object.isRequired,
   exampleRef: PropTypes.object.isRequired,
-  parseMessageRef: PropTypes.object.isRequired,
+  messageRef: PropTypes.object.isRequired,
 };
 
 function ExampleContainer({ createPages }) {
   const textAreaRef = useRef();
   const exampleRef = useRef();
-  const parseMessageRef = useRef();
+  const messageRef = useRef();
 
   const onKeyUp = useCallback((event) => {
     event.nativeEvent.stopImmediatePropagation();
@@ -92,9 +81,9 @@ function ExampleContainer({ createPages }) {
           createPages={createPages}
           textAreaRef={textAreaRef}
           exampleRef={exampleRef}
-          parseMessageRef={parseMessageRef}
+          messageRef={messageRef}
         />
-        <ParseMessage ref={parseMessageRef} />
+        <Message ref={messageRef} />
       </GridContainer>
       <Example ref={exampleRef} />
     </>

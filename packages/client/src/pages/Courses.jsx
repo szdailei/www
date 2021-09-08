@@ -3,7 +3,7 @@ import makeid from '../lib/makeid.js';
 import { t } from '../i18n/index.js';
 import { useRemoteData } from '../lib/network.js';
 import { PRESENTATION_PATH } from '../lib/path.js';
-import { StyledContainer } from '../styled/index.js';
+import { FlexContainer } from '../styled/index.js';
 import { Article, Header, Main, Section } from '../sectioning/index.js';
 import { Error } from '../components/index.js';
 
@@ -18,9 +18,9 @@ function Courses() {
   data.getCourses.forEach((course) => {
     const href = `#${PRESENTATION_PATH}/${course.toString()}`;
     const child = (
-      <StyledContainer key={makeid()} style={{ margin: '0.3em 0 0 2em', fontSize: '1.5em', letterSpacing: '2px' }}>
+      <FlexContainer key={makeid()} style={{ margin: '0.3em 0 0 2em', fontSize: '1.5em', letterSpacing: '2px' }}>
         <a href={href}>{course.toString()}</a>
-      </StyledContainer>
+      </FlexContainer>
     );
     children.push(child);
   });

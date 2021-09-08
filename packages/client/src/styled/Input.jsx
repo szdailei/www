@@ -17,18 +17,12 @@ const Input = React.forwardRef(({ type, style, ...rest }, ref) => {
         ...style,
       };
       break;
-    case 'text':
+    default:
       objStyle = {
         fontSize: '1em',
         cursor: 'text',
         outline: 0,
         borderStyle: 'none none solid none',
-        ...style,
-      };
-      break;
-    default:
-      objStyle = {
-        fontSize: '1em',
         ...style,
       };
       break;

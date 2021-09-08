@@ -3,6 +3,10 @@ import { schema, resolvers } from './graphql-loader.js';
 
 function graphqlServer(req, res) {
   req.on('error', (err) => {
+    if (res.headersSent) {
+      res.end();
+      return;
+    }
     res.writeHead(400);
     res.end(err.toString());
   });

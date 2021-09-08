@@ -1,58 +1,45 @@
-import React, { useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { request } from '../lib/network.js';
 import { storageWebToken } from '../lib/security.js';
-import { GridContainer, Div, Button, Input } from '../styled/index.js';
+import { Button, Div } from '../styled/index.js';
 import { Article } from '../sectioning/index.js';
+import { Message, SignInInput } from '../components/index.js';
 
 function SignIn() {
   const navigate = useNavigate();
-  const [serverResponse, setServerResponse] = useState('');
-  let username;
-  let password;
+  const userNameRef = useRef();
+  const passwordRef = useRef();
+  const messageRef = useRef();
 
-  function inputUsername(event) {
-    username = event.target.value;
-  }
-
-  function inputPassword(event) {
-    password = event.target.value;
-  }
-
-  async function signIn() {
-    const query = `{getWebToken(name: "${username}" password: "${password}")}`;
+  const signIn = useCallback(async () => {
+    const query = `{getWebToken(name: "${userNameRef.current.value}" password: "${passwordRef.current.value}")}`;
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { data, error } = await request(query);
-    if (error) setServerResponse('Login failure');
-    if (!data) return;
+    if (error) messageRef.current.setChildren(error.response.errors[0].message);
 
-    if (data.getWebToken) {
+    if (data && data.getWebToken) {
       storageWebToken(data.getWebToken);
       navigate('/');
     }
-  }
+  }, [navigate]);
 
-  async function cancel() {
+  const gotoRoot = useCallback(async () => {
     navigate('/');
-  }
+  }, [navigate]);
 
   return (
     <Article>
-      <Div style={{ textAlign: 'center' }}>{serverResponse}</Div>
-      <GridContainer style={{ gridTemplateColumns: '3fr 3fr 3fr', marginTop: '2em' }}>
-        <Div style={{ textAlign: 'right', marginRight: '1em', fontSize: '1.5em' }}>Username</Div>
-        <Input onChange={inputUsername} style={{ fontSize: '1.5em' }} placeholder="Username" />
-      </GridContainer>
-      <GridContainer style={{ gridTemplateColumns: '3fr 3fr 3fr', marginTop: '2em' }}>
-        <Div style={{ textAlign: 'right', marginRight: '1em', fontSize: '1.5em' }}>Password</Div>
-        <Input onChange={inputPassword} style={{ fontSize: '1.5em' }} placeholder="Password" />
-      </GridContainer>
-      <GridContainer style={{ gridTemplateColumns: '1fr 1fr', marginTop: '2em' }}>
-        <Button onClick={signIn} style={{ marginLeft: 'auto', marginRight: '4em' }}>
+      <SignInInput userNameRef={userNameRef} passwordRef={passwordRef} />
+      <Div style={{ textAlign: 'center', marginTop: '2em' }}>
+        <Button onClick={signIn} style={{ display: 'inline-block', marginRight: '4em' }}>
           Sign In
         </Button>
-        <Button onClick={cancel}>Cancel</Button>
-      </GridContainer>
+        <Button onClick={gotoRoot} style={{ display: 'inline-block' }}>
+          Cancel
+        </Button>
+      </Div>
+      <Message style={{ marginTop: '2em' }} ref={messageRef} />
     </Article>
   );
 }
