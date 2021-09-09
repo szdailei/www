@@ -10,10 +10,11 @@ import SignUp from './SignUp.jsx';
 
 function selectRole() {}
 
-function getPermissionById(permissions, id) {
+function getPermissionById(id, permissions) {
   for (let i = 0; i < permissions.length; i += 1) {
-    if (permissions[i].id === id) {
-      return permissions[i].function_name;
+    const permission = JSON.parse(permissions[i]);
+    if (permission.id === id) {
+      return permission.function_name;
     }
   }
   return null;
@@ -21,20 +22,20 @@ function getPermissionById(permissions, id) {
 
 function RolePermissions({ roles, permissions }) {
   const rolesChildren = [];
-  roles.forEach((userRole) => {
-    const json = JSON.parse(userRole);
+  roles.forEach((stringifiedRole) => {
+    const role = JSON.parse(stringifiedRole);
 
     let functionNames = '';
-    json.permission_ids.forEach((id) => {
-      const functionName = getPermissionById(permissions, id);
+    role.permission_ids.forEach((id) => {
+      const functionName = getPermissionById(id, permissions);
       functionNames += `${functionName},`;
     });
 
     const child = (
       <FlexContainer key={makeid()} style={{ marginLeft: '2em' }}>
-        <GridContainer style={{ gridTemplateColumns: '1fr  1fr 1fr 1fr 1fr', fontSize: '1em' }}>
-          <Div>{json.id}</Div>
-          <Div>{json.name}</Div>
+        <GridContainer style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr', fontSize: '1em' }}>
+          <Div>{role.id}</Div>
+          <Div>{role.name}</Div>
           <Div>{functionNames}</Div>
         </GridContainer>
       </FlexContainer>
@@ -91,20 +92,20 @@ function Users({ messageRef, onSuccessOfDeleteUser, users, roles }) {
   );
 
   const usersChildren = [];
-  users.forEach((user) => {
-    const json = JSON.parse(user);
+  users.forEach((stringifiedUser) => {
+    const user = JSON.parse(stringifiedUser);
     const child = (
       <FlexContainer key={makeid()} style={{ marginLeft: '2em' }}>
         <GridContainer style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr' }}>
-          <Div>{json.id}</Div>
-          <Div>{json.name}</Div>
-          <Div>{json.role}</Div>
-          <Div>{json.permission}</Div>
+          <Div>{user.id}</Div>
+          <Div>{user.name}</Div>
+          <Div>{user.role}</Div>
+          <Div>{user.permission}</Div>
           <Select onChange={selectRole} options={options} style={{ fontSize: '1em' }} />
-          <Button onClick={changePassword} value={json.name}>
+          <Button onClick={changePassword} value={user.name}>
             Change Password
           </Button>
-          <Button onClick={deleteUser} value={json.name}>
+          <Button onClick={deleteUser} value={user.name}>
             Delete User
           </Button>
         </GridContainer>
@@ -141,7 +142,7 @@ Users.defaultProps = {
 };
 
 const RolesAndUsers = React.forwardRef(({ messageRef }, ref) => {
-  const query = '{getUsers getUserRoles getRoles getPermissions}';
+  const query = '{getUsers getRoles getPermissions}';
   const { data, error, reFetch } = useRemoteData(query);
 
   useImperativeHandle(ref, () => ({
@@ -156,7 +157,7 @@ const RolesAndUsers = React.forwardRef(({ messageRef }, ref) => {
   return (
     <Div ref={ref}>
       <RolePermissions roles={data.getRoles} permissions={data.getPermissions} />
-      <Users messageRef={messageRef} onSuccessOfDeleteUser={reFetch} users={data.getUsers} roles={data.getRoles} />
+      <Users onSuccessOfDeleteUser={reFetch} users={data.getUsers} roles={data.getRoles} messageRef={messageRef} />
     </Div>
   );
 });

@@ -98,8 +98,8 @@ export default {
     const { userRoles, error } = await storage.getUserRoles();
     if (error) throw new Error(error);
 
-    userRoles.forEach((role) => {
-      results.push(JSON.stringify(role));
+    userRoles.forEach((userRole) => {
+      results.push(JSON.stringify(userRole));
     });
     return results;
   },

@@ -1,7 +1,6 @@
 import {
   FlexContainer,
   GridContainer,
-  StyledContainer,
   Abbr,
   Button,
   Div,
@@ -23,7 +22,6 @@ import {
 export {
   FlexContainer,
   GridContainer,
-  StyledContainer,
   Abbr,
   Button,
   Div,

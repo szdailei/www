@@ -5,10 +5,9 @@ psql -d web -U dbuser -c "CREATE TABLE permission (id integer primary key, funct
 psql -d web -U dbuser -c "INSERT INTO role (id, name, permission_ids) VALUES(1, 'super','{1,2}')"
 psql -d web -U dbuser -c "INSERT INTO role (id, name, permission_ids) VALUES(2, 'normal','{2}')"
 psql -d web -U dbuser -c "INSERT INTO role (id, name, permission_ids) VALUES(3, 'guest','{3}')"
+psql -d web -U dbuser -c "INSERT INTO all_user (id, name, password, salt) VALUES(1,'admin', 'admin','salt')"
 psql -d web -U dbuser -c "INSERT INTO user_role (id, user_name, role_id, role_name) VALUES(1,'admin', 1,'super')"
 psql -d web -U dbuser -c "INSERT INTO permission (id, function_name) VALUES(1,'test')"
 
 
 psql -d web -U dbuser -c "UPDATE role SET name = 'super' WHERE id=1"
-
-
