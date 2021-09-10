@@ -67,7 +67,6 @@ function Users({ messageRef, onSuccessOfDeleteUser, users, roles }) {
   const deleteUser = useCallback(
     async (event) => {
       const query = `{deleteUser(name:"${event.target.getAttribute('value')}")}`;
-
       const { data, error } = await request(query);
 
       let msg;
