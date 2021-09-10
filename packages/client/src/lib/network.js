@@ -89,17 +89,17 @@ async function request(query, origEndPoint, origOptions) {
     if (res.ok) {
       const result = await res.json();
       if (!result) {
-        error = new Error("The response body isn't json");
+        error = new Error("The response body isn't json"); // body format error.
       } else if (result.errors) {
-        error = new Error(result.errors[0].message);
+        error = new Error(result.errors[0].message); // wrong query.
       } else {
         data = result.data;
       }
     } else {
-      error = await getErrorByRes(res);
+      error = await getErrorByRes(res); // non-200 response.
     }
   } catch (err) {
-    error = err;
+    error = err; // http error.
   }
 
   return { data, error };
