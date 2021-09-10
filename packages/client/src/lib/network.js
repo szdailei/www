@@ -1,37 +1,41 @@
 import { useEffect, useState } from 'react';
-import { GraphQLClient } from 'graphql-request';
 import config from '../config.js';
 
-async function fetchData(url, type) {
+async function getErrorByRes(res) {
+  const resBody = await res.text();
+  return new Error(`${res.status}: ${res.statusText}: ${resBody}`);
+}
+
+async function fetchData(endPoint, type) {
   const options = {
     method: 'GET',
     mode: 'cors',
     credentials: 'omit',
-    headers: {
-      'Cache-control': 'no-cache',
-    },
   };
   let res;
+  let data;
+  let error;
   try {
-    res = await fetch(url, options);
-  } catch (error) {
-    return { error };
+    res = await fetch(endPoint, options);
+    if (res.ok) {
+      switch (type) {
+        case 'text':
+          data = await res.text();
+          break;
+        case 'json':
+          data = await res.json();
+          break;
+        default:
+          break;
+      }
+    } else {
+      error = await getErrorByRes(res);
+    }
+  } catch (err) {
+    error = err;
   }
 
-  let data;
-  if (res.ok) {
-    switch (type) {
-      case 'text':
-        data = await res.text();
-        break;
-      case 'json':
-        data = await res.json();
-        break;
-      default:
-        break;
-    }
-  }
-  return { data };
+  return { data, error };
 }
 
 function getServerConfigUrl() {
@@ -68,23 +72,36 @@ function setDownloadServerUrl(json) {
   config.downloadServerUrl = `${json.downloadProtocol}//${hostname}:${json.downloadServerPort}`;
 }
 
-async function request(query) {
-  const endpoint = getApiGatewayEndPoint();
-  const client = new GraphQLClient(endpoint, {
+async function request(query, origEndPoint, origOptions) {
+  const endPoint = origEndPoint || getApiGatewayEndPoint();
+  const options = origOptions || {
+    method: 'POST',
     mode: 'cors',
     credentials: 'omit',
-    headers: {
-      'Cache-control': 'no-cache',
-    },
-  });
+    body: JSON.stringify({ query }),
+  };
 
+  let res;
   let data;
   let error;
   try {
-    data = await client.request(query);
+    res = await fetch(endPoint, options);
+    if (res.ok) {
+      const result = await res.json();
+      if (!result) {
+        error = new Error("The response body isn't json");
+      } else if (result.errors) {
+        error = new Error(result.errors[0].message);
+      } else {
+        data = result.data;
+      }
+    } else {
+      error = await getErrorByRes(res);
+    }
   } catch (err) {
     error = err;
   }
+
   return { data, error };
 }
 
@@ -95,16 +112,15 @@ function useRemoteConfig() {
   useEffect(() => {
     let isMounted = true;
     async function getRemoteConfig() {
-      const result = await fetchData(getServerConfigUrl(), 'text');
+      const endPoint = getServerConfigUrl();
+      const result = await fetchData(endPoint, 'json');
       if (!isMounted) return;
-      if (result.data) {
-        const json = JSON.parse(result.data);
-        setApiGatewayEndPoint(json);
-        setDownloadServerUrl(json);
-        setReady(true);
-      }
       if (result.error) {
         setError(result.error);
+      } else {
+        setApiGatewayEndPoint(result.data);
+        setDownloadServerUrl(result.data);
+        setReady(true);
       }
     }
 
@@ -148,4 +164,4 @@ function useRemoteData(query) {
   return { data, error, reFetch };
 }
 
-export { fetchData, getDownloadFileUrl, request, useRemoteConfig, useRemoteData };
+export { getDownloadFileUrl, request, useRemoteConfig, useRemoteData };

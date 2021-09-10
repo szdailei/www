@@ -73,7 +73,7 @@ function Users({ messageRef, onSuccessOfDeleteUser, users, roles }) {
       if (data && data.deleteUser) {
         msg = 'Delete User Success';
       } else if (error) {
-        msg = error.response.errors[0].message;
+        msg = error.toString();
       } else {
         msg = 'Delete User Failure';
       }

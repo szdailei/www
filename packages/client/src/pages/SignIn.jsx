@@ -16,7 +16,7 @@ function SignIn() {
     const query = `{getWebToken(name: "${userNameRef.current.value}" password: "${passwordRef.current.value}")}`;
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { data, error } = await request(query);
-    if (error) messageRef.current.setChildren(error.response.errors[0].message);
+    if (error) messageRef.current.setChildren(error.toString());
 
     if (data && data.getWebToken) {
       storageWebToken(data.getWebToken);

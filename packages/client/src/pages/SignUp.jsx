@@ -16,7 +16,7 @@ function SignUp({ onSuccessOfCreateUser, messageRef }) {
     if (data && data.createUser) {
       msg = 'Sign Up Success';
     } else if (error) {
-      msg = error.response.errors[0].message;
+      msg = error.toString();
     } else {
       msg = 'Sign Up Failure';
     }

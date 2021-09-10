@@ -20,7 +20,7 @@ function ChangePassword() {
     if (data && data.changePassword) {
       msg = 'Change Password Success';
     } else if (error) {
-      msg = error.response.errors[0].message;
+      msg = error.toString();
     } else {
       msg = 'Change Password Failure';
     }

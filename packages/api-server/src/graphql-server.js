@@ -22,8 +22,9 @@ function graphqlServer(req, res) {
     body += chunk.toString();
   });
   req.on('end', async () => {
-    const json = JSON.parse(body);
-    if (!json || !json.query) {
+    let json;
+    if (body) json = JSON.parse(body);
+    if (!body || !json || !json.query) {
       const MISS_JSON_OR_QUERY = 'Miss json or "query" token in body';
       res.writeHead(400);
       res.end(MISS_JSON_OR_QUERY);

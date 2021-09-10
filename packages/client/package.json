@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "debug": "^4.3.2",
-    "graphql-request": "2.0.0",
     "history": "^5.0.0",
     "is-alphabetical": "^2.0.0",
     "kuler": "^2.0.0",
