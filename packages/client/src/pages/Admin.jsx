@@ -143,11 +143,11 @@ Users.defaultProps = {
 
 const RolesAndUsers = React.forwardRef(({ messageRef }, ref) => {
   const query = '{getUsers getRoles getPermissions}';
-  const { data, error, reFetch } = useRemoteData(query);
+  const { data, error, refetch } = useRemoteData(query);
 
   useImperativeHandle(ref, () => ({
-    reFetch: () => {
-      reFetch();
+    refetch: () => {
+      refetch();
     },
   }));
 
@@ -157,7 +157,7 @@ const RolesAndUsers = React.forwardRef(({ messageRef }, ref) => {
   return (
     <Div ref={ref}>
       <RolePermissions roles={data.getRoles} permissions={data.getPermissions} />
-      <Users onSuccessOfDeleteUser={reFetch} users={data.getUsers} roles={data.getRoles} messageRef={messageRef} />
+      <Users onSuccessOfDeleteUser={refetch} users={data.getUsers} roles={data.getRoles} messageRef={messageRef} />
     </Div>
   );
 });
@@ -172,7 +172,7 @@ function Admin() {
   const RolesAndUsersRef = useRef();
 
   function onSuccessOfCreateUser() {
-    RolesAndUsersRef.current.reFetch();
+    RolesAndUsersRef.current.refetch();
   }
 
   return (

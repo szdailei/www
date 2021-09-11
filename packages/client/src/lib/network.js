@@ -150,7 +150,7 @@ function useRemoteConfig() {
 function useRemoteData(query) {
   const [cache, setCache] = useState();
 
-  function reFetch() {
+  function refetch() {
     setCache(null);
   }
 
@@ -174,7 +174,7 @@ function useRemoteData(query) {
     error = cache.error;
   }
 
-  return { data, error, reFetch };
+  return { data, error, refetch };
 }
 
 export { getDownloadFileUrl, request, useRemoteConfig, useRemoteData };
