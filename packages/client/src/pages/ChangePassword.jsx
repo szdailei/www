@@ -13,16 +13,18 @@ function ChangePassword() {
   const messageRef = useRef();
 
   const submitNewPassword = useCallback(async () => {
-    const query = `{changePassword(name:"${userNameRef.current.value}" password:"${passwordRef.current.value}")}`;
+    const name = userNameRef.current.value;
+    const password = passwordRef.current.value;
+    const query = `{changePassword(name:"${name}" password:"${password}")}`;
     const { data, error } = await request(query);
 
     let msg;
     if (data && data.changePassword) {
-      msg = 'Change Password Success';
+      msg = `Change ${name} Password Success`;
     } else if (error) {
       msg = error.toString();
     } else {
-      msg = 'Change Password Failure';
+      msg = `Change ${name} Password Failure`;
     }
     messageRef.current.setChildren(msg);
   }, []);

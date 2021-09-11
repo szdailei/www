@@ -9,16 +9,18 @@ function SignUp({ onSuccessOfCreateUser, messageRef }) {
   const passwordRef = useRef();
 
   const createUser = useCallback(async () => {
-    const query = `{createUser(name: "${userNameRef.current.value}" password: "${passwordRef.current.value}")}`;
+    const userName = userNameRef.current.value;
+    const password = passwordRef.current.value;
+    const query = `{createUser(name:"${userName}" password:"${password}")}`;
     const { data, error } = await request(query);
 
     let msg;
     if (data && data.createUser) {
-      msg = 'Sign Up Success';
+      msg = `Sign Up ${userName} Success`;
     } else if (error) {
       msg = error.toString();
     } else {
-      msg = 'Sign Up Failure';
+      msg = `Sign Up ${userName} Failure`;
     }
 
     messageRef.current.setChildren(msg);

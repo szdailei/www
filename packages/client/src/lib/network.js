@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import config from '../config.js';
 
-async function getErrorByRes(res) {
+async function createErrorByRes(res) {
   const resBody = await res.text();
   return new Error(`${res.status}: ${res.statusText}: ${resBody}`);
 }
@@ -29,7 +29,7 @@ async function fetchData(endPoint, type) {
           break;
       }
     } else {
-      error = await getErrorByRes(res);
+      error = await createErrorByRes(res);
     }
   } catch (err) {
     error = err;
@@ -72,6 +72,19 @@ function setDownloadServerUrl(json) {
   config.downloadServerUrl = `${json.downloadProtocol}//${hostname}:${json.downloadServerPort}`;
 }
 
+function createErrorByResult(result) {
+  let msg = '';
+  result.errors.forEach((resultError) => {
+    let locationsMsg = '';
+    resultError.locations.forEach((location) => {
+      locationsMsg += `line:${location.line} column:${location.column}`;
+    });
+    msg += `${locationsMsg} ${resultError.message}\n`;
+  });
+
+  return new Error(msg);
+}
+
 async function request(query, origEndPoint, origOptions) {
   const endPoint = origEndPoint || getApiGatewayEndPoint();
   const options = origOptions || {
@@ -89,17 +102,17 @@ async function request(query, origEndPoint, origOptions) {
     if (res.ok) {
       const result = await res.json();
       if (!result) {
-        error = new Error("The response body isn't json"); // response body format error.
+        error = new Error("The response body isn't json"); // Response body format error.
       } else if (result.errors) {
-        error = new Error(result.errors[0].message); // unknown query.
+        error = createErrorByResult(result); // Graphql-Server return error.
       } else {
         data = result.data;
       }
     } else {
-      error = await getErrorByRes(res); // non-200 response.
+      error = await createErrorByRes(res); // Non-200 response.
     }
   } catch (err) {
-    error = err; // http protocol error.
+    error = err; // Http protocol error.
   }
 
   return { data, error };

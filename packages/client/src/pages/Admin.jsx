@@ -66,16 +66,17 @@ function Users({ messageRef, onSuccessOfDeleteUser, users, roles }) {
 
   const deleteUser = useCallback(
     async (event) => {
-      const query = `{deleteUser(name:"${event.target.getAttribute('value')}")}`;
+      const userName = event.target.getAttribute('value');
+      const query = `{deleteUser(name:"${userName}")}`;
       const { data, error } = await request(query);
 
       let msg;
       if (data && data.deleteUser) {
-        msg = 'Delete User Success';
+        msg = `Delete User ${userName} Success`;
       } else if (error) {
         msg = error.toString();
       } else {
-        msg = 'Delete User Failure';
+        msg = `Delete User ${userName} Failure`;
       }
       messageRef.current.setChildren(msg);
       if (onSuccessOfDeleteUser && data && data.deleteUser) onSuccessOfDeleteUser();
