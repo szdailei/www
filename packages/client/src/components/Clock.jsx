@@ -14,18 +14,17 @@ const Clock = React.forwardRef(({ showClock, ...props }, ref) => {
     };
   });
 
-  if (showClock)
-    return (
-      <Span {...props} ref={ref}>
-        🕒{date.toLocaleTimeString()}
-      </Span>
-    );
-
-  return (
+  const node = showClock ? (
+    <Span {...props} ref={ref}>
+      🕒{date.toLocaleTimeString()}
+    </Span>
+  ) : (
     <Span {...props} ref={ref}>
       {date.toLocaleTimeString()}
     </Span>
   );
+
+  return node;
 });
 
 Clock.propTypes = {
