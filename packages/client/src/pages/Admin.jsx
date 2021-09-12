@@ -79,6 +79,7 @@ function Users({ messageRef, onSuccessOfDeleteUser, users, roles }) {
         msg = `Delete User ${userName} Failure`;
       }
       messageRef.current.setChildren(msg);
+
       if (onSuccessOfDeleteUser && data && data.deleteUser) onSuccessOfDeleteUser();
     },
     [messageRef, onSuccessOfDeleteUser]

@@ -94,13 +94,14 @@ async function request(query, origEndPoint, origOptions) {
     body: JSON.stringify({ query }),
   };
 
-  let res;
   let data;
   let error;
   try {
-    res = await fetch(endPoint, options);
+    const res = await fetch(endPoint, options);
+
     if (res.ok) {
       const result = await res.json();
+
       if (!result) {
         error = new Error("The response body isn't json"); // Response body format error.
       } else if (result.errors) {
@@ -124,6 +125,7 @@ function useRemoteConfig() {
 
   useEffect(() => {
     let isMounted = true;
+
     async function getRemoteConfig() {
       const endPoint = getServerConfigUrl();
       const result = await fetchData(endPoint, 'json');
@@ -156,10 +158,12 @@ function useRemoteData(query) {
 
   useEffect(() => {
     let isMounted = true;
+
     async function getRemoteData() {
       if (!isMounted) return;
       setCache(await request(query));
     }
+
     if (query && !cache) getRemoteData();
 
     return () => {
@@ -167,12 +171,8 @@ function useRemoteData(query) {
     };
   }, [cache, query]);
 
-  let data;
-  let error;
-  if (cache) {
-    data = cache.data;
-    error = cache.error;
-  }
+  const data = cache ? cache.data : null;
+  const error = cache ? cache.error : null;
 
   return { data, error, refetch };
 }
