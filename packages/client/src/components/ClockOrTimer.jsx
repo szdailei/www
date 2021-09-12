@@ -22,7 +22,7 @@ const ClockOrTimer = React.forwardRef(({ style, ...rest }, ref) => {
 
   return (
     <Div {...rest} onClick={onClick} style={objStyle} ref={ref}>
-      {isClock ? <Clock /> : <Timer />}
+      {isClock ? <Clock showClock /> : <Timer />}
     </Div>
   );
 });
