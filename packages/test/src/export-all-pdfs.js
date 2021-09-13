@@ -34,7 +34,7 @@ async function createIntroMdx(fileNames) {
     await link.click();
     await waitForDone(page);
     const title = await getTextContentById(page, '#title');
-    titles += `1. ${title}\n`;
+    titles += `   1. ${title}\n`;
     titlesArray.push(title);
     await browser.close();
   }
@@ -49,6 +49,7 @@ async function createIntroMdx(fileNames) {
 ---
 <Header>课程清单</Header>
 
+- 一共${fileNames.length}门课程。分别是：
 ${titles}
 
 <br>
