@@ -160,8 +160,8 @@ function useRemoteData(query) {
     let isMounted = true;
 
     async function getRemoteData() {
-      if (!isMounted) return;
-      setCache(await request(query));
+      const result = await request(query);
+      if (isMounted) setCache(result);
     }
 
     if (query && !cache) getRemoteData();
