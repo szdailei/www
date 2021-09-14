@@ -171,9 +171,7 @@ function useRemoteData(query) {
     };
   }, [cache, query]);
 
-  const data = cache ? cache.data : null;
-  const error = cache ? cache.error : null;
-
+  const { data, error } = cache || { data: null, error: null };
   return { data, error, refetch };
 }
 
