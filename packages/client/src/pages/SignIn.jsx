@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { request } from '../lib/client.js';
+import request from '../lib/client.js';
 import { storageWebToken } from '../lib/security.js';
 import { Button, Div } from '../styled/index.js';
 import { Article } from '../sectioning/index.js';

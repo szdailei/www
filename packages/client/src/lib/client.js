@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { getApiGatewayEndPoint, setApiGatewayEndPoint, getServerConfigUrl, setDownloadServerUrl } from './network.js';
+import { getApiGatewayEndPoint } from './network.js';
 
 async function createErrorByRes(res) {
   const resBody = await res.text();
@@ -67,41 +66,4 @@ async function request(query, origResType, origMethod, origEndPoint, origOptions
   return { data, error };
 }
 
-function useRemoteData(query, resType, method, endPoint, options) {
-  const [cache, setCache] = useState();
-
-  function refetch() {
-    setCache(null);
-  }
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function getRemoteData() {
-      const result = await request(query, resType, method, endPoint, options);
-      if (isMounted) setCache(result);
-    }
-
-    if (!cache) getRemoteData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [cache, query, resType, method, endPoint, options]);
-
-  const { data, error } = cache || { data: null, error: null };
-  return { data, error, refetch };
-}
-
-function useRemoteConfig() {
-  const { data, error } = useRemoteData(null, 'json', 'GET', getServerConfigUrl());
-
-  if (data) {
-    setApiGatewayEndPoint(data);
-    setDownloadServerUrl(data);
-  }
-
-  return { data, error };
-}
-
-export { request, useRemoteConfig, useRemoteData };
+export default request;
