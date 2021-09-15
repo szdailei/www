@@ -6,38 +6,6 @@ async function createErrorByRes(res) {
   return new Error(`${res.status}: ${res.statusText}: ${resBody}`);
 }
 
-async function fetchData(endPoint, type) {
-  const options = {
-    method: 'GET',
-    mode: 'cors',
-    credentials: 'omit',
-  };
-  let res;
-  let data;
-  let error;
-  try {
-    res = await fetch(endPoint, options);
-    if (res.ok) {
-      switch (type) {
-        case 'text':
-          data = await res.text();
-          break;
-        case 'json':
-          data = await res.json();
-          break;
-        default:
-          break;
-      }
-    } else {
-      error = await createErrorByRes(res);
-    }
-  } catch (err) {
-    error = err;
-  }
-
-  return { data, error };
-}
-
 function getServerConfigUrl() {
   const serverConfigUrl = `${window.location.protocol}//${window.location.host}/${config.SERVER_CONFIG_FILE}`;
   return serverConfigUrl;
@@ -85,13 +53,15 @@ function createErrorByResult(result) {
   return new Error(msg);
 }
 
-async function request(query, origEndPoint, origOptions) {
+async function request(query, origResType, origMethod, origEndPoint, origOptions) {
+  const resType = origResType || 'json';
+  const method = origMethod || 'POST';
   const endPoint = origEndPoint || getApiGatewayEndPoint();
   const options = origOptions || {
-    method: 'POST',
+    method,
     mode: 'cors',
     credentials: 'omit',
-    body: JSON.stringify({ query }),
+    body: query ? JSON.stringify({ query }) : null,
   };
 
   let data;
@@ -99,18 +69,30 @@ async function request(query, origEndPoint, origOptions) {
   try {
     const res = await fetch(endPoint, options);
 
-    if (res.ok) {
-      const result = await res.json();
-
-      if (!result) {
-        error = new Error("The response body isn't json"); // Response body format error.
-      } else if (result.errors) {
-        error = createErrorByResult(result); // Graphql-Server return error.
-      } else {
-        data = result.data;
-      }
-    } else {
+    if (!res.ok) {
       error = await createErrorByRes(res); // Non-200 response.
+      return { data, error };
+    }
+
+    let result;
+    switch (resType) {
+      case 'text':
+        result = await res.text();
+        break;
+      case 'json':
+        result = await res.json();
+        break;
+      default:
+        break;
+    }
+
+    if (!result) error = new Error('resType wrong or response body format wrong');
+    if (result.errors) error = createErrorByResult(result); // Server return error.
+
+    if (result.data) {
+      data = result.data;
+    } else {
+      data = result;
     }
   } catch (err) {
     error = err; // Http protocol error.
@@ -119,37 +101,7 @@ async function request(query, origEndPoint, origOptions) {
   return { data, error };
 }
 
-function useRemoteConfig() {
-  const [ready, setReady] = useState(false);
-  const [error, setError] = useState();
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function getRemoteConfig() {
-      const endPoint = getServerConfigUrl();
-      const result = await fetchData(endPoint, 'json');
-      if (!isMounted) return;
-      if (result.error) {
-        setError(result.error);
-      } else {
-        setApiGatewayEndPoint(result.data);
-        setDownloadServerUrl(result.data);
-        setReady(true);
-      }
-    }
-
-    if (!ready) getRemoteConfig();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [ready, error]);
-
-  return { ready, error };
-}
-
-function useRemoteData(query) {
+function useRemoteData(query, resType, method, endPoint, options) {
   const [cache, setCache] = useState();
 
   function refetch() {
@@ -160,19 +112,30 @@ function useRemoteData(query) {
     let isMounted = true;
 
     async function getRemoteData() {
-      const result = await request(query);
+      const result = await request(query, resType, method, endPoint, options);
       if (isMounted) setCache(result);
     }
 
-    if (query && !cache) getRemoteData();
+    if (!cache) getRemoteData();
 
     return () => {
       isMounted = false;
     };
-  }, [cache, query]);
+  }, [cache, query, resType, method, endPoint, options]);
 
   const { data, error } = cache || { data: null, error: null };
   return { data, error, refetch };
+}
+
+function useRemoteConfig() {
+  const { data, error } = useRemoteData(null, 'json', 'GET', getServerConfigUrl());
+
+  if (data) {
+    setApiGatewayEndPoint(data);
+    setDownloadServerUrl(data);
+  }
+
+  return { data, error };
 }
 
 export { getDownloadFileUrl, request, useRemoteConfig, useRemoteData };

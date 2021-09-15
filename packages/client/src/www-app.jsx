@@ -18,9 +18,10 @@ import Presentation from './presentation/Presentation';
 import ChangePassword from './pages/ChangePassword';
 
 function App() {
-  const { ready, error } = useRemoteConfig();
+  const { data, error } = useRemoteConfig();
+
   if (error) return <Error error={error} />;
-  if (!ready) return <Loading />;
+  if (!data) return <Loading />;
 
   const presentationPath = `${PRESENTATION_PATH}/:course`;
   return (
