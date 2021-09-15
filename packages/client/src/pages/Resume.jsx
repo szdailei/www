@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import makeid from '../lib/makeid.js';
-import { getDownloadFileUrl, request, useRemoteData } from '../lib/network.js';
+import { getDownloadFileUrl } from '../lib/network.js';
+import { request, useRemoteData } from '../lib/client.js';
 import { GridContainer, FlexContainer, Abbr, Div, Span } from '../styled/index.js';
 import { Article, Header, Main, Section } from '../sectioning/index.js';
 import { Error } from '../components/index.js';

@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import makeid from '../lib/makeid.js';
-import { request, useRemoteData } from '../lib/network.js';
+import { request, useRemoteData } from '../lib/client.js';
 import { FlexContainer, GridContainer, Div, Button, Option, Select } from '../styled/index.js';
 import { Article } from '../sectioning/index.js';
 import { Error, Message } from '../components/index.js';

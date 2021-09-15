@@ -1,7 +1,7 @@
 import React from 'react';
 import makeid from '../lib/makeid.js';
 import { t } from '../i18n/index.js';
-import { useRemoteData } from '../lib/network.js';
+import { useRemoteData } from '../lib/client.js';
 import { PRESENTATION_PATH } from '../lib/path.js';
 import { FlexContainer } from '../styled/index.js';
 import { Article, Header, Main, Section } from '../sectioning/index.js';

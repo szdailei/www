@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { request } from '../lib/network.js';
+import { request } from '../lib/client.js';
 import { Button, Div } from '../styled/index.js';
 import { Article } from '../sectioning/index.js';
 import { Message, SignInInput } from '../components/index.js';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useRemoteData } from '../lib/network.js';
+import { useRemoteData } from '../lib/client.js';
 import createPages from './create-pages.jsx';
 import Controller from './Controller.jsx';
 
