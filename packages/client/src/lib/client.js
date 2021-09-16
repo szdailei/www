@@ -18,11 +18,11 @@ function createErrorByResult(result) {
   return new Error(msg);
 }
 
-async function request(query, origResType, origMethod, origEndPoint, origOptions) {
+async function request(query, origResType, origEndPoint, origMethod) {
   const resType = origResType || 'json';
   const method = origMethod || 'POST';
   const endPoint = origEndPoint || getApiGatewayEndPoint();
-  const options = origOptions || {
+  const options = {
     method,
     mode: 'cors',
     credentials: 'omit',

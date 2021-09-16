@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { setApiGatewayEndPoint, getServerConfigUrl, setDownloadServerUrl } from './network.js';
 import request from './client.js';
 
-function useRemoteData(query, resType, method, endPoint, options) {
+function useRemoteData(query, resType, endPoint, method) {
   const [cache, setCache] = useState();
 
   function refetch() {
@@ -13,7 +13,7 @@ function useRemoteData(query, resType, method, endPoint, options) {
     let isMounted = true;
 
     async function getRemoteData() {
-      const result = await request(query, resType, method, endPoint, options);
+      const result = await request(query, resType, endPoint, method);
       if (isMounted) setCache(result);
     }
 
@@ -22,14 +22,14 @@ function useRemoteData(query, resType, method, endPoint, options) {
     return () => {
       isMounted = false;
     };
-  }, [cache, query, resType, method, endPoint, options]);
+  }, [cache, query, resType, method, endPoint]);
 
   const { data, error } = cache || { data: null, error: null };
   return { data, error, refetch };
 }
 
 function useRemoteConfig() {
-  const { data, error } = useRemoteData(null, 'json', 'GET', getServerConfigUrl());
+  const { data, error } = useRemoteData(null, 'json', getServerConfigUrl(), 'GET');
 
   if (data) {
     setApiGatewayEndPoint(data);
