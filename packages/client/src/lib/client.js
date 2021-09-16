@@ -20,10 +20,9 @@ function createErrorByResult(result) {
 
 async function request(query, origResType, origEndPoint, origMethod) {
   const resType = origResType || 'json';
-  const method = origMethod || 'POST';
   const endPoint = origEndPoint || getApiGatewayEndPoint();
   const options = {
-    method,
+    method: origMethod || 'POST',
     mode: 'cors',
     credentials: 'omit',
     body: query ? JSON.stringify({ query }) : null,
