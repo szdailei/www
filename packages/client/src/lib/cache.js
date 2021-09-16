@@ -22,7 +22,7 @@ function useRemoteData(query, resType, endPoint, method) {
     return () => {
       isMounted = false;
     };
-  }, [cache, query, resType, method, endPoint]);
+  }, [cache, query, resType, endPoint, method]);
 
   const { data, error } = cache || { data: null, error: null };
   return { data, error, refetch };
