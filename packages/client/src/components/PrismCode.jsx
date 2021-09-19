@@ -16,15 +16,16 @@ function PrismCode({ code, language }) {
     origLang = 'jsx';
   }
 
-  const index = origLang.indexOf('{');
+  const indexOfLeftBracket = origLang.indexOf('{');
   let lang;
   let dataLine;
-  if (index === -1) {
+  if (indexOfLeftBracket === -1) {
     lang = origLang.trim();
     dataLine = null;
   } else {
-    lang = origLang.slice(0, index).trim();
-    dataLine = origLang.slice(index + 1, origLang.length - 1);
+    lang = origLang.slice(0, indexOfLeftBracket).trim();
+    const indexOfRightBracket = origLang.indexOf('}');
+    dataLine = origLang.slice(indexOfLeftBracket + 1, indexOfRightBracket).trim();
   }
 
   useEffect(() => {
