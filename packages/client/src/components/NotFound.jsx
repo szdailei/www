@@ -1,7 +1,9 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 function NotFound() {
-  return <h1>404: Page Not Found</h1>;
+  const location = useLocation();
+  return <h3>No router for {location.pathname}</h3>;
 }
 
 export default NotFound;
