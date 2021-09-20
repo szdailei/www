@@ -11,9 +11,10 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import './prism-line-highlight.css';
 
 function PrismCode({ code, language }) {
+  const defaultLang = 'jsx';
   let origLang = language;
   if (!language || language === '') {
-    origLang = 'jsx';
+    origLang = defaultLang;
   }
 
   const indexOfLeftBracket = origLang.indexOf('{');
@@ -24,6 +25,7 @@ function PrismCode({ code, language }) {
     dataLine = null;
   } else {
     lang = origLang.slice(0, indexOfLeftBracket).trim();
+    if (lang === '') lang = defaultLang;
     const indexOfRightBracket = origLang.indexOf('}');
     dataLine = origLang.slice(indexOfLeftBracket + 1, indexOfRightBracket).trim();
   }
