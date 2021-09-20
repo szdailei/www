@@ -121,7 +121,7 @@ async function getOrigFileNames() {
 
     const page = await newCoursesPage(browser, config);
     await gotoCourse(page, fileName);
-    await exportPdf(page, fileName, config);
+    await exportPdf(page, config, fileName);
     await browser.close();
 
     await fs.promises.unlink(`${config.COURSES_DIR}${fileName}`);

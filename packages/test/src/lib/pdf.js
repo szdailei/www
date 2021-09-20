@@ -49,10 +49,15 @@ async function createPdfBuffers(page, totalPagesNum, defaultViewPort, fontSize) 
   return pdfBuffers;
 }
 
-async function exportPdf(page, origFileName, config) {
-  const totalPagesNum = await getTotalPagesNum(page);
+async function exportPdf(page, config, origFileName, origTotalPagesNum) {
+  const totalPagesNum = origTotalPagesNum || (await getTotalPagesNum(page));
   const fileNameWithoutSuffix = origFileName.substring(0, origFileName.lastIndexOf('.'));
-  const pdfFileName = `${config.PDFS_DIR}${fileNameWithoutSuffix}.pdf`;
+  let pdfFileName;
+  if (fileNameWithoutSuffix) {
+    pdfFileName = `${config.PDFS_DIR}${fileNameWithoutSuffix}.pdf`;
+  } else {
+    pdfFileName = `${config.PDFS_DIR}${origFileName}.pdf`;
+  }
 
   const pdfBuffers = await createPdfBuffers(page, totalPagesNum, config.VIEWPORT, config.FONT_SIZE);
   await exportPdfBuffersToFile(pdfFileName, pdfBuffers, totalPagesNum);

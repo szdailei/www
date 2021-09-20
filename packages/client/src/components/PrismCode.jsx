@@ -7,7 +7,7 @@ import 'prismjs/components/prism-markdown';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import 'prismjs/plugins/line-highlight/prism-line-highlight.js';
-import './prism-tomorrow.css';
+import './prism.css';
 import './prism-line-highlight.css';
 
 function PrismCode({ code, language }) {
@@ -33,11 +33,9 @@ function PrismCode({ code, language }) {
   }, []);
 
   return (
-    <div>
-      <pre className="line-numbers" data-line={dataLine}>
-        <code className={`language-${lang}`}>{code}</code>
-      </pre>
-    </div>
+    <pre className="line-numbers" data-line={dataLine}>
+      <code className={`language-${lang}`}>{code}</code>
+    </pre>
   );
 }
 
