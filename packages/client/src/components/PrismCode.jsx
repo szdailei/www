@@ -12,21 +12,27 @@ import './prism-line-highlight.css';
 
 function parseLanguage(language) {
   const DEFAULT_LANG = 'jsx';
-  let lang = DEFAULT_LANG;
+  let lang;
   let dataLine;
 
-  if (language && language !== '') {
-    const indexOfLeftBracket = language.indexOf('{');
-    if (indexOfLeftBracket === -1) {
-      lang = language.trim();
-    } else {
-      lang = language.slice(0, indexOfLeftBracket).trim();
-      if (lang === '') lang = DEFAULT_LANG;
-      const indexOfRightBracket = language.indexOf('}');
-      dataLine = language.slice(indexOfLeftBracket + 1, indexOfRightBracket).trim();
-    }
+  if (!language || language.trim() === '') {
+    lang = DEFAULT_LANG;
+    return { lang, dataLine };
   }
 
+  const indexOfLeftBracket = language.indexOf('{');
+  if (indexOfLeftBracket === -1) {
+    lang = language.trim();
+    return { lang, dataLine };
+  }
+
+  lang = language.slice(0, indexOfLeftBracket).trim();
+  if (lang === '') lang = DEFAULT_LANG;
+
+  const indexOfRightBracket = language.indexOf('}');
+  if (indexOfRightBracket === -1) return { lang, dataLine };
+
+  dataLine = language.slice(indexOfLeftBracket + 1, indexOfRightBracket).trim();
   return { lang, dataLine };
 }
 
