@@ -10,29 +10,32 @@ import './prism.css';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import './prism-line-highlight.css';
 
-function PrismCode({ code, language }) {
-  const defaultLang = 'jsx';
-  let origLang = language;
-  if (!language || language === '') {
-    origLang = defaultLang;
-  }
-
-  const indexOfLeftBracket = origLang.indexOf('{');
-  let lang;
+function parseLanguage(language) {
+  const DEFAULT_LANG = 'jsx';
+  let lang = DEFAULT_LANG;
   let dataLine;
-  if (indexOfLeftBracket === -1) {
-    lang = origLang.trim();
-    dataLine = null;
-  } else {
-    lang = origLang.slice(0, indexOfLeftBracket).trim();
-    if (lang === '') lang = defaultLang;
-    const indexOfRightBracket = origLang.indexOf('}');
-    dataLine = origLang.slice(indexOfLeftBracket + 1, indexOfRightBracket).trim();
+
+  if (language && language !== '') {
+    const indexOfLeftBracket = language.indexOf('{');
+    if (indexOfLeftBracket === -1) {
+      lang = language.trim();
+    } else {
+      lang = language.slice(0, indexOfLeftBracket).trim();
+      if (lang === '') lang = DEFAULT_LANG;
+      const indexOfRightBracket = language.indexOf('}');
+      dataLine = language.slice(indexOfLeftBracket + 1, indexOfRightBracket).trim();
+    }
   }
 
+  return { lang, dataLine };
+}
+
+function PrismCode({ code, language }) {
   useEffect(() => {
     Prism.highlightAll();
   }, []);
+
+  const { lang, dataLine } = parseLanguage(language);
 
   return (
     <pre className="line-numbers" data-line={dataLine}>
