@@ -18,6 +18,17 @@ function createErrorByResult(result) {
   return new Error(msg);
 }
 
+async function parseResBody(res, resType) {
+  switch (resType) {
+    case 'text':
+      return res.text();
+    case 'json':
+      return res.json();
+    default:
+      return null;
+  }
+}
+
 async function request(query, origResType, origEndPoint, origMethod) {
   const resType = origResType || 'json';
   const endPoint = origEndPoint || getApiGatewayEndPoint();
@@ -38,18 +49,7 @@ async function request(query, origResType, origEndPoint, origMethod) {
       return { data, error };
     }
 
-    let result;
-    switch (resType) {
-      case 'text':
-        result = await res.text();
-        break;
-      case 'json':
-        result = await res.json();
-        break;
-      default:
-        break;
-    }
-
+    const result = await parseResBody(res, resType);
     if (!result) error = new Error('resType wrong or response body format wrong');
     if (result.errors) error = createErrorByResult(result); // Server return error.
 
