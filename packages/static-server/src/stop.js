@@ -3,19 +3,18 @@ function exitProcess(code) {
   process.exit(code);
 }
 
-function callback() {}
-
-function closeServer(server) {
-  server.close(callback);
-  setImmediate(() => {
-    server.emit('close');
-  });
+function exit() {
+  console.log('Static server closed');
+  exitProcess(1);
 }
 
 function stop(eventType, server) {
-  console.log('received signal ', eventType);
-  closeServer(server);
-  exitProcess(1);
+  console.log('Received signal %s, stop static server ...', eventType);
+
+  server.close(exit);
+  setImmediate(() => {
+    server.emit('close');
+  });
 }
 
 export default stop;

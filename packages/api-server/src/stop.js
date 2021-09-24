@@ -1,22 +1,37 @@
+import config from './config.js';
+
 /* eslint-disable no-console */
+let isGraphqlServerExit = false;
+let isStaticServerExit = false;
+
 function exitProcess(code) {
-  process.exit(code);
+  if (isGraphqlServerExit && isStaticServerExit) process.exit(code);
 }
 
-function callback() {}
-
-function closeServer(server) {
-  server.close(callback);
-  setImmediate(() => {
-    server.emit('close');
-  });
-}
-
-function end(eventType, graphqlServer, staticServer) {
-  console.log('received end signal ', eventType);
-  closeServer(graphqlServer);
-  closeServer(staticServer);
+function exitGraphqlServer() {
+  console.log('Graphql server closed');
+  isGraphqlServerExit = true;
   exitProcess(1);
+}
+
+function exitStaticServer() {
+  console.log('Static server closed');
+  isStaticServerExit = true;
+  exitProcess(1);
+}
+
+async function end(eventType, graphqlServer, staticServer) {
+  console.log('Received signal %s, stop api server and static server ...', eventType);
+
+  graphqlServer.close(exitGraphqlServer);
+  staticServer.close(exitStaticServer);
+  setImmediate(() => {
+    graphqlServer.emit('close');
+    staticServer.emit('close');
+  });
+
+  console.log(`Teardown postgres server`);
+  await config.sql.end({ timeout: 0 });
 }
 
 export default end;

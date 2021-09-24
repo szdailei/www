@@ -3,19 +3,18 @@ function exitProcess(code) {
   process.exit(code);
 }
 
-function callback() {}
-
-function closeServer(server) {
-  server.close(callback);
-  setImmediate(() => {
-    server.emit('close');
-  });
+function exit() {
+  console.log('Api gateway closed');
+  exitProcess(1);
 }
 
 function end(eventType, server) {
-  console.log('received end signal ', eventType);
-  closeServer(server);
-  exitProcess(1);
+  console.log('Received signal %s, stop api gateway ...', eventType);
+
+  server.close(exit);
+  setImmediate(() => {
+    server.emit('close');
+  });
 }
 
 export default end;

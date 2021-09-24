@@ -46,7 +46,7 @@ function graphqlServer(port) {
   server.on('request', requestHandler);
   server.listen(port);
 
-  log.warn(`Start api server on http port ${port}`);
+  log.warn(`Start graphql server on http port ${port}`);
   return server;
 }
 
