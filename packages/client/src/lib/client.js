@@ -53,7 +53,7 @@ async function request(query, origResType, origEndPoint, origMethod) {
     if (!result) error = new Error('resType wrong or response body format wrong');
     if (result.errors) error = createErrorByResult(result); // Server return error.
 
-    data = result.data || result
+    data = result.data || result;
   } catch (err) {
     error = err; // Http protocol error.
   }

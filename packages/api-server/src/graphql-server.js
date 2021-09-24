@@ -1,7 +1,9 @@
+import http from 'http';
 import { graphql } from 'graphql/index.mjs';
+import log from './lib/log.js';
 import { schema, resolvers } from './graphql-loader.js';
 
-function graphqlServer(req, res) {
+function requestHandler(req, res) {
   req.on('error', (err) => {
     if (res.headersSent) {
       res.end();
@@ -35,6 +37,17 @@ function graphqlServer(req, res) {
     const resBody = JSON.stringify(result);
     res.end(resBody);
   });
+}
+
+function graphqlServer(port) {
+  if (!port) throw new Error('API_SERVER_PORT is not set');
+
+  const server = http.createServer();
+  server.on('request', requestHandler);
+  server.listen(port);
+
+  log.warn(`Start api server on http port ${port}`);
+  return server;
 }
 
 export default graphqlServer;

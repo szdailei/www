@@ -49,7 +49,7 @@ async function createIntroMdx(fileNames) {
 ---
 <Header>课程清单</Header>
 
-- 一共${fileNames.length}门课程。分别是：
+- ${fileNames.length}门课程。分别是：
 ${titles}
 
 <br>

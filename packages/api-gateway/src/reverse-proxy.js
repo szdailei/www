@@ -1,5 +1,6 @@
 import http from 'http';
 import httpProxy from 'http-proxy';
+import log from './lib/log.js';
 import rules from './rules.js';
 
 /**
@@ -14,7 +15,7 @@ function handleProxyError(err, _, res) {
   sendResponse(res, 503, err.toString());
 }
 
-function reverseProxy(req, res) {
+function requestHandler(req, res) {
   req.on('error', (err) => {
     if (res.headersSent) {
       res.end();
@@ -46,6 +47,16 @@ function reverseProxy(req, res) {
   }
 
   sendResponse(res, 501, http.STATUS_CODES[501]);
+}
+
+function reverseProxy(port) {
+  if (!port) throw new Error('PORT is not set');
+
+  const server = http.createServer();
+  server.on('request', requestHandler);
+  server.listen(port);
+  log.warn(`Start api gateway on http port ${process.env.API_GATEWAY_PORT}`);
+  return server;
 }
 
 export default reverseProxy;

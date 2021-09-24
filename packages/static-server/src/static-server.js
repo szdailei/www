@@ -238,31 +238,32 @@ function resolveUrl(req, res, rootDir) {
 }
 
 function staticServer(port, rootDir) {
-  if (!port) {
-    throw new Error('port is not set');
-  }
-
-  if (!rootDir) {
-    throw new Error('rootDir is not set');
-  }
-
-  http
-    .createServer((req, res) => {
-      req.on('error', (err) => {
-        if (res.headersSent) {
-          res.end();
-          return;
-        }
-        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-        sendResponse(res, 400, err.toString(), err.toString().length);
-      });
+  function requestHandler(req, res) {
+    req.on('error', (err) => {
       if (res.headersSent) {
         res.end();
         return;
       }
-      resolveUrl(req, res, rootDir);
-    })
-    .listen(port);
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      sendResponse(res, 400, err.toString(), err.toString().length);
+    });
+
+    if (res.headersSent) {
+      res.end();
+      return;
+    }
+    resolveUrl(req, res, rootDir);
+  }
+
+  if (!port) throw new Error('PORT is not set');
+  if (!rootDir) throw new Error('rootDir is not set');
+
+  const server = http.createServer();
+  server.on('request', requestHandler);
+  server.listen(port);
+  // eslint-disable-next-line no-console
+  console.log(`Start static server on http port ${port}`);
+  return server;
 }
 
 export default staticServer;

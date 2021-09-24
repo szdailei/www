@@ -10,7 +10,7 @@ import { string } from 'rollup-plugin-string';
 const mode = process.env.NODE_ENV;
 
 const config = {
-  input: 'src/index.js',
+  input: 'src/start.js',
   output: [
     {
       dir: 'dist',
