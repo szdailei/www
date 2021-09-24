@@ -1,7 +1,7 @@
 import dotenv from 'dotenv-defaults';
 import rules from './rules.js';
 import reverseProxy from './reverse-proxy.js';
-import end from './end.js';
+import stop from './stop.js';
 
 (async () => {
   await dotenv.config();
@@ -9,7 +9,7 @@ import end from './end.js';
 
   const server = reverseProxy(process.env.API_GATEWAY_PORT);
   function onExit(eventType) {
-    end(eventType, server);
+    stop(eventType, server);
   }
 
   ['SIGINT', 'SIGTERM'].forEach((eventType) => {

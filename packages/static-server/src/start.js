@@ -1,6 +1,6 @@
 import dotenv from 'dotenv-defaults';
 import staticServer from './static-server.js';
-import end from './end.js';
+import stop from './stop.js';
 
 (async () => {
   await dotenv.config();
@@ -8,7 +8,7 @@ import end from './end.js';
   const server = staticServer(process.env.PORT, process.env.WWW);
 
   function onExit(eventType) {
-    end(eventType, server);
+    stop(eventType, server);
   }
 
   ['SIGINT', 'SIGTERM'].forEach((eventType) => {

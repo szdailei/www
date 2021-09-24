@@ -12,10 +12,10 @@ function closeServer(server) {
   });
 }
 
-function end(eventType, server) {
-  console.log('received end signal ', eventType);
+function stop(eventType, server) {
+  console.log('received signal ', eventType);
   closeServer(server);
   exitProcess(1);
 }
 
-export default end;
+export default stop;
