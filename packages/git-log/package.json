@@ -9,8 +9,8 @@
     "eslint": "eslint  --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
     "clean": "rimraf reports && mkdirp reports",
     "prepare": "yarn clean && node src/git-log.js && cp src/index.html reports/",
-    "inline": "node ../client/inline.js reports/index.html reports/git-log.html",
-    "log": "yarn prepare && yarn rollup -c rollup.config.git-log.js && yarn inline && chromium reports/git-log.html"
+    "inline": "node ../../inline.js reports/index.html reports/git-log.html",
+    "log": "yarn prepare && yarn rollup -c rollup.config.git-log.js && yarn inline && rm reports/index.html reports/app.js && chromium reports/git-log.html"
   },
   "dependencies": {
     "gitlog": "^4.0.4"

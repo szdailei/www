@@ -10,6 +10,9 @@
     import path from 'path'
     const dirname = path.dirname(new URL(import.meta.url).pathname)
     const puppeteerRootDirectory = pkgDir.sync(dirname)
+20210925新增：为了避免将es6转化为es5，取消使用import.meta.url
+     修改为：
+    const puppeteerRootDirectory = null
 3. package.json新增一行：
   "type": "module",
 */
@@ -35,16 +38,20 @@ fs.writeFileSync(puppeteerDebugFile, newCode);
 
 const initializeFile = path.join(puppeteerDir, 'initialize-node.js');
 lines = fs.readFileSync(initializeFile, 'utf8').split('\n');
+/*
 if (lines[0].trim() === `import path from 'path'`) {
   newCode = ``;
 } else {
   newCode = `import path from 'path'\n`;
-}
+} */
+newCode = ``
+
 lines.forEach((line) => {
   if (line.trim() !== `const puppeteerRootDirectory = pkgDir.sync(__dirname);`) {
     newCode += `${line}\n`;
   } else {
-    newCode += `//${line}\nconst dirname = path.dirname(new URL(import.meta.url).pathname)\n    const puppeteerRootDirectory = pkgDir.sync(dirname)\n`;
+//    newCode += `//${line}\nconst dirname = path.dirname(new URL(import.meta.url).pathname)\n    const puppeteerRootDirectory = pkgDir.sync(dirname)\n`;
+      newCode += `//${line}\n    const puppeteerRootDirectory = null\n`
   }
 });
 fs.writeFileSync(initializeFile, newCode);

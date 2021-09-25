@@ -19,17 +19,17 @@
     "build:api": "yarn workspace @dailei/api-server build",
     "build:gateway": "yarn workspace @dailei/api-gateway build",
     "build:client": "yarn workspace @dailei/client build",
-    "build": "yarn build:static && yarn build:api && yarn build:gateway && yarn build:client",
-    "deploy":"cp packages/client/dist/local/local-presentation.html ../www-data/storage/local-presentation.html",
+    "build": "yarn build:static & yarn build:api & yarn build:gateway & yarn build:client",
     "start:static": "yarn workspace @dailei/static-server start",
     "start:api": "yarn workspace @dailei/api-server start",
     "start:gateway": "yarn workspace @dailei/api-gateway start",
-    "start": "yarn start:static & yarn start:api & yarn start:gateway"
+    "start": "yarn start:static & yarn start:api & yarn start:gateway",
+    "deploy": "cp packages/client/dist/local/local-presentation.html ../www-data/storage/local-presentation.html & yarn workspace @dailei/deploy build && yarn workspace @dailei/deploy dist"
   },
   "dependencies": {
-    "dotenv-defaults": "^2.0.1",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
+    "dotenv-defaults": "^2.0.1",
     "loglevel": "^1.7.1",
     "prop-types": "^15.7.2",
     "puppeteer-core": "^10.2.0",
@@ -37,6 +37,7 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.15.7",
     "@babel/core": "^7.14.8",
     "@babel/preset-env": "^7.14.8",
     "@babel/preset-react": "^7.14.5",
@@ -62,7 +63,8 @@
     "rollup-plugin-string": "^3.0.0",
     "stylelint": "13.12.0",
     "stylelint-config-recess-order": "^2.3.0",
-    "stylelint-config-standard": "^21.0.0"
+    "stylelint-config-standard": "^21.0.0",
+    "web-resource-inliner": "^5.0.0"
   },
   "prettier": {
     "printWidth": 120,

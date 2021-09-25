@@ -1,11 +1,12 @@
-import dotenv from 'dotenv-defaults';
+import dotenv from '../../../dotenv.js';
 import log from './lib/log.js';
 import rules from './rules.js';
 import reverseProxy from './reverse-proxy.js';
 import stop from './stop.js';
 
 (async () => {
-  await dotenv.config();
+  await dotenv();
+
   rules.init();
 
   const server = reverseProxy(process.env.API_GATEWAY_PORT);

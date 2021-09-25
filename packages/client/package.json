@@ -14,10 +14,10 @@
     "dev": "yarn clean && yarn copy:www && yarn rollup --watch -c rollup.config.www.js",
     "dev:debug": "cp src/__debug__/*.md dist && yarn rollup --watch -c rollup.config.debug.js",
     "build:www": "yarn copy:www && yarn rollup -c rollup.config.www.js",
-    "inline": "node inline.js dist/local/tmp/index.html dist/local/local-presentation.html",
+    "inline": "node ../../inline.js dist/local/tmp/index.html dist/local/local-presentation.html",
     "build:local": "yarn copy:local && yarn rollup -c rollup.config.local.js && yarn inline",
     "build:debug": "cp src/__debug__/*.md dist && yarn rollup -c rollup.config.debug.js",
-    "build": "yarn clean && yarn build:www && yarn build:local",
+    "build": "yarn clean && yarn build:www & yarn build:local",
     "debug": "DEBUG=* node dist/debug.js"
   },
   "dependencies": {
@@ -29,8 +29,5 @@
     "prismjs": "^1.24.1",
     "react-router-dom": "^6.0.0-beta.3",
     "video.js": "^7.14.3"
-  },
-  "devDependencies": {
-    "web-resource-inliner": "^5.0.0"
   }
 }

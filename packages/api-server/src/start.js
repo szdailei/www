@@ -1,4 +1,4 @@
-import dotenv from 'dotenv-defaults';
+import dotenv from '../../../dotenv.js';
 import log from './lib/log.js';
 import init from './init.js';
 import graphqlServer from './graphql-server.js';
@@ -7,7 +7,8 @@ import staticServer from '../../static-server/src/static-server.js';
 import stop from './stop.js';
 
 (async () => {
-  await dotenv.config();
+  await dotenv();
+
   await init();
 
   const gServer = graphqlServer(process.env.API_SERVER_PORT);
