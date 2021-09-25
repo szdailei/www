@@ -1,6 +1,5 @@
 import http from 'http';
 import httpProxy from 'http-proxy';
-import log from './lib/log.js';
 import rules from './rules.js';
 
 /**
@@ -55,7 +54,6 @@ function reverseProxy(port) {
   const server = http.createServer();
   server.on('request', requestHandler);
   server.listen(port);
-  log.warn(`Start api gateway on http port ${process.env.API_GATEWAY_PORT}`);
   return server;
 }
 

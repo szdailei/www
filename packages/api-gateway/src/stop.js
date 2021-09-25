@@ -1,20 +1,21 @@
-/* eslint-disable no-console */
+import log from './lib/log.js';
+
 function exitProcess(code) {
   process.exit(code);
 }
 
-function exit() {
-  console.log('Api gateway closed');
+function onServerClosed() {
+  log.warn('Api gateway closed');
   exitProcess(1);
 }
 
-function end(eventType, server) {
-  console.log('Received signal %s, stop api gateway ...', eventType);
+function stop(eventType, server) {
+  log.warn('%s received, stop api gateway ...', eventType);
 
-  server.close(exit);
+  server.close(onServerClosed);
   setImmediate(() => {
     server.emit('close');
   });
 }
 
-export default end;
+export default stop;

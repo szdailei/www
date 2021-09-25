@@ -1,5 +1,6 @@
 import http from 'http';
 import Table from 'cli-table';
+import log from '../lib/log.js';
 import targets from './targets.js';
 
 function testOnce(target) {
@@ -125,7 +126,7 @@ async function testMultiTargets(duration, connections) {
     })
   );
   const output = `${summary}${table.toString()}`;
-  console.log(output); // eslint-disable-line no-console
+  log.info(output);
 }
 
 export default testMultiTargets;

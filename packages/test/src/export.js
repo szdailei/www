@@ -1,9 +1,9 @@
-/* eslint-disable no-console */
 /* eslint-disable no-await-in-loop */
 import { argv } from 'process';
 import dotenv from 'dotenv-defaults';
 import puppeteer from 'puppeteer-core/lib/esm/puppeteer/node.js';
 import config from './config.js';
+import log from './lib/log.js';
 import { exportPdf } from './lib/pdf.js';
 
 const waitTillHTMLRendered = async (page, timeout = 5000) => {
@@ -20,13 +20,13 @@ const waitTillHTMLRendered = async (page, timeout = 5000) => {
 
     const bodyHTMLSize = await page.evaluate(() => document.body.innerHTML.length);
 
-    console.log('last: ', lastHTMLSize, ' <> curr: ', currentHTMLSize, ' body html size: ', bodyHTMLSize);
+    log.info('last: ', lastHTMLSize, ' <> curr: ', currentHTMLSize, ' body html size: ', bodyHTMLSize);
 
     if (lastHTMLSize !== 0 && currentHTMLSize === lastHTMLSize) countStableSizeIterations += 1;
     else countStableSizeIterations = 0;
 
     if (countStableSizeIterations >= minStableSizeIterations) {
-      console.log('Page rendered fully..');
+      log.info('Page rendered fully..');
       break;
     }
 
@@ -40,7 +40,7 @@ const waitTillHTMLRendered = async (page, timeout = 5000) => {
   await dotenv.config();
 
   if (argv.length < 3) {
-    console.log(`Usage: yarn export https://example.com`);
+    log.info(`Usage: yarn export https://example.com`);
     return;
   }
 

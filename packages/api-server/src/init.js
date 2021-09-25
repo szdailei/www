@@ -14,6 +14,7 @@ async function init() {
     password: process.env.DATABASE_PASSWORD,
     ssl: true,
   };
+
   config.sql = postgres({ ...options });
   log.warn(`Connect to postgres server to ${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}`);
 }

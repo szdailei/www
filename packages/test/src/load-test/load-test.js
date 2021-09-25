@@ -1,5 +1,5 @@
-/* eslint-disable no-console */
 import minimist from 'minimist';
+import log from '../lib/log.js';
 import VERSION from './VERSION.js';
 import HELP from './HELP.js';
 import runLoadTest from './run-load-test.js';
@@ -17,16 +17,16 @@ const args = minimist(process.argv.slice(2), {
     duration: 5,
   },
   unknown: () => {
-    console.error(HELP);
+    log.error(HELP);
     process.exit(1);
   },
 });
 if (args.help) {
-  console.log(HELP);
+  log.info(HELP);
   process.exit(0);
 }
 if (args.version) {
-  console.log(VERSION);
+  log.info(VERSION);
   process.exit(0);
 }
 

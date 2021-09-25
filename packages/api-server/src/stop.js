@@ -1,37 +1,40 @@
 import config from './config.js';
+import log from './lib/log.js';
 
-/* eslint-disable no-console */
-let isGraphqlServerExit = false;
-let isStaticServerExit = false;
+let isGraphqlServerClosed = false;
+let isStaticServerClosed = false;
+let isPostgresServerDisconnected = false;
 
 function exitProcess(code) {
-  if (isGraphqlServerExit && isStaticServerExit) process.exit(code);
+  if (isGraphqlServerClosed && isStaticServerClosed && isPostgresServerDisconnected) process.exit(code);
 }
 
-function exitGraphqlServer() {
-  console.log('Graphql server closed');
-  isGraphqlServerExit = true;
+function onGraphqlServerClosed() {
+  log.warn('Graphql server closed');
+  isGraphqlServerClosed = true;
   exitProcess(1);
 }
 
-function exitStaticServer() {
-  console.log('Static server closed');
-  isStaticServerExit = true;
+function onStaticServerClosed() {
+  log.warn('Static server closed');
+  isStaticServerClosed = true;
   exitProcess(1);
 }
 
-async function end(eventType, graphqlServer, staticServer) {
-  console.log('Received signal %s, stop api server and static server ...', eventType);
+async function stop(eventType, graphqlServer, staticServer) {
+  log.warn('%s received, stop api server and static server ...', eventType);
 
-  graphqlServer.close(exitGraphqlServer);
-  staticServer.close(exitStaticServer);
+  graphqlServer.close(onGraphqlServerClosed);
+  staticServer.close(onStaticServerClosed);
   setImmediate(() => {
     graphqlServer.emit('close');
     staticServer.emit('close');
   });
 
-  console.log(`Teardown postgres server`);
   await config.sql.end({ timeout: 0 });
+  log.warn(`Disconnected to postgres server`);
+  isPostgresServerDisconnected = true;
+  exitProcess(1);
 }
 
-export default end;
+export default stop;

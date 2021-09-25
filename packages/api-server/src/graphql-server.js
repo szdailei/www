@@ -1,6 +1,5 @@
 import http from 'http';
 import { graphql } from 'graphql/index.mjs';
-import log from './lib/log.js';
 import { schema, resolvers } from './graphql-loader.js';
 
 function requestHandler(req, res) {
@@ -45,8 +44,6 @@ function graphqlServer(port) {
   const server = http.createServer();
   server.on('request', requestHandler);
   server.listen(port);
-
-  log.warn(`Start graphql server on http port ${port}`);
   return server;
 }
 

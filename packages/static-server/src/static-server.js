@@ -5,6 +5,7 @@ import zlib from 'zlib';
 import { Transform } from 'stream';
 import LRU from 'quick-lru';
 import mime from 'mime';
+import log from './lib/log.js';
 
 const MAX_CACHED_FILES = 50;
 const MAX_CACHED_SIZE = 10 * 1024 * 1024;
@@ -174,7 +175,7 @@ function sendFile(res, fileName, etag, mimeType, encoding) {
         }
       });
   } catch (error) {
-    console.log(error); // eslint-disable-line no-console
+    log.warn(error);
   }
 }
 
@@ -261,8 +262,6 @@ function staticServer(port, rootDir) {
   const server = http.createServer();
   server.on('request', requestHandler);
   server.listen(port);
-  // eslint-disable-next-line no-console
-  console.log(`Start static server on http port ${port}`);
   return server;
 }
 

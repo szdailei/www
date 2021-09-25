@@ -1,17 +1,18 @@
-/* eslint-disable no-console */
+import log from './lib/log.js';
+
 function exitProcess(code) {
   process.exit(code);
 }
 
-function exit() {
-  console.log('Static server closed');
+function onServerClosed() {
+  log.warn('Static server closed');
   exitProcess(1);
 }
 
 function stop(eventType, server) {
-  console.log('Received signal %s, stop static server ...', eventType);
+  log.warn('%s received, stop static server ...', eventType);
 
-  server.close(exit);
+  server.close(onServerClosed);
   setImmediate(() => {
     server.emit('close');
   });
