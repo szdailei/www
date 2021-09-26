@@ -238,7 +238,7 @@ function resolveUrl(req, res, rootDir) {
   }
 }
 
-function staticServer(port, rootDir) {
+function staticServer(port, root) {
   function requestHandler(req, res) {
     req.on('error', (err) => {
       if (res.headersSent) {
@@ -253,11 +253,11 @@ function staticServer(port, rootDir) {
       res.end();
       return;
     }
-    resolveUrl(req, res, rootDir);
+    resolveUrl(req, res, root);
   }
 
-  if (!port) throw new Error('PORT is not set');
-  if (!rootDir) throw new Error('rootDir is not set');
+  if (!port) throw new Error('static-server port is not set');
+  if (!root) throw new Error('static-server root is not set');
 
   const server = http.createServer();
   server.on('request', requestHandler);

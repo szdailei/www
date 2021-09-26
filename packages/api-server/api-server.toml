@@ -1,0 +1,17 @@
+[api-server]
+port = 8001
+
+[static-server]
+port = 8002
+
+[storage]
+root = '/home/dailei/projects/www-data/storage/' # 存放courses和resume文件的根目录
+courses = 'courses/'
+resume = 'resume/resume.json'
+
+[database]
+host = '127.0.0.1'
+port = 5432
+database = 'web'
+username = 'dbuser'
+password = '123'

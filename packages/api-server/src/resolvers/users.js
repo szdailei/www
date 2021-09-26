@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import jwt from 'jsonwebtoken';
+import jwt from 'jwt-simple';
 import storage from '../lib/storage';
 
 function getHashPassword(password, salt) {
@@ -147,7 +147,7 @@ export default {
     }
     const content = { user: name };
     const secretKey = storage.getSecretKey();
-    const token = jwt.sign(content, secretKey, { expiresIn: 60 * 60 * 24 });
+    const token = jwt.encode(content, secretKey);
     return token;
   },
 };

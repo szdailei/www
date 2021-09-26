@@ -1,21 +1,19 @@
 {
   "license": "MIT",
   "private": "true",
-  "name": "@dailei/api-server",
+  "name": "@dailei/gateway",
   "exports": "./dist/index.js",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,mjs,json}\"",
     "eslint": "eslint  --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
     "clean": "rimraf dist && mkdirp dist",
-    "dev": "yarn prepare && NODE_ENV=development nodemon src/index.js",
-    "build": "yarn clean && cp *.toml dist/ && yarn rollup -c ../../rollup.config.js",
+    "dev": "NODE_ENV=development nodemon src/index.js",
+    "build": "yarn clean && cp *.toml dist/ && yarn rollup -c  ../../rollup.config.js",
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "graphql": "^15.5.0",
-    "jwt-simple": "^0.5.6",
-    "postgres": "^2.0.0-beta.9"
+    "http-proxy": "^1.18.1"
   }
 }

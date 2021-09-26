@@ -10,19 +10,19 @@ function exitProcess(code) {
 }
 
 function onGraphqlServerClosed() {
-  log.warn('Graphql server closed');
+  log.warn('api-server stoped');
   isGraphqlServerClosed = true;
   exitProcess(1);
 }
 
 function onStaticServerClosed() {
-  log.warn('Static server closed');
+  log.warn('static-server stoped');
   isStaticServerClosed = true;
   exitProcess(1);
 }
 
 async function stop(eventType, graphqlServer, staticServer) {
-  log.warn('%s received, stop api server and static server ...', eventType);
+  log.warn('%s received, api-server and static-server stoping ...', eventType);
 
   graphqlServer.close(onGraphqlServerClosed);
   staticServer.close(onStaticServerClosed);

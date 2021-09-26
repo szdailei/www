@@ -26,11 +26,11 @@ import stop from './stop';
 
   await connectToDatabase(options);
 
-  const gServer = graphqlServer(config.apiServer.port);
-  log.warn(`Start graphql server on http port ${config.apiServer.port}`);
+  const gServer = graphqlServer(config['api-server'].port);
+  log.warn(`api-server started on http port ${config['api-server'].port}`);
 
-  const sServer = staticServer(config.staticServer.port, storage.getStorageRoot());
-  log.warn(`Start static server on http port ${config.staticServer.port}`);
+  const sServer = staticServer(config['static-server'].port, storage.getStorageRoot());
+  log.warn(`static-server started on http port ${config['static-server'].port}`);
 
   function onSignalTerm(eventType) {
     stop(eventType, gServer, sServer);

@@ -1,0 +1,5 @@
+[gateway]
+port = 8443
+
+[api-server]
+endpoint = 'http://127.0.0.1:8001'

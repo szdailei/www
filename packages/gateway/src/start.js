@@ -1,13 +1,15 @@
 import getConfigInExecScriptPath from '../../../config';
 import log from './lib/log';
-import staticServer from './static-server';
+import rules from './rules';
+import reverseProxy from './reverse-proxy';
 import stop from './stop';
 
 (async () => {
-  const config = await getConfigInExecScriptPath('static-server.toml');
+  const config = await getConfigInExecScriptPath('gateway.toml');
+  rules.init(config['api-server'].endpoint);
 
-  const server = staticServer(config['static-server'].port, config['static-server'].root);
-  log.warn(`static-server started on http port ${config['static-server'].port}`);
+  const server = reverseProxy(config.gateway.port);
+  log.warn(`gateway started on http port ${config.gateway.port}`);
 
   function onSignalTerm(eventType) {
     stop(eventType, server);

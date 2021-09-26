@@ -39,7 +39,7 @@ function requestHandler(req, res) {
 }
 
 function graphqlServer(port) {
-  if (!port) throw new Error('API_SERVER_PORT is not set');
+  if (!port) throw new Error('api-server port is not set');
 
   const server = http.createServer();
   server.on('request', requestHandler);

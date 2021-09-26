@@ -5,12 +5,12 @@ function exitProcess(code) {
 }
 
 function onServerClosed() {
-  log.warn('static-server stoped');
+  log.warn('gateway stoped');
   exitProcess(1);
 }
 
 function stop(eventType, server) {
-  log.warn('%s received, static-server stoping ...', eventType);
+  log.warn('%s received, gateway stoping ...', eventType);
 
   server.close(onServerClosed);
   setImmediate(() => {

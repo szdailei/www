@@ -1,0 +1,26 @@
+import fs from 'fs';
+import path from 'path';
+import TOML from '@iarna/toml';
+
+function getExecScriptPath() {
+  const isESModule = typeof __dirname === 'undefined';
+
+  let execScriptPath;
+  if (isESModule) {
+    execScriptPath = new URL('.', import.meta.url).pathname;
+  } else {
+    // __dirname is always '/snapshot' in pkg environment, not real script path.
+    execScriptPath = process.pkg ? path.dirname(process.execPath) : __dirname;
+  }
+
+  return execScriptPath;
+}
+
+async function getConfigInExecScriptPath(configFileName) {
+  const execScriptPath = getExecScriptPath()
+  const configFilePath = path.join(execScriptPath,configFileName)
+  const data = await fs.promises.readFile(configFilePath, 'utf8');
+  return TOML.parse(data);
+}
+
+export default getConfigInExecScriptPath;
