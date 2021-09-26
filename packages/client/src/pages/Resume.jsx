@@ -1,27 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import makeid from '../lib/makeid.js';
-import { getDownloadFileUrl } from '../lib/network.js';
-import request from '../lib/client.js';
 import { useRemoteData } from '../lib/cache.js';
 import { GridContainer, FlexContainer, Abbr, Div, Span } from '../styled/index.js';
 import { Article, Header, Main, Section } from '../sectioning/index.js';
 import { Error } from '../components/index.js';
-
-async function gotoPdfUrl() {
-  const query = `{pdf(url:"${window.location.href}")}`;
-  const { data, error } = await request(query);
-  // eslint-disable-next-line no-console
-  if (error) console.error(error);
-  if (data) {
-    const downloadUrl = getDownloadFileUrl(data.pdf);
-    const anchor = document.createElement('a');
-    anchor.href = downloadUrl;
-    anchor.rel = 'noopener noreferrer';
-    anchor.target = '_blank';
-    anchor.click();
-  }
-}
 
 function Experiences({ experiences }) {
   const children = [];
@@ -119,13 +102,7 @@ function Resume() {
       <Section style={{ gridTemplateColumns: '1fr', gridTemplateRows: 'auto auto', gridTemplateAreas }}>
         <Header>
           <GridContainer style={{ gridTemplateColumns: '2fr 2fr 3fr' }}>
-            <Abbr
-              onClick={gotoPdfUrl}
-              title="GotoPdfUrl"
-              style={{ cursor: 'pointer', fontSize: '2em', letterSpacing: '0.5em', marginLeft: '0' }}
-            >
-              {resume.name}
-            </Abbr>
+            <Abbr style={{ fontSize: '2em', letterSpacing: '0.5em', marginLeft: '0' }}>{resume.name}</Abbr>
             <Div style={{ fontSize: '1.2em' }}>{resume.position}</Div>
             <FlexContainer style={{ fontSize: '20px' }}>
               <Div>

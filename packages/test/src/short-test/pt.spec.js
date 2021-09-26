@@ -46,7 +46,7 @@ pdfBuffer数组长度等于胶片页数`;
   test(
     exportPdfContr,
     async () => {
-      await testPdfBuffers(page, config.VIEWPORT, config.FONT_SIZE);
+      await testPdfBuffers(page);
     },
     30000
   );
@@ -57,9 +57,10 @@ beforeAll(async () => {
   browser = await puppeteer.launch({
     headless: true,
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    defaultViewport: config.DEFAULT_VIEWPORT,
   });
 
-  page = await newCoursesPage(browser, config);
+  page = await newCoursesPage(browser);
   await gotoFirstCourse(page);
 });
 

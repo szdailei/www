@@ -11,8 +11,6 @@ type Query {
     changePassword(name: String, password:String):Boolean
     getWebToken(name:String, password:String):String
     log(data:String): Boolean
-    pdf(url:String!): String    
-    sortAcceptLanguage: String
     resume(name: String): String
 }
 `;

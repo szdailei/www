@@ -29,7 +29,7 @@ async function createIntroMdx(fileNames) {
       headless: true,
       executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     });
-    const page = await newCoursesPage(browser, config);
+    const page = await newCoursesPage(browser);
     const link = await getLinkByFileName(page, fileNames[i]);
     await link.click();
     await waitForDone(page);
@@ -69,20 +69,20 @@ ${titles}
 
   for (let i = 0; i < fileNames.length; i += 1) {
     const footer = `\n\n<Footer>${titlesArray[i]}</Footer>\n\n`;
-    const data = await fs.promises.readFile(`${config.COURSES_DIR}${fileNames[i]}`, 'utf8');
+    const data = await fs.promises.readFile(`${process.env.COURSES_DIR}${fileNames[i]}`, 'utf8');
     const pages = data.split('---');
     intro += `---${pages[1]}${footer}---${pages[2]}${footer}---${pages[pages.length - 3]}${footer}---${
       pages[pages.length - 2]
     }${footer}---${pages[pages.length - 1]}${footer}`;
   }
-  await fs.promises.writeFile(`${config.COURSES_DIR}${config.INTRO_FILE}`, intro);
+  await fs.promises.writeFile(`${process.env.COURSES_DIR}${config.INTRO_FILE}`, intro);
 }
 
 async function copyToTempFile(origFileNames, tempFileNames) {
   for (let i = 0; i < origFileNames.length; i += 1) {
-    let data = await fs.promises.readFile(`${config.COURSES_DIR}${origFileNames[i]}`, 'utf8');
+    let data = await fs.promises.readFile(`${process.env.COURSES_DIR}${origFileNames[i]}`, 'utf8');
     data = getMdxWithoutClockAndTimer(data);
-    await fs.promises.writeFile(`${config.COURSES_DIR}${tempFileNames[i]}`, data);
+    await fs.promises.writeFile(`${process.env.COURSES_DIR}${tempFileNames[i]}`, data);
   }
 }
 
@@ -90,10 +90,10 @@ async function getOrigFileNames() {
   const browser = await puppeteer.launch({
     headless: true,
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    defaultViewport: { ...config.VIEWPORT },
+    defaultViewport: config.DEFAULT_VIEWPORT,
   });
 
-  const page = await newCoursesPage(browser, config);
+  const page = await newCoursesPage(browser);
   const origFileNames = await getFileNames(page);
   await browser.close();
   return origFileNames;
@@ -117,14 +117,15 @@ async function getOrigFileNames() {
     const browser = await puppeteer.launch({
       headless: true,
       executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+      defaultViewport: config.DEFAULT_VIEWPORT,
     });
 
-    const page = await newCoursesPage(browser, config);
+    const page = await newCoursesPage(browser);
     await gotoCourse(page, fileName);
-    await exportPdf(page, config, fileName);
+    await exportPdf(page, fileName);
     await browser.close();
 
-    await fs.promises.unlink(`${config.COURSES_DIR}${fileName}`);
+    await fs.promises.unlink(`${process.env.COURSES_DIR}${fileName}`);
 
     if (fileName === config.INTRO_FILE) return;
     const fileNameWithoutSuffix = fileName.substring(0, fileName.lastIndexOf('.'));

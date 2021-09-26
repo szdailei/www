@@ -20,9 +20,10 @@ beforeAll(async () => {
   browser = await puppeteer.launch({
     headless: false,
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    defaultViewport: config.DEFAULT_VIEWPORT,
   });
 
-  page = await newCoursesPage(browser, config);
+  page = await newCoursesPage(browser);
   await gotoFirstCourse(page);
 });
 

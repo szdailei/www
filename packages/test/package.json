@@ -7,10 +7,9 @@
   "scripts": {
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,mjs,json}\"",
     "eslint": "eslint  --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
-    "clean:pdfs": "rimraf pdfs && mkdirp pdfs && node ../../puppeteer-support-esm.js",
-    "clean:reports": "rimraf reports && mkdirp reports",
-    "clean": "yarn clean:pdfs && yarn clean:reports",
+    "clean": "rimraf pdfs reports && mkdirp pdfs reports",
     "export": "node src/export.js",
+    "export-resume": "node src/export-resume.js",
     "export-courses": "node src/export-courses.js",
     "load-test": "node src/load-test/load-test.js",
     "test": "jest && chromium reports/jest_html_reporters.html"
@@ -22,6 +21,7 @@
     "jest": "^27.0.6",
     "jest-html-reporters": "^2.1.1",
     "minimist": "^1.2.5",
-    "pdf-lib": "^1.16.0"
+    "pdf-lib": "^1.16.0",
+    "puppeteer-core": "^10.2.0"
   }
 }

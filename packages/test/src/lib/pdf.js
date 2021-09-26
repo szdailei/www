@@ -1,15 +1,16 @@
 /* eslint-disable no-await-in-loop */
 import fs from 'fs';
 import { PDFDocument } from 'pdf-lib';
+import config from '../config.js';
 import { waitForDone, getDocumentViewPort } from './eval-common.js';
 import { getTotalPagesNum } from './eval-presentation.js';
 
-async function setFontSizes(page, standardSize) {
+async function setFontSizes(page) {
   const client = await page.target().createCDPSession();
   await client.send('Page.enable');
   await client.send('Page.setFontSizes', {
     fontSizes: {
-      standard: standardSize,
+      standard: config.STANDARD_FONT_SIZE,
     },
   });
 }
@@ -26,19 +27,15 @@ async function exportPdfBuffersToFile(pdfFileName, pdfBuffers, totalPagesNum) {
   await fs.promises.writeFile(pdfFileName, pdfBytes);
 }
 
-async function createPdfBuffers(page, totalPagesNum, defaultViewPort, fontSize) {
-  const viewPort = { ...defaultViewPort };
-  await setFontSizes(page, fontSize);
+async function createPdfBuffers(page, totalPagesNum, format) {
+  await setFontSizes(page);
   await page.keyboard.up('Home');
   await page.mouse.move(0, 0);
 
   const pdfBuffers = [];
   for (let i = 0; i < totalPagesNum; i += 1) {
-    const { width, height } = await getDocumentViewPort(page);
-    viewPort.width = width;
-    viewPort.height = height;
-
-    const buffer = await page.pdf(viewPort);
+    const viewPort = await getDocumentViewPort(page);
+    const buffer = format ? await page.pdf(format) : await page.pdf(viewPort);
     pdfBuffers.push(buffer);
     if (i !== totalPagesNum - 1) {
       await page.keyboard.up('PageDown');
@@ -49,7 +46,7 @@ async function createPdfBuffers(page, totalPagesNum, defaultViewPort, fontSize) 
   return pdfBuffers;
 }
 
-async function exportPdf(page, config, origFileName, origTotalPagesNum) {
+async function exportPdf(page, origFileName, origTotalPagesNum, format) {
   const totalPagesNum = origTotalPagesNum || (await getTotalPagesNum(page));
   const fileNameWithoutSuffix = origFileName.substring(0, origFileName.lastIndexOf('.'));
   let pdfFileName;
@@ -59,7 +56,7 @@ async function exportPdf(page, config, origFileName, origTotalPagesNum) {
     pdfFileName = `${config.PDFS_DIR}${origFileName}.pdf`;
   }
 
-  const pdfBuffers = await createPdfBuffers(page, totalPagesNum, config.VIEWPORT, config.FONT_SIZE);
+  const pdfBuffers = await createPdfBuffers(page, totalPagesNum, format);
   await exportPdfBuffersToFile(pdfFileName, pdfBuffers, totalPagesNum);
 }
 
