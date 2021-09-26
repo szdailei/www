@@ -1,8 +1,8 @@
 import React, { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
-import request from '../lib/client.js';
-import { FlexContainer, Button } from '../styled/index.js';
-import { SignInInput } from '../components/index.js';
+import request from '../lib/client';
+import { FlexContainer, Button } from '../styled';
+import { SignInInput } from '../components';
 
 function SignUp({ onSuccessOfCreateUser, messageRef }) {
   const userNameRef = useRef();

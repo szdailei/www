@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useImperativeHandle } from 'react';
-import { Div } from '../styled/index.js';
+import { Div } from '../styled';
 
 // eslint-disable-next-line react/prop-types
 const Message = React.forwardRef(({ style, ...rest }, ref) => {

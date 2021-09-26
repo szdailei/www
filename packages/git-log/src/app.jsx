@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Home from './pages/Home.jsx';
+import Home from './pages/Home';
 // eslint-disable-next-line import/no-unresolved
 import gitLog from '../reports/git-log.json';
 

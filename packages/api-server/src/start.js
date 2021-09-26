@@ -1,21 +1,36 @@
-import dotenv from '../../../dotenv.js';
-import log from './lib/log.js';
-import init from './init.js';
-import graphqlServer from './graphql-server.js';
-import storage from './lib/storage.js';
-import staticServer from '../../static-server/src/static-server.js';
-import stop from './stop.js';
+import crypto from 'crypto';
+import getConfigInExecScriptPath from '../../../config';
+import log from './lib/log';
+import connectToDatabase from './connect-to-database';
+import graphqlServer from './graphql-server';
+import storage from './lib/storage';
+import staticServer from '../../static-server/src/static-server';
+import stop from './stop';
 
 (async () => {
-  await dotenv();
+  storage.setSecretKey(crypto.randomBytes(16).toString('hex'));
 
-  await init();
+  const config = await getConfigInExecScriptPath('api-server.toml');
+  storage.setStorageRoot(config.storage.root);
+  storage.setCoursesPath(config.storage.courses);
+  storage.setResumeFile(config.storage.resume);
 
-  const gServer = graphqlServer(process.env.API_SERVER_PORT);
-  log.warn(`Start graphql server on http port ${process.env.API_SERVER_PORT}`);
+  const options = {
+    host: config.database.host,
+    port: config.database.port,
+    database: config.database.database,
+    username: config.database.username,
+    password: config.database.password,
+    ssl: true,
+  };
 
-  const sServer = staticServer(process.env.DOWNLOAD_SERVER_PORT, storage.getDownloadRootDir());
-  log.warn(`Start static server on http port ${process.env.DOWNLOAD_SERVER_PORT}`);
+  await connectToDatabase(options);
+
+  const gServer = graphqlServer(config.apiServer.port);
+  log.warn(`Start graphql server on http port ${config.apiServer.port}`);
+
+  const sServer = staticServer(config.staticServer.port, storage.getStorageRoot());
+  log.warn(`Start static server on http port ${config.staticServer.port}`);
 
   function onSignalTerm(eventType) {
     stop(eventType, gServer, sServer);

@@ -1,8 +1,8 @@
-import Article from './Article.jsx';
-import Footer from './Footer.jsx';
-import Header from './Header.jsx';
-import Main from './Main.jsx';
-import Section from './Section.jsx';
-import Title from './Title.jsx';
+import Article from './Article';
+import Footer from './Footer';
+import Header from './Header';
+import Main from './Main';
+import Section from './Section';
+import Title from './Title';
 
 export { Article, Footer, Header, Main, Section, Title };

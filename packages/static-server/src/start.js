@@ -1,13 +1,13 @@
-import dotenv from '../../../dotenv.js';
-import log from './lib/log.js';
-import staticServer from './static-server.js';
-import stop from './stop.js';
+import getConfigInExecScriptPath from '../../../config';
+import log from './lib/log';
+import staticServer from './static-server';
+import stop from './stop';
 
 (async () => {
-  await dotenv();
+  const config = await getConfigInExecScriptPath('static-server.toml');
 
-  const server = staticServer(process.env.PORT, process.env.WWW);
-  log.warn(`Start static server on http port ${process.env.PORT}`);
+  const server = staticServer(config.staticServer.port, config.staticServer.root);
+  log.warn(`Start static server on http port ${config.staticServer.port}`);
 
   function onSignalTerm(eventType) {
     stop(eventType, server);

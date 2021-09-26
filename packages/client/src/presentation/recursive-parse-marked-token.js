@@ -1,5 +1,5 @@
-import { trim } from '../lib/markdown.js';
-import MarkdownNode from './MarkdownNode.jsx';
+import { trim } from '../lib/markdown';
+import MarkdownNode from './MarkdownNode';
 
 function isTable(token) {
   if (token.type === 'table') return true;

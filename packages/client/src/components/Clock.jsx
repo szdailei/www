@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Span } from '../styled/index.js';
+import { Span } from '../styled';
 
 const Clock = React.forwardRef(({ showClock, ...props }, ref) => {
   const [date, setDate] = useState(new Date());

@@ -1,10 +1,10 @@
 import React, { useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import request from '../lib/client.js';
-import { storageWebToken } from '../lib/security.js';
-import { Button, Div } from '../styled/index.js';
-import { Article } from '../sectioning/index.js';
-import { Message, SignInInput } from '../components/index.js';
+import request from '../lib/client';
+import { storageWebToken } from '../lib/security';
+import { Button, Div } from '../styled';
+import { Article } from '../sectioning';
+import { Message, SignInInput } from '../components';
 
 function SignIn() {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import log from './lib/log.js';
+import log from './lib/log';
 
 function exitProcess(code) {
   process.exit(code);

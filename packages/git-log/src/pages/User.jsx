@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import makeid from '../lib/makeid.js';
-import { Span } from '../styled/index.js';
-import { Section, Header, Main } from '../sectioning/index.js';
-import Commit from './Commit.jsx';
+import makeid from '../lib/makeid';
+import { Span } from '../styled';
+import { Section, Header, Main } from '../sectioning';
+import Commit from './Commit';
 
 function User({ commits, repo, locale }) {
   const name = commits[0].committerName;

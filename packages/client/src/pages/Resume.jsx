@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import makeid from '../lib/makeid.js';
-import { useRemoteData } from '../lib/cache.js';
-import { GridContainer, FlexContainer, Abbr, Div, Span } from '../styled/index.js';
-import { Article, Header, Main, Section } from '../sectioning/index.js';
-import { Error } from '../components/index.js';
+import makeid from '../lib/makeid';
+import { useRemoteData } from '../lib/cache';
+import { GridContainer, FlexContainer, Abbr, Div, Span } from '../styled';
+import { Article, Header, Main, Section } from '../sectioning';
+import { Error } from '../components';
 
 function Experiences({ experiences }) {
   const children = [];

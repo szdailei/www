@@ -1,11 +1,11 @@
 import React from 'react';
-import makeid from '../lib/makeid.js';
-import { convertSrcToLocal, convertSrcToServer, removeBlankLine, trim } from '../lib/markdown.js';
-import { Heading, P, Span } from '../styled/index.js';
-import { PrismCode } from '../components/index.js';
-import { isReactTagAtBegginning } from './parse-react-component-utils.js';
-import HtmlNode from './HtmlNode.jsx';
-import TableNode from './TableNode.jsx';
+import makeid from '../lib/makeid';
+import { convertSrcToLocal, convertSrcToServer, removeBlankLine, trim } from '../lib/markdown';
+import { Heading, P, Span } from '../styled';
+import { PrismCode } from '../components';
+import { isReactTagAtBegginning } from './parse-react-component-utils';
+import HtmlNode from './HtmlNode';
+import TableNode from './TableNode';
 
 function MarkdownNode(token, children, parent) {
   const hoverStyle = {

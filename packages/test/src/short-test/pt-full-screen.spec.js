@@ -1,8 +1,8 @@
 import puppeteer from 'puppeteer-core';
 import dotenv from 'dotenv-defaults';
-import { newCoursesPage, gotoFirstCourse } from '../lib/eval-courses.js';
-import switchFullScreen from './switch-full-screen.js';
-import config from '../config.js';
+import { newCoursesPage, gotoFirstCourse } from '../lib/eval-courses';
+import switchFullScreen from './switch-full-screen';
+import config from '../config';
 
 let browser;
 let page;

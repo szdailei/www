@@ -1,15 +1,15 @@
 import Message from './Message';
-import Appear from './Appear.jsx';
-import Clock from './Clock.jsx';
-import Timer from './Timer.jsx';
-import ClockOrTimer from './ClockOrTimer.jsx';
-import Split from './Split.jsx';
+import Appear from './Appear';
+import Clock from './Clock';
+import Timer from './Timer';
+import ClockOrTimer from './ClockOrTimer';
+import Split from './Split';
 import PrismCode from './PrismCode';
-import VideoJS from './VideoJS.jsx';
-import SignInInput from './SignInInput.jsx';
-import Error from './Error.jsx';
-import Loading from './Loading.jsx';
-import NotFound from './NotFound.jsx';
+import VideoJS from './VideoJS';
+import SignInInput from './SignInInput';
+import Error from './Error';
+import Loading from './Loading';
+import NotFound from './NotFound';
 
 export {
   Message,

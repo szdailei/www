@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Span } from '../styled/index.js';
-import { Section, Header, Main } from '../sectioning/index.js';
+import { Span } from '../styled';
+import { Section, Header, Main } from '../sectioning';
 import Details from './Details';
 
 function Commit({ commit, repo, locale }) {

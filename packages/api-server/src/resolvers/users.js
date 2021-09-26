@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import storage from '../lib/storage.js';
+import storage from '../lib/storage';
 
 function getHashPassword(password, salt) {
   const saltPassword = `${password}${salt}`;

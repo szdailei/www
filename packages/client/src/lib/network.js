@@ -1,4 +1,4 @@
-import config from '../config.js';
+import config from '../config';
 
 function getServerConfigUrl() {
   const serverConfigUrl = `${window.location.protocol}//${window.location.host}/${config.SERVER_CONFIG_FILE}`;

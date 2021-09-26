@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import createPages from '../presentation/create-pages.jsx';
+import createPages from '../presentation/create-pages';
 
 (async () => {
   const TEST_FILE = './debug.md';

@@ -1,7 +1,7 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Div, Input, Label } from '../styled/index.js';
+import { Div, Input, Label } from '../styled';
 
 function SignInInput({ userNameRef, passwordRef, userName }) {
   useEffect(() => {

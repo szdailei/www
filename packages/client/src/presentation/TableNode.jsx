@@ -1,6 +1,6 @@
 import React from 'react';
-import { TH, TD, TR, THead, TBody, Table } from '../styled/index.js';
-import makeid from '../lib/makeid.js';
+import { TH, TD, TR, THead, TBody, Table } from '../styled';
+import makeid from '../lib/makeid';
 
 function TableNode(table) {
   const padding = '6px 16px 6px 16px';

@@ -1,8 +1,8 @@
 import minimist from 'minimist';
-import log from '../lib/log.js';
-import VERSION from './VERSION.js';
-import HELP from './HELP.js';
-import runLoadTest from './run-load-test.js';
+import log from '../lib/log';
+import VERSION from './VERSION';
+import HELP from './HELP';
+import runLoadTest from './run-load-test';
 
 const args = minimist(process.argv.slice(2), {
   boolean: ['version', 'help'],

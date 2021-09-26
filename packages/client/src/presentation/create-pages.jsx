@@ -1,6 +1,6 @@
 /* eslint-disable no-continue */
 import marked from 'marked';
-import { debug, MD_PARSE } from '../lib/debug.js';
+import { debug, MD_PARSE } from '../lib/debug';
 import {
   addBlankLines,
   modifyTokenIfMultiTagsInOneLine,
@@ -9,18 +9,18 @@ import {
   getTagName,
   getTheFirstTagTextContent,
   getTextExceptTheFirstTag,
-} from './parse-react-component-utils.js';
-import recursiveParseMarkedToken from './recursive-parse-marked-token.js';
-import { closeReactComponent } from './close-react-component.js';
+} from './parse-react-component-utils';
+import recursiveParseMarkedToken from './recursive-parse-marked-token';
+import { closeReactComponent } from './close-react-component';
 import {
   isParsingReactComponent,
   getTokensByMarkdown,
   openReactCompenent,
   recursiveSpliceChildren,
-} from './open-react-component.js';
-import { getCurrentNode, addComponentToChildren } from './tree.js';
-import Page from './Page.jsx';
-import { ExampleContainer, isExampleTag } from './Example.jsx';
+} from './open-react-component';
+import { getCurrentNode, addComponentToChildren } from './tree';
+import Page from './Page';
+import { ExampleContainer, isExampleTag } from './Example';
 
 const contract = debug(MD_PARSE);
 

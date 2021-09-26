@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { GridContainer } from '../styled/index.js';
+import { GridContainer } from '../styled';
 
 // eslint-disable-next-line react/prop-types
 const Split = React.forwardRef(({ children, style, ...rest }, ref) => {

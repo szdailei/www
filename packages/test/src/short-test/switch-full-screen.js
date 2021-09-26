@@ -1,4 +1,4 @@
-import { isFullscreen } from '../lib/eval-common.js';
+import { isFullscreen } from '../lib/eval-common';
 
 async function switchFullScreen(page) {
   const status = await isFullscreen(page);

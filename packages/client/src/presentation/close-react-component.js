@@ -1,7 +1,7 @@
-import { trim } from '../lib/markdown.js';
-import { isClosingTagAtBeginning, getTextExceptTheFirstTag } from './parse-react-component-utils.js';
-import { getCurrentNode, addComponentToChildren } from './tree.js';
-import MDXToReactHOC from './MDXToReactHOC.jsx';
+import { trim } from '../lib/markdown';
+import { isClosingTagAtBeginning, getTextExceptTheFirstTag } from './parse-react-component-utils';
+import { getCurrentNode, addComponentToChildren } from './tree';
+import MDXToReactHOC from './MDXToReactHOC';
 
 function closeReactComponent(ctx) {
   const currentNode = getCurrentNode(ctx.reactRoot);

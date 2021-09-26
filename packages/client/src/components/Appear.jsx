@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Div } from '../styled/index.js';
+import { Div } from '../styled';
 
 // eslint-disable-next-line react/prop-types
 const Appear = React.forwardRef(({ children, hover, wrap, style, ...rest }, ref) => {

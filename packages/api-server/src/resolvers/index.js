@@ -1,7 +1,7 @@
-import log from './log.js';
-import users from './users.js';
-import courses from './courses.js';
-import resume from './resume.js';
+import log from './log';
+import users from './users';
+import courses from './courses';
+import resume from './resume';
 
 const resolverArray = [users, courses, log, resume];
 

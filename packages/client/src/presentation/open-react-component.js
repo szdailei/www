@@ -1,14 +1,14 @@
 import marked from 'marked';
-import { debug, REACT_PARSE } from '../lib/debug.js';
-import recursiveParseMarkedToken from './recursive-parse-marked-token.js';
-import { createNode, addNodeToNodeList, getCurrentNode } from './tree.js';
+import { debug, REACT_PARSE } from '../lib/debug';
+import recursiveParseMarkedToken from './recursive-parse-marked-token';
+import { createNode, addNodeToNodeList, getCurrentNode } from './tree';
 import {
   isClosingTagAtEnd,
   isOpeningTagAtBegginning,
   isSelfCloseTag,
   getTextExceptTheFirstTag,
-} from './parse-react-component-utils.js';
-import { closeReactComponent } from './close-react-component.js';
+} from './parse-react-component-utils';
+import { closeReactComponent } from './close-react-component';
 
 const contract = debug(REACT_PARSE);
 

@@ -1,10 +1,10 @@
 import { argv } from 'process';
 import dotenv from 'dotenv-defaults';
-import puppeteer from 'puppeteer-core/lib/esm/puppeteer/node.js';
-import config from './config.js';
-import log from './lib/log.js';
-import waitUtillHTMLRendered from './lib/wait-loaded.js';
-import { exportPdf } from './lib/pdf.js';
+import puppeteer from 'puppeteer-core/lib/esm/puppeteer/node';
+import config from './config';
+import log from './lib/log';
+import waitUtillHTMLRendered from './lib/wait-loaded';
+import { exportPdf } from './lib/pdf';
 
 (async () => {
   await dotenv.config();

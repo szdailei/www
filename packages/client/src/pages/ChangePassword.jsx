@@ -1,9 +1,9 @@
 import React, { useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import request from '../lib/client.js';
-import { Button, Div } from '../styled/index.js';
-import { Article } from '../sectioning/index.js';
-import { Message, SignInInput } from '../components/index.js';
+import request from '../lib/client';
+import { Button, Div } from '../styled';
+import { Article } from '../sectioning';
+import { Message, SignInInput } from '../components';
 
 function ChangePassword() {
   const { userName } = useParams();

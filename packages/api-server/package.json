@@ -10,7 +10,7 @@
     "eslint": "eslint  --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
     "clean": "rimraf dist && mkdirp dist",
     "dev": "yarn prepare && NODE_ENV=development nodemon src/index.js",
-    "build": "yarn clean && cp .env* dist/ && yarn rollup -c ../../rollup.config.js",
+    "build": "yarn clean && cp *.toml dist/ && yarn rollup -c ../../rollup.config.js",
     "start": "node dist/index.js"
   },
   "dependencies": {

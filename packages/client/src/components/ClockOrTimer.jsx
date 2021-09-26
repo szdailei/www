@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useCallback } from 'react';
-import { Div } from '../styled/index.js';
-import Clock from './Clock.jsx';
-import Timer from './Timer.jsx';
+import { Div } from '../styled';
+import Clock from './Clock';
+import Timer from './Timer';
 
 // eslint-disable-next-line react/prop-types
 const ClockOrTimer = React.forwardRef(({ style, ...rest }, ref) => {

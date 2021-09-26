@@ -1,6 +1,6 @@
 import { buildSchema } from 'graphql/index.mjs';
-import typeDef from './types.js';
-import resolverArray from './resolvers/index.js';
+import typeDef from './types';
+import resolverArray from './resolvers';
 
 function getResolvers() {
   const obj = {};

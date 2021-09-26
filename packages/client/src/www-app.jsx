@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import { useRemoteConfig } from './lib/cache.js';
+import { useRemoteConfig } from './lib/cache';
 import { Error, Loading, NotFound } from './components';
 import { Home, Admin, Resume, Courses, SignIn } from './pages';
 import {

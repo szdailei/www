@@ -1,9 +1,9 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { useState, useCallback, useImperativeHandle, useRef } from 'react';
 import PropTypes from 'prop-types';
-import makeid from '../lib/makeid.js';
-import { Button, Div, GridContainer, TextArea } from '../styled/index.js';
-import { Message } from '../components/index.js';
+import makeid from '../lib/makeid';
+import { Button, Div, GridContainer, TextArea } from '../styled';
+import { Message } from '../components';
 
 const Example = React.forwardRef((_, ref) => {
   const [children, setChildren] = useState();

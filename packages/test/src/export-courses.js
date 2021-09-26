@@ -1,11 +1,11 @@
 /* eslint-disable no-await-in-loop */
 import fs from 'fs';
 import dotenv from 'dotenv-defaults';
-import puppeteer from 'puppeteer-core/lib/esm/puppeteer/node.js';
-import config from './config.js';
-import { waitForDone, getTextContentById } from './lib/eval-common.js';
-import { newCoursesPage, gotoCourse, getFileNames, getLinkByFileName } from './lib/eval-courses.js';
-import { exportPdf } from './lib/pdf.js';
+import puppeteer from 'puppeteer-core/lib/esm/puppeteer/node';
+import config from './config';
+import { waitForDone, getTextContentById } from './lib/eval-common';
+import { newCoursesPage, gotoCourse, getFileNames, getLinkByFileName } from './lib/eval-courses';
+import { exportPdf } from './lib/pdf';
 
 function getMdxWithoutClockAndTimer(text) {
   const uselessTags = ['<Clock />', '<Clock>', '<Timer />', '<Timer>', '<ClockOrTimer />', '<ClockOrTimer>'];

@@ -1,5 +1,5 @@
-import config from './config.js';
-import log from './lib/log.js';
+import log from './lib/log';
+import storage from './lib/storage';
 
 let isGraphqlServerClosed = false;
 let isStaticServerClosed = false;
@@ -31,7 +31,7 @@ async function stop(eventType, graphqlServer, staticServer) {
     staticServer.emit('close');
   });
 
-  await config.sql.end({ timeout: 0 });
+  await storage.getSql().end({ timeout: 0 });
   log.warn(`Disconnected to postgres server`);
   isPostgresServerDisconnected = true;
   exitProcess(1);

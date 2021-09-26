@@ -1,4 +1,4 @@
-import config from '../config.js';
+import config from '../config';
 
 async function waitForDone(page) {
   const maxTimeout = 5000;

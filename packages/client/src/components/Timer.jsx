@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
-import { Span } from '../styled/index.js';
+import { Span } from '../styled';
 
 function Timer(props) {
   const START_TIME = 0;

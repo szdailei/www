@@ -1,29 +1,47 @@
 import fs from 'fs';
 import path from 'path';
-import config from '../config.js';
 
-function getData(filename) {
-  return fs.promises.readFile(filename, 'utf8');
-}
-
-function setData(filename, json) {
-  return fs.promises.writeFile(filename, JSON.stringify(json), 'utf8');
-}
-function getStorageDir() {
-  return process.env.STORAGE_DIR;
-}
-
-function getCoursesPath() {
-  return config.COURSES_PATH;
-}
+const storageConfig = {
+  sql: undefined,
+  secretKey: undefined,
+  root: null,
+  coursesPath: null,
+  resumeFile: null,
+};
 
 function storage() {}
+
+storage.getSql = () => storageConfig.sql;
+
+storage.setSql = (sql) => {
+  storageConfig.sql = sql;
+};
+
+storage.setSecretKey = (secretKey) => {
+  storageConfig.secretKey = secretKey;
+};
+
+storage.setCoursesPath = (coursesPath) => {
+  storageConfig.coursesPath = coursesPath;
+};
+
+storage.getStorageRoot = () => storageConfig.root;
+
+storage.setStorageRoot = (root) => {
+  storageConfig.root = root;
+};
+
+storage.getResumeFile = () => storageConfig.resumeFile;
+
+storage.setResumeFile = (resumeFile) => {
+  storageConfig.resumeFile = resumeFile;
+};
 
 storage.getUsers = async () => {
   let users;
   let error;
   try {
-    users = await config.sql`
+    users = await storageConfig.sql`
       SELECT * from all_user
     `;
   } catch (err) {
@@ -36,7 +54,7 @@ storage.getRoles = async () => {
   let roles;
   let error;
   try {
-    roles = await config.sql`
+    roles = await storageConfig.sql`
       SELECT * from role
     `;
   } catch (err) {
@@ -49,7 +67,7 @@ storage.getUserByName = async (name) => {
   let user;
   let error;
   try {
-    [user] = await config.sql`
+    [user] = await storageConfig.sql`
       SELECT * from all_user WHERE name=${name}
     `;
   } catch (err) {
@@ -62,7 +80,7 @@ storage.getUserRoles = async () => {
   let userRoles;
   let error;
   try {
-    userRoles = await config.sql`
+    userRoles = await storageConfig.sql`
       SELECT * from user_role
     `;
   } catch (err) {
@@ -75,7 +93,7 @@ storage.getPermissions = async () => {
   let permissions;
   let error;
   try {
-    permissions = await config.sql`
+    permissions = await storageConfig.sql`
       SELECT * from permission
     `;
   } catch (err) {
@@ -88,7 +106,7 @@ storage.createUser = async (name, password, salt) => {
   let isSuccess;
   let error;
   try {
-    const { count } = await config.sql`
+    const { count } = await storageConfig.sql`
       INSERT INTO all_user (name,  password, salt) VALUES(${name}, ${password}, ${salt})
     `;
     if (count === 1) isSuccess = true;
@@ -103,7 +121,7 @@ storage.deleteUserByName = async (name) => {
   let isSuccess;
   let error;
   try {
-    const { count } = await config.sql`
+    const { count } = await storageConfig.sql`
       DELETE FROM ONLY all_user WHERE name=${name}
     `;
     if (count === 1) isSuccess = true;
@@ -118,7 +136,7 @@ storage.changePassword = async (name, password, salt) => {
   let isSuccess;
   let error;
   try {
-    const { count } = await config.sql`
+    const { count } = await storageConfig.sql`
       UPDATE ONLY all_user SET password=${password}, salt=${salt} WHERE name=${name}
     `;
     if (count === 1) isSuccess = true;
@@ -129,18 +147,20 @@ storage.changePassword = async (name, password, salt) => {
   return { isSuccess, error };
 };
 
-storage.getSecretKey = () => config.secretKey;
+storage.getSecretKey = () => storageConfig.secretKey;
 
-storage.readCourseFile = async (name) => storage.getDataByKey(`${getCoursesPath()}${name}`);
+storage.readCourseFile = async (name) => {
+  const key = path.join(storageConfig.coursesPath, name);
+  return storage.getDataByKey(key);
+};
 
-storage.getDownloadRootDir = () => process.env.DOWNLOAD_ROOT_DIR;
-
-storage.getDataByKey = (key) => getData(path.join(getStorageDir(), `${key}`));
-
-storage.setDataByKey = (key, json) => setData(path.join(getStorageDir(), `${key}`), json);
+storage.getDataByKey = async (key) => {
+  const filename = path.join(storageConfig.root, key);
+  return fs.promises.readFile(filename, 'utf8');
+};
 
 storage.listFiles = async (dirName) => {
-  const dir = path.join(getStorageDir(), dirName);
+  const dir = path.join(storageConfig.root, dirName);
   const files = await fs.promises.readdir(dir);
   const fileNames = [];
   for (let i = 0; i < files.length; i += 1) {
@@ -154,14 +174,8 @@ storage.listFiles = async (dirName) => {
 };
 
 storage.listCourseFiles = async () => {
-  const files = await storage.listFiles(getCoursesPath());
+  const files = await storage.listFiles(storageConfig.coursesPath);
   return files;
-};
-
-storage.uploadToTempDownloadServer = async (filename, buffer) => {
-  const tempFilename = `${process.env.TEMP_DOWNLOAD_DIR}${filename}`;
-  await fs.promises.writeFile(path.join(storage.getDownloadRootDir(), tempFilename), buffer);
-  return tempFilename;
 };
 
 export default storage;

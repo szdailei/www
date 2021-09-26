@@ -1,7 +1,7 @@
 /* eslint-disable no-continue */
 import { isAlphabetical } from 'is-alphabetical';
-import { trim } from '../lib/markdown.js';
-import emptyTags from '../lib/empty-tags.js';
+import { trim } from '../lib/markdown';
+import emptyTags from '../lib/empty-tags';
 
 function getTagName(text) {
   let tagName = '';

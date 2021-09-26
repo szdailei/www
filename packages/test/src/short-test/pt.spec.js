@@ -1,10 +1,10 @@
 import puppeteer from 'puppeteer-core';
 import dotenv from 'dotenv-defaults';
-import { newCoursesPage, gotoFirstCourse } from '../lib/eval-courses.js';
-import setTitle from './set-title.js';
-import testForwardBackward from './forward-backward.js';
-import testPdfBuffers from './pdf-buffers.js';
-import config from '../config.js';
+import { newCoursesPage, gotoFirstCourse } from '../lib/eval-courses';
+import setTitle from './set-title';
+import testForwardBackward from './forward-backward';
+import testPdfBuffers from './pdf-buffers';
+import config from '../config';
 
 let browser;
 let page;

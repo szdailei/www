@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import marked from 'marked';
-import { i18n, t } from '../i18n/index.js';
-import makeid from '../lib/makeid.js';
-import { Div, Span, Option, Select } from '../styled/index.js';
-import { Article, Section, Header, Main } from '../sectioning/index.js';
+import { i18n, t } from '../i18n';
+import makeid from '../lib/makeid';
+import { Div, Span, Option, Select } from '../styled';
+import { Article, Section, Header, Main } from '../sectioning';
 import awesome from '../awesome.md';
 
 function createHeading(node) {
@@ -57,11 +57,15 @@ function parseMarkdown(markdown) {
 
 function Home() {
   const [refresh, setRefresh] = useState(false);
-  function changeCurrentLocale(event) {
-    const localeName = i18n.getLocaleByNativeName(event.target.value);
-    i18n.setCurrentLocaleCode(localeName);
-    setRefresh(!refresh);
-  }
+
+  const changeCurrentLocale = useCallback(
+    (event) => {
+      const localeName = i18n.getLocaleByNativeName(event.target.value);
+      i18n.setCurrentLocaleCode(localeName);
+      setRefresh(!refresh);
+    },
+    [refresh]
+  );
 
   function LangSelect() {
     const options = [<Option key={i18n.getNativeNames().length + 1} value="Select..." label="Select..." />];

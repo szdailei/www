@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
-import { getCurrentPageNum, getTotalPagesNum, isFooterHidden } from '../lib/eval-presentation.js';
-import { isTitleExist } from '../lib/eval-common.js';
+import { getCurrentPageNum, getTotalPagesNum, isFooterHidden } from '../lib/eval-presentation';
+import { isTitleExist } from '../lib/eval-common';
 
 async function testForwardBackward(page) {
   const totalPagesNum = await getTotalPagesNum(page);

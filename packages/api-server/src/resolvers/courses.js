@@ -1,4 +1,4 @@
-import storage from '../lib/storage.js';
+import storage from '../lib/storage';
 
 export default {
   getCourses: async () => {
@@ -6,7 +6,8 @@ export default {
     return courses;
   },
   getCourse: async ({ name }) => {
-    const courseContent = await storage.readCourseFile(`${name}`);
-    return courseContent;
+    const content = await storage.readCourseFile(`${name}`);
+    if (!content) throw new Error('null result');
+    return content;
   },
 };

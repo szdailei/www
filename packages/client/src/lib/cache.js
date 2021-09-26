@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { setApiGatewayEndPoint, getServerConfigUrl, setDownloadServerUrl } from './network.js';
-import request from './client.js';
+import { setApiGatewayEndPoint, getServerConfigUrl, setDownloadServerUrl } from './network';
+import request from './client';
 
 function useRemoteData(query, resType, endPoint, method) {
   const [cache, setCache] = useState();

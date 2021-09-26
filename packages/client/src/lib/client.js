@@ -1,4 +1,4 @@
-import { getApiGatewayEndPoint } from './network.js';
+import { getApiGatewayEndPoint } from './network';
 
 async function createErrorByRes(res) {
   const resBody = await res.text();

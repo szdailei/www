@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import makeid from '../lib/makeid.js';
-import { Span } from '../styled/index.js';
+import makeid from '../lib/makeid';
+import { Span } from '../styled';
 import User from './User';
-import { Article, Section, Header, Main } from '../sectioning/index.js';
+import { Article, Section, Header, Main } from '../sectioning';
 
 function Home({ repo, locale, users }) {
   const children = [];

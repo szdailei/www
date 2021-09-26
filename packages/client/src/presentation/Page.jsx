@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import makeid from '../lib/makeid.js';
-import { Div } from '../styled/index.js';
-import { Section, Main, Footer } from '../sectioning/index.js';
+import makeid from '../lib/makeid';
+import { Div } from '../styled';
+import { Section, Main, Footer } from '../sectioning';
 
 function createFooter(ctx) {
   const footerNote = ctx.currentFooter || '';

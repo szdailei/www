@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import { waitForDone } from './eval-common.js';
+import { waitForDone } from './eval-common';
 
 async function newCoursesPage(browser) {
   const page = await browser.newPage();

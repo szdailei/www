@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
-import { Div, Input } from '../styled/index.js';
-import createPages from './create-pages.jsx';
-import Controller from './Controller.jsx';
+import React, { useState, useCallback } from 'react';
+import { Div, Input } from '../styled';
+import createPages from './create-pages';
+import Controller from './Controller';
 
 const reader = new FileReader();
 
 function PresentationOfLocalData() {
   const [markdown, setMarkdown] = useState();
 
-  function onLoadEndOfReadFile(event) {
+  const onLoadEndOfReadFile = useCallback((event) => {
     event.preventDefault();
     reader.removeEventListener('load', onLoadEndOfReadFile);
     setMarkdown(event.target.result);
-  }
+  }, []);
 
-  function οnChangeOfInputFile(event) {
-    event.preventDefault();
-    reader.addEventListener('loadend', onLoadEndOfReadFile);
-    reader.readAsText(event.target.files[0]);
-  }
+  const οnChangeOfInputFile = useCallback(
+    (event) => {
+      event.preventDefault();
+      reader.addEventListener('loadend', onLoadEndOfReadFile);
+      reader.readAsText(event.target.files[0]);
+    },
+    [onLoadEndOfReadFile]
+  );
 
   if (!markdown) {
     return (

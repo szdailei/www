@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Div, Span, Input, Label } from '../styled/index.js';
-import { Title } from '../sectioning/index.js';
-import { Appear, Clock, Timer, ClockOrTimer, Split } from '../components/index.js';
-import makeid from '../lib/makeid.js';
-import { getTextFromChildren } from './parse-react-component-utils.js';
+import { Button, Div, Span, Input, Label } from '../styled';
+import { Title } from '../sectioning';
+import { Appear, Clock, Timer, ClockOrTimer, Split } from '../components';
+import makeid from '../lib/makeid';
+import { getTextFromChildren } from './parse-react-component-utils';
 
 function destructuringParams(propNames, params) {
   const clonedParams = { ...params };

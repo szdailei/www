@@ -17,7 +17,7 @@ import {
   THead,
   TBody,
   Table,
-} from '../../../client/src/styled/index.js';
+} from '../../../client/src/styled';
 
 export {
   FlexContainer,

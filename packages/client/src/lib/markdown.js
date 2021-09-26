@@ -1,5 +1,5 @@
-import config from '../config.js';
-import { getDownloadFileUrl } from './network.js';
+import config from '../config';
+import { getDownloadFileUrl } from './network';
 
 function getImagesDir() {
   return config.IMAGES_DIR;

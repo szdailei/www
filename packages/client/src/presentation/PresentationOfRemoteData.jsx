@@ -1,9 +1,9 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useRemoteData } from '../lib/cache.js';
-import { Error } from '../components/index.js';
-import createPages from './create-pages.jsx';
-import Controller from './Controller.jsx';
+import { useRemoteData } from '../lib/cache';
+import { Error } from '../components';
+import createPages from './create-pages';
+import Controller from './Controller';
 
 function PresentationOfRemoteData() {
   const { course } = useParams();

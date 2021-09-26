@@ -1,6 +1,6 @@
 import React from 'react';
-import PresentationOfLocalData from './PresentationOfLocalData.jsx';
-import PresentationOfRemoteData from './PresentationOfRemoteData.jsx';
+import PresentationOfLocalData from './PresentationOfLocalData';
+import PresentationOfRemoteData from './PresentationOfRemoteData';
 
 function Presentation() {
   if (window.location.protocol === 'file:') return <PresentationOfLocalData />;

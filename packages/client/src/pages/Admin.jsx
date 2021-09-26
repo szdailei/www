@@ -1,13 +1,13 @@
 import React, { useCallback, useRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import makeid from '../lib/makeid.js';
-import request from '../lib/client.js';
-import { useRemoteData } from '../lib/cache.js';
-import { FlexContainer, GridContainer, Div, Button, Option, Select } from '../styled/index.js';
-import { Article } from '../sectioning/index.js';
-import { Error, Message } from '../components/index.js';
-import SignUp from './SignUp.jsx';
+import makeid from '../lib/makeid';
+import request from '../lib/client';
+import { useRemoteData } from '../lib/cache';
+import { FlexContainer, GridContainer, Div, Button, Option, Select } from '../styled';
+import { Article } from '../sectioning';
+import { Error, Message } from '../components';
+import SignUp from './SignUp';
 
 function selectRole() {}
 
@@ -173,9 +173,9 @@ function Admin() {
   const messageRef = useRef();
   const RolesAndUsersRef = useRef();
 
-  function onSuccessOfCreateUser() {
+  const onSuccessOfCreateUser = useCallback(() => {
     RolesAndUsersRef.current.refetch();
-  }
+  }, [RolesAndUsersRef]);
 
   return (
     <Article>

@@ -1,4 +1,4 @@
-import log from '../lib/log.js';
+import log from '../lib/log';
 
 export default {
   log: (args, req) => {

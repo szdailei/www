@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import makeid from '../lib/makeid';
-import { Div, Span } from '../styled/index.js';
+import { Div, Span } from '../styled';
 
 function Details({ files, status, repo }) {
   const children = [];

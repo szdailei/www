@@ -9,7 +9,7 @@ const VideoJS = ({ options, children }) => {
   const playerRef = useRef(null);
 
   useEffect(() => {
-    // make sure Video.js player is only initialized once
+    // make sure Video player is only initialized once
     if (!playerRef.current) {
       const videoElement = videoRef.current;
       if (videoElement) {

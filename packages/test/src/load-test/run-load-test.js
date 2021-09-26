@@ -1,7 +1,7 @@
 import http from 'http';
 import Table from 'cli-table';
-import log from '../lib/log.js';
-import targets from './targets.js';
+import log from '../lib/log';
+import targets from './targets';
 
 function testOnce(target) {
   const headers = { 'Accept-Encoding': 'identity' };
