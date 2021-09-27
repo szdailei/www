@@ -20,7 +20,7 @@
     "start:gateway": "yarn workspace @dailei/gateway start",
     "start": "yarn start:static & yarn start:api & yarn start:gateway",
     "clean:dist": "rimraf dist/ && mkdirp dist/",
-    "packer": "node --experimental-specifier-resolution=node build/packer.js"
+    "packer": "node --experimental-specifier-resolution=node packer/packer.js"
   },
   "dependencies": {
     "@emotion/react": "^11.4.0",
