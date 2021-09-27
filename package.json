@@ -19,7 +19,7 @@
     "start:api": "yarn workspace @dailei/api-server start",
     "start:gateway": "yarn workspace @dailei/gateway start",
     "start": "yarn start:static & yarn start:api & yarn start:gateway",
-    "clean:dist":"rimraf dist/ && mkdirp dist/",
+    "clean:dist": "rimraf dist/ && mkdirp dist/",
     "packer": "node --experimental-specifier-resolution=node build/packer.js"
   },
   "dependencies": {
@@ -48,6 +48,7 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "minimist": "^1.2.5",
     "mkdirp": "^1.0.4",
     "pkg": "^5.3.2",
     "pkg-fetch": "^3.2.3",

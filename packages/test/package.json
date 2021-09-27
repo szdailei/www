@@ -13,13 +13,12 @@
     "load-test": "node --experimental-specifier-resolution=node src/load-test/load-test.js",
     "test": "node --experimental-vm-modules --experimental-specifier-resolution=node node_modules/.bin/jest && chromium reports/jest_html_reporters.html"
   },
-  "dependencies": {
+  "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.12.1",
     "babel-jest": "^27.0.6",
     "cli-table": "^0.3.1",
     "jest": "^27.0.6",
     "jest-html-reporters": "^2.1.1",
-    "minimist": "^1.2.5",
     "pdf-lib": "^1.16.0",
     "puppeteer-core": "^10.2.0"
   }

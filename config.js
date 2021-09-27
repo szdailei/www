@@ -35,4 +35,4 @@ async function getConfigInWorkingPath(configFileName) {
   return getConfig(workingPath, configFileName);
 }
 
-export { getConfigInExecScriptPath, getConfigInWorkingPath };
+export { getConfig, getConfigInExecScriptPath, getConfigInWorkingPath };
