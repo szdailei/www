@@ -1,5 +1,4 @@
 import path from 'path';
-import fs from 'fs';
 import shell from 'shelljs';
 
 (async () => {
@@ -14,7 +13,8 @@ import shell from 'shelljs';
   const distOfCourses = path.join(dist, 'courses');
   const origCourses = path.join(root, '../www-data/storage/courses');
 
-  shell.mkdir('-p', distOfWeb, distOfCourses);
+  shell.mkdir(distOfWeb, distOfCourses);
+  
   shell.cp('-R', origWeb, dist);
   shell.cp('-R', origCourses, dist);
   shell.cp(origLocalFile, dist);

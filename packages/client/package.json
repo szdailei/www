@@ -3,7 +3,7 @@
   "private": "true",
   "name": "@dailei/client",
   "type": "module",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "scripts": {
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,mjs,json}\"",
     "eslint": "eslint  --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
@@ -11,8 +11,6 @@
     "clean": "rimraf dist && mkdirp dist dist/web dist/local",
     "copy:web": "cp -r public/* dist/web/",
     "copy:local": "mkdirp dist/local/tmp && cp -r public/* dist/local/tmp",
-    "dev": "yarn clean && yarn copy:web && yarn rollup --watch -c rollup.config.web.js",
-    "dev:debug": "cp src/__debug__/*.md dist && yarn rollup --watch -c rollup.config.debug.js",
     "build:web": "yarn copy:web && yarn rollup -c rollup.config.web.js",
     "inline": "node ../../inline.js dist/local/tmp/index.html dist/local/local-presentation.html",
     "build:local": "yarn copy:local && yarn rollup -c rollup.config.local.js && yarn inline",

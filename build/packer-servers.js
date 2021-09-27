@@ -6,6 +6,7 @@ import { exec } from 'pkg';
 
 async function trans(origFile, targetFile) {
   const options = {
+    compact:true,
     plugins: ['@babel/plugin-transform-modules-commonjs', 'babel-plugin-transform-import-meta'],
   };
 
@@ -50,8 +51,7 @@ async function packer(config, mjs, cjs, exe, dist) {
   const distOfApiServer = path.join(dist, 'api-server/');
   const exeOfApiServer = path.join(distOfApiServer, 'api-server');
 
-  shell.rm('-rf', dist);
-  shell.mkdir('-p', distOfStaticServer, distOfGateway, distOfApiServer);
+  shell.mkdir(distOfStaticServer, distOfGateway, distOfApiServer);
 
   await packer(configOfStaticServer, mjsOfStaticServer, cjsOfStaticServer, exeOfStaticServer, distOfStaticServer);
   await packer(configOfGateway, mjsOfGateway, cjsOfGateway, exeOfGateway, distOfGateway);
