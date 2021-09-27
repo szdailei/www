@@ -14,6 +14,12 @@ async function trans(origFile, targetFile) {
   await fs.promises.writeFile(targetFile, code);
 }
 
+async function packer(config, mjs, cjs, exe, dist) {
+  await trans(mjs, cjs);
+  await exec([cjs, '--target', 'linux-x64', '--output', exe]);
+  shell.cp(config, dist);
+}
+
 (async () => {
   const execScriptPath = new URL('.', import.meta.url).pathname;
   const root = path.join(execScriptPath, '..');
@@ -46,18 +52,12 @@ async function trans(origFile, targetFile) {
   shell.rm('-rf', dist);
   shell.mkdir('-p', distOfStaticServer, distOfGateway, distOfApiServer);
 
-  await trans(mjsOfStaticServer, cjsOfStaticServer);
-  await exec(['--target', 'linux-x64', '--output', exeOfStaticServer, cjsOfStaticServer]);
-  shell.cp(configOfStaticServer, distOfStaticServer);
-
-  await trans(mjsOfGateway, cjsOfGateway);
-  await exec(['--target', 'linux-x64', '--output', exeOfGateway, cjsOfGateway]);
-  shell.cp(configOfGateway, distOfGateway);
-
-  await trans(mjsOfApiServer, cjsOfApiServer);
-  await exec(['--target', 'linux-x64', '--output', exeOfApiServer, cjsOfApiServer]);
-  shell.cp(configOfApiServer, distOfApiServer);
+  await packer(configOfStaticServer, mjsOfStaticServer, cjsOfStaticServer, exeOfStaticServer, distOfStaticServer);
+  await packer(configOfGateway, mjsOfGateway, cjsOfGateway, exeOfGateway, distOfGateway);
+  await packer(configOfApiServer, mjsOfApiServer, cjsOfApiServer, exeOfApiServer, distOfApiServer);
 
   const startShell = path.join(root, 'start.sh');
+  const stopShell = path.join(root, 'stop.sh');
   shell.cp(startShell, dist);
+  shell.cp(stopShell, dist);
 })();
