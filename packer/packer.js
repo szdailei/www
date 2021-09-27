@@ -13,7 +13,7 @@ function getExecScriptPath() {
   return new URL('.', import.meta.url).pathname;
 }
 
-function getPath() {
+function getRootAndDistPath() {
   const execScriptPath = getExecScriptPath();
   const root = path.join(execScriptPath, '..');
   const dist = path.join(root, 'dist/');
@@ -25,6 +25,13 @@ function clean(dist) {
   shell.mkdir(dist);
 }
 
+function packer(root, dist, origCoursesDir) {
+  packServers(root, dist);
+  copyWeb(root, dist);
+  copyCoursesAndLocalHtml(root, dist, origCoursesDir);
+  copyTargetScripts(root, dist);
+}
+
 (async () => {
   const args = minimist(process.argv.slice(2), {
     boolean: ['help'],
@@ -33,7 +40,7 @@ function clean(dist) {
     },
   });
 
-  if (args.help) {
+  if (args.help || process.argv.length > 2) {
     log.warn(HELP);
     process.exit(0);
   }
@@ -42,11 +49,8 @@ function clean(dist) {
   const origCoursesDir = config['courses-dir'];
   if (!origCoursesDir) throw new Error("can't found courses-dir in config file");
 
-  const { root, dist } = getPath();
+  const { root, dist } = getRootAndDistPath();
   clean(dist);
 
-  packServers(root, dist);
-  copyWeb(root, dist);
-  copyCoursesAndLocalHtml(root, dist, origCoursesDir);
-  copyTargetScripts(root, dist);
+  packer(root, dist, origCoursesDir);
 })();
