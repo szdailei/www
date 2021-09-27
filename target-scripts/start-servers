@@ -1,0 +1,2 @@
+execPath=`dirname "$0"`
+$execPath/static-server/static-server-linux & $execPath/gateway/gateway-linux & $execPath/api-server/api-server-linux

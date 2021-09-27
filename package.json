@@ -24,8 +24,8 @@
     "start:api": "yarn workspace @dailei/api-server start",
     "start:gateway": "yarn workspace @dailei/gateway start",
     "start": "yarn start:static & yarn start:api & yarn start:gateway",
-    "copy-local": "cp packages/client/dist/local/local-presentation.html ../www-data/storage/local-presentation.html",
-    "deploy": "node build/packer.js"
+    "packer": "node build/packer-servers.js",
+    "prepare":"node build/prepare.js"
   },
   "dependencies": {
     "@emotion/react": "^11.4.0",

@@ -16,7 +16,7 @@ async function trans(origFile, targetFile) {
 
 async function packer(config, mjs, cjs, exe, dist) {
   await trans(mjs, cjs);
-  await exec([cjs, '--target', 'linux-x64', '--output', exe]);
+  await exec([cjs, '--target', 'linux-x64,win-x64', '--output', exe]);
   shell.cp(config, dist);
 }
 
@@ -24,6 +24,7 @@ async function packer(config, mjs, cjs, exe, dist) {
   const execScriptPath = new URL('.', import.meta.url).pathname;
   const root = path.join(execScriptPath, '..');
   const dist = path.join(root, 'dist/');
+  const targetScriptsPath = path.join(root, 'target-scripts',"*");
 
   const scriptPathOfStaticServer = path.join(root, 'packages/static-server/dist');
   const mjsOfStaticServer = path.join(scriptPathOfStaticServer, 'index.js');
@@ -56,8 +57,5 @@ async function packer(config, mjs, cjs, exe, dist) {
   await packer(configOfGateway, mjsOfGateway, cjsOfGateway, exeOfGateway, distOfGateway);
   await packer(configOfApiServer, mjsOfApiServer, cjsOfApiServer, exeOfApiServer, distOfApiServer);
 
-  const startShell = path.join(root, 'start.sh');
-  const stopShell = path.join(root, 'stop.sh');
-  shell.cp(startShell, dist);
-  shell.cp(stopShell, dist);
+  shell.cp(targetScriptsPath, dist);
 })();

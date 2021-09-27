@@ -1,0 +1,3 @@
+killall static-server-linux
+killall gateway-linux
+killall api-server-linux
