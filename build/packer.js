@@ -46,15 +46,15 @@ async function trans(origFile, targetFile) {
   shell.rm('-rf', dist);
   shell.mkdir('-p', distOfStaticServer, distOfGateway, distOfApiServer);
 
-  trans(mjsOfStaticServer, cjsOfStaticServer);
+  await trans(mjsOfStaticServer, cjsOfStaticServer);
   await exec(['--target', 'linux-x64', '--output', exeOfStaticServer, cjsOfStaticServer]);
   shell.cp(configOfStaticServer, distOfStaticServer);
 
-  trans(mjsOfGateway, cjsOfGateway);
+  await trans(mjsOfGateway, cjsOfGateway);
   await exec(['--target', 'linux-x64', '--output', exeOfGateway, cjsOfGateway]);
   shell.cp(configOfGateway, distOfGateway);
 
-  trans(mjsOfApiServer, cjsOfApiServer);
+  await trans(mjsOfApiServer, cjsOfApiServer);
   await exec(['--target', 'linux-x64', '--output', exeOfApiServer, cjsOfApiServer]);
   shell.cp(configOfApiServer, distOfApiServer);
 

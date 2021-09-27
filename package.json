@@ -24,7 +24,8 @@
     "start:api": "yarn workspace @dailei/api-server start",
     "start:gateway": "yarn workspace @dailei/gateway start",
     "start": "yarn start:static & yarn start:api & yarn start:gateway",
-    "deploy": "cp packages/client/dist/local/local-presentation.html ../www-data/storage/local-presentation.html && node build/pack.js"
+    "copy-local": "cp packages/client/dist/local/local-presentation.html ../www-data/storage/local-presentation.html",
+    "deploy": "node build/packer.js"
   },
   "dependencies": {
     "@emotion/react": "^11.4.0",
@@ -44,6 +45,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.2",
     "@rollup/plugin-replace": "^3.0.0",
+    "babel-plugin-transform-import-meta": "^2.1.0",
     "eslint": "^7.31.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.3.0",
@@ -53,6 +55,8 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "mkdirp": "^1.0.4",
     "nodemon": "^2.0.12",
+    "pkg": "^5.3.2",
+    "pkg-fetch": "^3.2.3",
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.55.1",

@@ -10,9 +10,8 @@ function getExecScriptPath() {
     execScriptPath = new URL('.', import.meta.url).pathname;
   } else {
     // __dirname is always '/snapshot' in pkg environment, not real script path.
-    execScriptPath = process.pkg ? process.execPath : __dirname;
+    execScriptPath = process.pkg ? path.dirname(process.execPath) : __dirname;
   }
-
   return execScriptPath;
 }
 
