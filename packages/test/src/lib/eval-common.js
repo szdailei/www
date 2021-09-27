@@ -7,6 +7,13 @@ async function waitForDone(page) {
   });
 }
 
+async function createPageByUrl(browser, url) {
+  const page = await browser.newPage();
+  await page.goto(url);
+  await waitForDone(page);
+  return page;
+}
+
 async function getDocumentViewPort(page) {
   const viewPort = await page.evaluate(() => ({
     width: document.documentElement.scrollWidth,
@@ -45,4 +52,12 @@ async function isTitleExist(page) {
   }
 }
 
-export { waitForDone, getDocumentViewPort, getDocumentTitle, getTextContentById, isFullscreen, isTitleExist };
+export {
+  createPageByUrl,
+  waitForDone,
+  getDocumentViewPort,
+  getDocumentTitle,
+  getTextContentById,
+  isFullscreen,
+  isTitleExist,
+};

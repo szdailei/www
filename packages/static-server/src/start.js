@@ -1,4 +1,4 @@
-import getConfigInExecScriptPath from '../../../config';
+import { getConfigInExecScriptPath } from '../../../config';
 import log from './lib/log';
 import staticServer from './static-server';
 import stop from './stop';

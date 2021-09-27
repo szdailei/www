@@ -1,11 +1,12 @@
 import fs from 'fs';
-import dotenv from 'dotenv-defaults';
+import path from 'path';
 import { gitlogPromise } from 'gitlog';
 
 (async () => {
-  await dotenv.config();
+  const execScriptPath = new URL('.', import.meta.url).pathname;
+  const repo = path.join(execScriptPath, '../../..');
 
-  const DEFAULT_LOCALE = 'cn';
+  const locale = 'cn';
   const GIT_LOG_JSON = 'reports/git-log.json';
   const minute = 1000 * 60;
   const hour = minute * 60;
@@ -13,14 +14,14 @@ import { gitlogPromise } from 'gitlog';
   const month = day * 30;
 
   const options = {
-    repo: process.env.REPO,
+    repo,
     since: new Date(Date.now() - month * 1),
     number: 100,
     fields: ['subject', 'body', 'committerName', 'committerEmail', 'committerDate', 'authorName'],
   };
   const result = {
-    repo: options.repo,
-    locale: process.env.LOCALE || DEFAULT_LOCALE,
+    repo,
+    locale,
     data: await gitlogPromise(options),
   };
 

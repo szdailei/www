@@ -1,4 +1,4 @@
-import getConfigInExecScriptPath from '../../../config';
+import { getConfigInExecScriptPath } from '../../../config';
 import log from './lib/log';
 import rules from './rules';
 import reverseProxy from './reverse-proxy';

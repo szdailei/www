@@ -1,8 +1,9 @@
 import puppeteer from 'puppeteer-core';
-import dotenv from 'dotenv-defaults';
-import { newCoursesPage, gotoFirstCourse } from '../lib/eval-courses';
-import switchFullScreen from './switch-full-screen';
+import init from '../init';
 import config from '../config';
+import { createPageByUrl } from '../lib/eval-common';
+import { gotoFirstCourse } from '../lib/eval-courses';
+import switchFullScreen from './switch-full-screen';
 
 let browser;
 let page;
@@ -16,14 +17,15 @@ describe(ptFullScreenReq, () => {
 });
 
 beforeAll(async () => {
-  await dotenv.config();
+  await init();
+
   browser = await puppeteer.launch({
     headless: false,
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    executablePath: config.env.PUPPETEER_EXECUTABLE_PATH,
     defaultViewport: config.DEFAULT_VIEWPORT,
   });
 
-  page = await newCoursesPage(browser);
+  page = await createPageByUrl(browser, config.env.COURSES_PAGE);
   await gotoFirstCourse(page);
 });
 

@@ -8,11 +8,10 @@
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,mjs,json}\"",
     "eslint": "eslint  --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
     "clean": "rimraf pdfs reports && mkdirp pdfs reports",
-    "export": "node src/export.js",
-    "export-resume": "node src/export-resume.js",
-    "export-courses": "node src/export-courses.js",
-    "load-test": "node src/load-test/load-test.js",
-    "test": "jest && chromium reports/jest_html_reporters.html"
+    "export-resume": "node --experimental-specifier-resolution=node src/export-resume.js",
+    "export-courses": "node --experimental-specifier-resolution=node src/export-courses.js",
+    "load-test": "node --experimental-specifier-resolution=node src/load-test/load-test.js",
+    "test": "node --experimental-vm-modules --experimental-specifier-resolution=node node_modules/.bin/jest && chromium reports/jest_html_reporters.html"
   },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.12.1",

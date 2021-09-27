@@ -1,13 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import { waitForDone } from './eval-common';
 
-async function newCoursesPage(browser) {
-  const page = await browser.newPage();
-  await page.goto(process.env.COURSES_PAGE);
-  await waitForDone(page);
-  return page;
-}
-
 async function getFileNames(page) {
   const elements = await page.$$('a');
   const result = [];
@@ -40,4 +33,4 @@ async function gotoFirstCourse(page) {
   await waitForDone(page);
 }
 
-export { newCoursesPage, getFileNames, gotoCourse, gotoFirstCourse, getLinkByFileName };
+export { getFileNames, gotoCourse, gotoFirstCourse, getLinkByFileName };

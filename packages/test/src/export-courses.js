@@ -1,10 +1,10 @@
 /* eslint-disable no-await-in-loop */
 import fs from 'fs';
-import dotenv from 'dotenv-defaults';
-import puppeteer from 'puppeteer-core/lib/esm/puppeteer/node';
+import puppeteer from 'puppeteer-core';
+import init from './init';
 import config from './config';
-import { waitForDone, getTextContentById } from './lib/eval-common';
-import { newCoursesPage, gotoCourse, getFileNames, getLinkByFileName } from './lib/eval-courses';
+import { createPageByUrl, waitForDone, getTextContentById } from './lib/eval-common';
+import { gotoCourse, getFileNames, getLinkByFileName } from './lib/eval-courses';
 import { exportPdf } from './lib/pdf';
 
 function getMdxWithoutClockAndTimer(text) {
@@ -27,9 +27,10 @@ async function createIntroMdx(fileNames) {
   for (let i = 0; i < fileNames.length; i += 1) {
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+      executablePath: config.env.PUPPETEER_EXECUTABLE_PATH,
     });
-    const page = await newCoursesPage(browser);
+
+    const page = await createPageByUrl(browser, config.env.COURSES_PAGE);
     const link = await getLinkByFileName(page, fileNames[i]);
     await link.click();
     await waitForDone(page);
@@ -69,38 +70,38 @@ ${titles}
 
   for (let i = 0; i < fileNames.length; i += 1) {
     const footer = `\n\n<Footer>${titlesArray[i]}</Footer>\n\n`;
-    const data = await fs.promises.readFile(`${process.env.COURSES_DIR}${fileNames[i]}`, 'utf8');
+    const data = await fs.promises.readFile(`${config.env.COURSES_DIR}${fileNames[i]}`, 'utf8');
     const pages = data.split('---');
     intro += `---${pages[1]}${footer}---${pages[2]}${footer}---${pages[pages.length - 3]}${footer}---${
       pages[pages.length - 2]
     }${footer}---${pages[pages.length - 1]}${footer}`;
   }
-  await fs.promises.writeFile(`${process.env.COURSES_DIR}${config.INTRO_FILE}`, intro);
+  await fs.promises.writeFile(`${config.env.COURSES_DIR}${config.INTRO_FILE}`, intro);
 }
 
 async function copyToTempFile(origFileNames, tempFileNames) {
   for (let i = 0; i < origFileNames.length; i += 1) {
-    let data = await fs.promises.readFile(`${process.env.COURSES_DIR}${origFileNames[i]}`, 'utf8');
+    let data = await fs.promises.readFile(`${config.env.COURSES_DIR}${origFileNames[i]}`, 'utf8');
     data = getMdxWithoutClockAndTimer(data);
-    await fs.promises.writeFile(`${process.env.COURSES_DIR}${tempFileNames[i]}`, data);
+    await fs.promises.writeFile(`${config.env.COURSES_DIR}${tempFileNames[i]}`, data);
   }
 }
 
 async function getOrigFileNames() {
   const browser = await puppeteer.launch({
     headless: true,
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    executablePath: config.env.PUPPETEER_EXECUTABLE_PATH,
     defaultViewport: config.DEFAULT_VIEWPORT,
   });
 
-  const page = await newCoursesPage(browser);
+  const page = await createPageByUrl(browser, config.env.COURSES_PAGE);
   const origFileNames = await getFileNames(page);
   await browser.close();
   return origFileNames;
 }
 
 (async () => {
-  await dotenv.config();
+  await init();
 
   const origFileNames = await getOrigFileNames();
 
@@ -116,16 +117,16 @@ async function getOrigFileNames() {
   tempFileNames.forEach(async (fileName) => {
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+      executablePath: config.env.PUPPETEER_EXECUTABLE_PATH,
       defaultViewport: config.DEFAULT_VIEWPORT,
     });
 
-    const page = await newCoursesPage(browser);
+    const page = await createPageByUrl(browser, config.env.COURSES_PAGE);
     await gotoCourse(page, fileName);
     await exportPdf(page, fileName);
     await browser.close();
 
-    await fs.promises.unlink(`${process.env.COURSES_DIR}${fileName}`);
+    await fs.promises.unlink(`${config.env.COURSES_DIR}${fileName}`);
 
     if (fileName === config.INTRO_FILE) return;
     const fileNameWithoutSuffix = fileName.substring(0, fileName.lastIndexOf('.'));

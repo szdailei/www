@@ -15,13 +15,13 @@ async function waitLoaded(page, timeout = 5000) {
 
     const bodyHTMLSize = await page.evaluate(() => document.body.innerHTML.length);
 
-    log.info('last: ', lastHTMLSize, ' <> curr: ', currentHTMLSize, ' body html size: ', bodyHTMLSize);
+    log.warn('last: ', lastHTMLSize, ' <> curr: ', currentHTMLSize, ' body html size: ', bodyHTMLSize);
 
     if (lastHTMLSize !== 0 && currentHTMLSize === lastHTMLSize) countStableSizeIterations += 1;
     else countStableSizeIterations = 0;
 
     if (countStableSizeIterations >= minStableSizeIterations) {
-      log.info('Page rendered fully..');
+      log.warn('Page rendered fully..');
       break;
     }
 

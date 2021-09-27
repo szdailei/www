@@ -126,7 +126,7 @@ async function testMultiTargets(duration, connections) {
     })
   );
   const output = `${summary}${table.toString()}`;
-  log.info(output);
+  log.warn(output);
 }
 
 export default testMultiTargets;

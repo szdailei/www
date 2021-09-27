@@ -1,30 +1,20 @@
 import crypto from 'crypto';
-import getConfigInExecScriptPath from '../../../config';
+import { getConfigInExecScriptPath } from '../../../config';
 import log from './lib/log';
-import connectToDatabase from './connect-to-database';
+import { connect } from './lib/database';
 import graphqlServer from './graphql-server';
 import storage from './lib/storage';
 import staticServer from '../../static-server/src/static-server';
 import stop from './stop';
 
 (async () => {
-  storage.setSecretKey(crypto.randomBytes(16).toString('hex'));
-
   const config = await getConfigInExecScriptPath('api-server.toml');
   storage.setStorageRoot(config.storage.root);
   storage.setCoursesPath(config.storage.courses);
   storage.setResumeFile(config.storage.resume);
+  storage.setSecretKey(crypto.randomBytes(16).toString('hex'));
 
-  const options = {
-    host: config.database.host,
-    port: config.database.port,
-    database: config.database.database,
-    username: config.database.username,
-    password: config.database.password,
-    ssl: true,
-  };
-
-  await connectToDatabase(options);
+  await connect(config.database);
 
   const gServer = graphqlServer(config['api-server'].port);
   log.warn(`api-server started on http port ${config['api-server'].port}`);

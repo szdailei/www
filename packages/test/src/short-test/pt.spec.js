@@ -1,10 +1,11 @@
 import puppeteer from 'puppeteer-core';
-import dotenv from 'dotenv-defaults';
-import { newCoursesPage, gotoFirstCourse } from '../lib/eval-courses';
+import init from '../init';
+import config from '../config';
+import { createPageByUrl } from '../lib/eval-common';
+import { gotoFirstCourse } from '../lib/eval-courses';
 import setTitle from './set-title';
 import testForwardBackward from './forward-backward';
 import testPdfBuffers from './pdf-buffers';
-import config from '../config';
 
 let browser;
 let page;
@@ -53,14 +54,14 @@ pdfBuffer数组长度等于胶片页数`;
 });
 
 beforeAll(async () => {
-  await dotenv.config();
+  await init();
   browser = await puppeteer.launch({
     headless: true,
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    executablePath: config.env.PUPPETEER_EXECUTABLE_PATH,
     defaultViewport: config.DEFAULT_VIEWPORT,
   });
 
-  page = await newCoursesPage(browser);
+  page = await createPageByUrl(browser, config.env.COURSES_PAGE);
   await gotoFirstCourse(page);
 });
 

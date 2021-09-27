@@ -1,8 +1,8 @@
 import minimist from 'minimist';
 import log from '../lib/log';
+import runLoadTest from './run-load-test';
 import VERSION from './VERSION';
 import HELP from './HELP';
-import runLoadTest from './run-load-test';
 
 const args = minimist(process.argv.slice(2), {
   boolean: ['version', 'help'],
@@ -21,12 +21,14 @@ const args = minimist(process.argv.slice(2), {
     process.exit(1);
   },
 });
+
 if (args.help) {
-  log.info(HELP);
+  log.warn(HELP);
   process.exit(0);
 }
+
 if (args.version) {
-  log.info(VERSION);
+  log.warn(VERSION);
   process.exit(0);
 }
 

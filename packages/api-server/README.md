@@ -1,1 +1,0 @@
-开发环境下，设置环境变量NODE_TLS_REJECT_UNAUTHORIZED=0, 忽略对证书的验证，发布版本必须删除此环境变量

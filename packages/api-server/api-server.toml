@@ -15,3 +15,4 @@ port = 5432
 database = 'web'
 username = 'dbuser'
 password = '123'
+ssl = false   # 开发环境设置为false，忽略对证书的验证。正式环境应该设置为true
