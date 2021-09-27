@@ -15,9 +15,9 @@ import shell from 'shelljs';
 
   shell.mkdir(distOfWeb, distOfCourses);
   
-  shell.cp('-R', origWeb, dist);
+  shell.cp('-R', origWeb, distOfWeb);
 
-  shell.cp('-R', origCourses, dist);
+  shell.cp('-R', origCourses, distOfCourses);
   // ${origLocalFile} must be copied into parent folder of ${distOfCourses}
   shell.cp(origLocalFile, dist);
 })();
