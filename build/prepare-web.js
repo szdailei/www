@@ -1,10 +1,7 @@
 import path from 'path';
 import shell from 'shelljs';
 
-(async () => {
-  const execScriptPath = new URL('.', import.meta.url).pathname;
-  const root = path.join(execScriptPath, '..');
-  const dist = path.join(root, 'dist/');
+async function prepareWeb(root,dist){
 
   const distOfWeb = path.join(dist, 'web');
   const origWeb = path.join(root, 'packages/client/dist/web');
@@ -20,4 +17,6 @@ import shell from 'shelljs';
   shell.cp('-R', origCourses, distOfCourses);
   // ${origLocalFile} must be copied into parent folder of ${distOfCourses}
   shell.cp(origLocalFile, dist);
-})();
+}
+
+export default prepareWeb

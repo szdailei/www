@@ -15,18 +15,13 @@ async function trans(origFile, targetFile) {
   await fs.promises.writeFile(targetFile, code);
 }
 
-async function packer(config, mjs, cjs, exe, dist) {
+async function packerServer(config, mjs, cjs, exe, dist) {
   await trans(mjs, cjs);
   await exec([cjs, '--target', 'linux-x64,win-x64', '--output', exe]);
   shell.cp(config, dist);
 }
 
-(async () => {
-  const execScriptPath = new URL('.', import.meta.url).pathname;
-  const root = path.join(execScriptPath, '..');
-  const dist = path.join(root, 'dist/');
-  const targetScriptsPath = path.join(root, 'target-scripts',"*");
-
+async function packerServers(root,dist) {
   const scriptPathOfStaticServer = path.join(root, 'packages/static-server/dist');
   const mjsOfStaticServer = path.join(scriptPathOfStaticServer, 'index.js');
   const cjsOfStaticServer = path.join(scriptPathOfStaticServer, 'index.cjs');
@@ -53,9 +48,9 @@ async function packer(config, mjs, cjs, exe, dist) {
 
   shell.mkdir(distOfStaticServer, distOfGateway, distOfApiServer);
 
-  await packer(configOfStaticServer, mjsOfStaticServer, cjsOfStaticServer, exeOfStaticServer, distOfStaticServer);
-  await packer(configOfGateway, mjsOfGateway, cjsOfGateway, exeOfGateway, distOfGateway);
-  await packer(configOfApiServer, mjsOfApiServer, cjsOfApiServer, exeOfApiServer, distOfApiServer);
+  await packerServer(configOfStaticServer, mjsOfStaticServer, cjsOfStaticServer, exeOfStaticServer, distOfStaticServer);
+  await packerServer(configOfGateway, mjsOfGateway, cjsOfGateway, exeOfGateway, distOfGateway);
+  await packerServer(configOfApiServer, mjsOfApiServer, cjsOfApiServer, exeOfApiServer, distOfApiServer);
+}
 
-  shell.cp(targetScriptsPath, dist);
-})();
+export default packerServers
