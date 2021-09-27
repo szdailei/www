@@ -4,7 +4,7 @@ import minimist from 'minimist';
 import log from 'loglevel';
 import { getConfig } from '../config';
 import HELP from './HELP';
-import packerServers from './packer-servers';
+import packServers from './pack-servers';
 import copyWeb from './copy-web';
 import copyCoursesAndLocalHtml from './copy-courses-local-html';
 import copyTargetScripts from './copy-target-scripts';
@@ -45,7 +45,7 @@ function clean(dist) {
   const { root, dist } = getPath();
   clean(dist);
 
-  packerServers(root, dist);
+  packServers(root, dist);
   copyWeb(root, dist);
   copyCoursesAndLocalHtml(root, dist, origCoursesDir);
   copyTargetScripts(root, dist);
