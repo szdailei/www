@@ -15,7 +15,6 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.12.1",
-    "babel-jest": "^27.0.6",
     "cli-table": "^0.3.1",
     "jest": "^27.0.6",
     "jest-html-reporters": "^2.1.1",
