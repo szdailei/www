@@ -1,33 +1,33 @@
 import { trim } from '../lib/markdown';
-import { isClosingTagAtBeginning, getTextExceptTheFirstTag } from './parse-react-component-utils';
+import { isClosingTagAtBeginning, getTextExceptTheFirstTag } from './parse-jsx-utils';
 import { getCurrentNode, addComponentToChildren } from './tree';
 import MDXToReactHOC from './MDXToReactHOC';
 
-function closeReactComponent(ctx) {
-  const currentNode = getCurrentNode(ctx.reactRoot);
+function closeJSX(ctx) {
+  const currentNode = getCurrentNode(ctx.jsxRoot);
   if (currentNode.tagName === 'Title') {
     ctx.hasTitleInCurrentPage = true;
   }
 
   const component = MDXToReactHOC.createComponent(currentNode);
-  addComponentToChildren(ctx.reactRoot, currentNode, component);
+  addComponentToChildren(ctx.jsxRoot, currentNode, component);
 
-  if (ctx.reactRoot === currentNode) {
+  if (ctx.jsxRoot === currentNode) {
     ctx.pageChildren.push(component);
-    ctx.reactRoot = null;
+    ctx.jsxRoot = null;
   }
 }
 
-function closeMultiReactComponentsInOneLine(ctx, origText) {
+function closeMultiJSXsInOneLine(ctx, origText) {
   let text = origText;
   if (!text || text.length < 4) return;
 
   while (isClosingTagAtBeginning(text)) {
-    closeReactComponent(ctx);
+    closeJSX(ctx);
 
     text = trim(getTextExceptTheFirstTag(text));
     if (!text || text.length < 4) return;
   }
 }
 
-export { closeReactComponent, closeMultiReactComponentsInOneLine };
+export { closeJSX, closeMultiJSXsInOneLine };

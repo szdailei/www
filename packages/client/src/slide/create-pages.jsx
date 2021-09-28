@@ -9,15 +9,10 @@ import {
   getTagName,
   getTheFirstTagTextContent,
   getTextExceptTheFirstTag,
-} from './parse-react-component-utils';
+} from './parse-jsx-utils';
 import recursiveParseMarkedToken from './recursive-parse-marked-token';
-import { closeReactComponent } from './close-react-component';
-import {
-  isParsingReactComponent,
-  getTokensByMarkdown,
-  openReactCompenent,
-  recursiveSpliceChildren,
-} from './open-react-component';
+import { closeJSX } from './close-jsx';
+import { isParsingJSX, getTokensByMarkdown, openJSX, recursiveSpliceChildren } from './open-jsx';
 import { getCurrentNode, addComponentToChildren } from './tree';
 import Page from './Page';
 import { ExampleContainer, isExampleTag } from './Example';
@@ -55,7 +50,7 @@ function createPages(markdown) {
   const pages = [];
   const ctx = {
     pageChildren: [],
-    reactRoot: null,
+    jsxRoot: null,
     hasTitleInCurrentPage: false,
     currentFooter: null,
     currentPageNum: 1,
@@ -76,7 +71,7 @@ function createPages(markdown) {
     const node = recursiveParseMarkedToken(token);
     if (!node) continue;
     if (node.error) {
-      contract('@require 发现React组件\n%s\n@ensure 解析React文本', node.text);
+      contract('@require 发现JSX组件\n%s\n@ensure 解析JSX文本', node.text);
       const textExceptTheFirstTag = getTextExceptTheFirstTag(node.text);
       if (isOpeningTagAtBegginning(node.text)) {
         let text;
@@ -86,24 +81,24 @@ function createPages(markdown) {
         } else {
           text = node.text;
         }
-        openReactCompenent(ctx, text);
+        openJSX(ctx, text);
       }
 
       const tagName = getTagName(node.text);
       if (isExampleTag(tagName)) {
-        const currentNode = getCurrentNode(ctx.reactRoot);
+        const currentNode = getCurrentNode(ctx.jsxRoot);
         const component = ExampleContainer.createComponent(createPages);
-        addComponentToChildren(ctx.reactRoot, currentNode, component);
+        addComponentToChildren(ctx.jsxRoot, currentNode, component);
 
-        if (ctx.reactRoot === currentNode) {
+        if (ctx.jsxRoot === currentNode) {
           ctx.pageChildren.push(component);
-          ctx.reactRoot = null;
+          ctx.jsxRoot = null;
         }
         continue;
       }
 
       if (!isOpeningTagAtBegginning(node.text) || isSelfCloseTag(node.text)) {
-        closeReactComponent(ctx);
+        closeJSX(ctx);
       }
 
       if (textExceptTheFirstTag) {
@@ -118,9 +113,9 @@ function createPages(markdown) {
       recursiveSpliceChildren(node.props.children);
     }
 
-    if (isParsingReactComponent(ctx)) {
-      contract('@require React节点里面有MD节点 \n%O\n@ensure 把MD节点push进React节点', node.props);
-      const currentNode = getCurrentNode(ctx.reactRoot);
+    if (isParsingJSX(ctx)) {
+      contract('@require JSX节点里面有MD节点 \n%O\n@ensure 把MD节点push进JSX节点', node.props);
+      const currentNode = getCurrentNode(ctx.jsxRoot);
       currentNode.children.push(node);
       continue;
     }

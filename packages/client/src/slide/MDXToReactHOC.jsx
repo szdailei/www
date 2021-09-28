@@ -5,7 +5,7 @@ import { Button, Div, Span, Input, Label } from '../styled';
 import { Title } from '../sectioning';
 import { Appear, Clock, Timer, ClockOrTimer, Split } from '../components';
 import makeid from '../lib/makeid';
-import { getTextFromChildren } from './parse-react-component-utils';
+import { getTextFromChildren } from './parse-jsx-utils';
 
 function destructuringParams(propNames, params) {
   const clonedParams = { ...params };

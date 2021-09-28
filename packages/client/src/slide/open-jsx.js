@@ -1,5 +1,5 @@
 import marked from 'marked';
-import { debug, REACT_PARSE } from '../lib/debug';
+import { debug, JSX_PARSE } from '../lib/debug';
 import recursiveParseMarkedToken from './recursive-parse-marked-token';
 import { createNode, addNodeToNodeList, getCurrentNode } from './tree';
 import {
@@ -7,13 +7,13 @@ import {
   isOpeningTagAtBegginning,
   isSelfCloseTag,
   getTextExceptTheFirstTag,
-} from './parse-react-component-utils';
-import { closeReactComponent } from './close-react-component';
+} from './parse-jsx-utils';
+import { closeJSX } from './close-jsx';
 
-const contract = debug(REACT_PARSE);
+const contract = debug(JSX_PARSE);
 
-function isParsingReactComponent(ctx) {
-  return ctx.reactRoot;
+function isParsingJSX(ctx) {
+  return ctx.jsxRoot;
 }
 
 function getTokensByMarkdown(markdown) {
@@ -28,28 +28,28 @@ function getTokensByMarkdown(markdown) {
 }
 
 /*
-@require  ctx isn't null, and text has React open tag at beginning.
+@require  ctx isn't null, and text has jsx open tag at beginning.
 @ensure   
-  1. Create reactRoot or addNode to current nodeList.
-  2. Remove first react open tag and recursiveParse rest text.
+  1. Create jsxRoot or addNode to current nodeList.
+  2. Remove first jsx open tag and recursiveParse rest text.
 */
-function openReactCompenent(ctx, text) {
-  contract('@require React Opening tag \n%s', text);
+function openJSX(ctx, text) {
+  contract('@require JSX Opening tag \n%s', text);
   const node = createNode(text);
   const textExceptTheFirstTag = getTextExceptTheFirstTag(text);
 
-  if (!ctx.reactRoot) {
-    contract('@require ctx.reactRoot不存在 \n@ensure  新增ctx.reactRoot');
-    ctx.reactRoot = node;
+  if (!ctx.jsxRoot) {
+    contract('@require ctx.jsxRoot不存在 \n@ensure  新增ctx.jsxRoot');
+    ctx.jsxRoot = node;
   } else {
-    contract('@require ctx.reactRoot存在 \n\t\tensure  ctx.reactRoot添加子节点');
-    addNodeToNodeList(ctx.reactRoot, node);
+    contract('@require ctx.jsxRoot存在 \n\t\tensure  ctx.jsxRoot添加子节点');
+    addNodeToNodeList(ctx.jsxRoot, node);
   }
 
   if (textExceptTheFirstTag) {
     const tokens = getTokensByMarkdown(textExceptTheFirstTag);
 
-    contract('@require MD in React \n%s\n@ensure 解析为%O', textExceptTheFirstTag, tokens);
+    contract('@require MD in JSX \n%s\n@ensure 解析为%O', textExceptTheFirstTag, tokens);
     tokens.forEach((token) => {
       contract('@require token \n%O \n@ensure 递归解析为subNode', token);
       const subNode = recursiveParseMarkedToken(token);
@@ -57,23 +57,23 @@ function openReactCompenent(ctx, text) {
 
       if (subNode.error) {
         if (isOpeningTagAtBegginning(subNode.text)) {
-          contract('@require React有子节点文本\n%s\n@ensure 递归React Opening tag', subNode.text);
-          openReactCompenent(ctx, subNode.text);
+          contract('@require JSX有子节点文本\n%s\n@ensure 递归JSX Opening tag', subNode.text);
+          openJSX(ctx, subNode.text);
         } else {
-          contract('@require React Closing tag \n%s\n@ensure 结束解析React子节点文本', subNode.text);
-          closeReactComponent(ctx);
+          contract('@require JSX Closing tag \n%s\n@ensure 结束解析JSX子节点文本', subNode.text);
+          closeJSX(ctx);
         }
         return;
       }
 
       if (subNode.props) {
         contract(
-          '@require React文本被解析成%s个children\n\t\t@ensure 递归寻找children里的ReactTag，解析后修改children',
+          '@require JSX文本被解析成%s个children\n\t\t@ensure 递归寻找children里的JSXTag，解析后修改children',
           subNode.props.children.length
         );
         // eslint-disable-next-line no-use-before-define
         recursiveSpliceChildren(subNode.props.children);
-        const currentNode = getCurrentNode(ctx.reactRoot);
+        const currentNode = getCurrentNode(ctx.jsxRoot);
         currentNode.children.push(subNode);
       }
     });
@@ -84,7 +84,7 @@ function recursiveSpliceChildren(origChildren) {
   let children = origChildren;
   const ctx = {
     pageChildren: [],
-    reactRoot: null,
+    jsxRoot: null,
   };
 
   while (children) {
@@ -102,7 +102,7 @@ function recursiveSpliceChildren(origChildren) {
           if (isOpeningTagAtBegginning(children[i].text)) {
             htmlStartIndex = i;
             htmlStartIndexs.push(htmlStartIndex);
-            openReactCompenent(ctx, children[i].text);
+            openJSX(ctx, children[i].text);
           }
 
           if (
@@ -110,8 +110,8 @@ function recursiveSpliceChildren(origChildren) {
             isSelfCloseTag(children[i].text) ||
             isClosingTagAtEnd(children[i].text)
           ) {
-            const currentNode = getCurrentNode(ctx.reactRoot);
-            closeReactComponent(ctx);
+            const currentNode = getCurrentNode(ctx.jsxRoot);
+            closeJSX(ctx);
 
             if (!htmlStartIndex) {
               htmlStartIndex = 0;
@@ -122,8 +122,8 @@ function recursiveSpliceChildren(origChildren) {
             children.splice(lastHtmlStartIndex, i - lastHtmlStartIndex + 1, currentNode.component);
             i = lastHtmlStartIndex;
           }
-        } else if (isParsingReactComponent(ctx)) {
-          const currentNode = getCurrentNode(ctx.reactRoot);
+        } else if (isParsingJSX(ctx)) {
+          const currentNode = getCurrentNode(ctx.jsxRoot);
           currentNode.children.push(children[i]);
         } else if (children[i].props) {
           recursiveSpliceChildren(children[i].props.children);
@@ -134,4 +134,4 @@ function recursiveSpliceChildren(origChildren) {
   }
 }
 
-export { isParsingReactComponent, getTokensByMarkdown, openReactCompenent, recursiveSpliceChildren };
+export { isParsingJSX, getTokensByMarkdown, openJSX, recursiveSpliceChildren };

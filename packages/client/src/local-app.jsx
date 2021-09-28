@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Presentation from './presentation/Presentation';
+import Slide from './slide/Slide';
 
 function App() {
-  return <Presentation />;
+  return <Slide />;
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));

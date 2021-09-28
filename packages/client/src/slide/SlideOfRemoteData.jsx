@@ -5,7 +5,7 @@ import { Error } from '../components';
 import createPages from './create-pages';
 import Controller from './Controller';
 
-function PresentationOfRemoteData() {
+function SlideOfRemoteData() {
   const { course } = useParams();
   const query = `{getCourse(name:"${course}")}`;
 
@@ -18,4 +18,4 @@ function PresentationOfRemoteData() {
   return <Controller pages={pages} />;
 }
 
-export default PresentationOfRemoteData;
+export default SlideOfRemoteData;

@@ -3,7 +3,7 @@ import makeid from '../lib/makeid';
 import { convertSrcToLocal, convertSrcToServer, removeBlankLine, trim } from '../lib/markdown';
 import { Heading, P, Span } from '../styled';
 import { PrismCode } from '../components';
-import { isReactTagAtBegginning } from './parse-react-component-utils';
+import { isJSXTagAtBegginning } from './parse-jsx-utils';
 import HtmlNode from './HtmlNode';
 import TableNode from './TableNode';
 
@@ -22,9 +22,9 @@ function MarkdownNode(token, children, parent) {
       node = <blockquote key={makeid()}>{children}</blockquote>;
       break;
     case 'code':
-      if (token.codeBlockStyle === 'indented' && isReactTagAtBegginning(trimedText)) {
+      if (token.codeBlockStyle === 'indented' && isJSXTagAtBegginning(trimedText)) {
         node = {
-          error: 'react-component',
+          error: 'jsx',
           type: token.type,
           text: trimedText,
         };
@@ -78,9 +78,9 @@ function MarkdownNode(token, children, parent) {
       node = <li key={makeid()}>{children}</li>;
       break;
     case 'html':
-      if (isReactTagAtBegginning(trimedText)) {
+      if (isJSXTagAtBegginning(trimedText)) {
         node = {
-          error: 'react-component',
+          error: 'jsx',
           type: token.type,
           text: trimedText,
         };

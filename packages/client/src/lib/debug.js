@@ -2,6 +2,6 @@ import debug from 'debug/src/browser';
 
 const MD_PARSE = 'parse:markdown';
 
-const REACT_PARSE = 'parse:react';
+const JSX_PARSE = 'parse:jsx';
 
-export { debug, MD_PARSE, REACT_PARSE };
+export { debug, MD_PARSE, JSX_PARSE };

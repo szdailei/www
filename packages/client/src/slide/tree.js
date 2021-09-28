@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { getParams, getTagName } from './parse-react-component-utils';
+import { getParams, getTagName } from './parse-jsx-utils';
 
 function createRoot() {
   return {

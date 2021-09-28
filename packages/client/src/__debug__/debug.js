@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import createPages from '../presentation/create-pages';
+import createPages from '../slide/create-pages';
 
 (async () => {
   const TEST_FILE = './debug.md';

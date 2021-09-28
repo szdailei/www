@@ -12,9 +12,9 @@ import {
   COURSES_PATH,
   SIGN_IN_PATH,
   CHANGE_PASSWORD_PATH,
-  PRESENTATION_PATH,
+  SLIDE_PATH,
 } from './lib/path';
-import Presentation from './presentation/Presentation';
+import Slide from './slide/Slide';
 import ChangePassword from './pages/ChangePassword';
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
   if (error) return <Error error={error} />;
   if (!data) return <Loading />;
 
-  const presentationPath = `${PRESENTATION_PATH}/:course`;
+  const slidePath = `${SLIDE_PATH}/:course`;
   return (
     <Router>
       <Routes>
@@ -34,7 +34,7 @@ function App() {
         <Route path={COURSES_PATH} element={<Courses />} />
         <Route path={SIGN_IN_PATH} element={<SignIn />} />
         <Route path={CHANGE_PASSWORD_PATH} element={<ChangePassword />} />
-        <Route path={presentationPath} element={<Presentation />} />
+        <Route path={slidePath} element={<Slide />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

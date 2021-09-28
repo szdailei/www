@@ -5,7 +5,7 @@ import Controller from './Controller';
 
 const reader = new FileReader();
 
-function PresentationOfLocalData() {
+function SlideOfLocalData() {
   const [markdown, setMarkdown] = useState();
 
   const onLoadEndOfReadFile = useCallback((event) => {
@@ -27,9 +27,9 @@ function PresentationOfLocalData() {
     return (
       <div>
         <Div style={{ marginBottom: '2em', fontSize: '1.5em', fontWeight: '600' }}>
-          Please copy images files to courses/images directory under local-presentation.html
+          This local html MUST be in parent folder of courses.
         </Div>
-        <Div style={{ fontSize: '1.5em', fontWeight: '600' }}>And then select a .mdx or .md file for presentation</Div>
+        <Div style={{ fontSize: '1.5em', fontWeight: '600' }}>Select a .mdx or .md file in courses folder</Div>
         <Input style={{ fontSize: '1.5em' }} type="file" accept=".txt,.md,.mdx" onChange={οnChangeOfInputFile} />
       </div>
     );
@@ -39,4 +39,4 @@ function PresentationOfLocalData() {
   return <Controller pages={pages} />;
 }
 
-export default PresentationOfLocalData;
+export default SlideOfLocalData;

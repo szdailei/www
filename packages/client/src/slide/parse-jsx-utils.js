@@ -205,7 +205,7 @@ function isSelfCloseTag(text) {
   return false;
 }
 
-function isReactTagAtBegginning(text) {
+function isJSXTagAtBegginning(text) {
   if (text[0] !== '<') return false;
   if (isOpeningTagAtBegginning(text)) return isCapitalLetter(text[1]);
   return isCapitalLetter(text[2]);
@@ -218,7 +218,7 @@ function addBlankLines(markdown) {
   for (let i = 0; i < lines.length; i += 1) {
     const trimedLine = trim(lines[i]);
     if (trimedLine.indexOf('```') !== -1) isInsideCode = !isInsideCode;
-    if (!isInsideCode && isReactTagAtBegginning(trimedLine)) {
+    if (!isInsideCode && isJSXTagAtBegginning(trimedLine)) {
       result += `\n\n${trimedLine}\n`;
     } else {
       result += `\n${lines[i]}`;
@@ -248,7 +248,7 @@ export {
   isClosingTagAtBeginning,
   isEmptyTagAtBeginning,
   isClosingTagAtEnd,
-  isReactTagAtBegginning,
+  isJSXTagAtBegginning,
   isOpeningTagAtBegginning,
   isSelfCloseTag,
 };
