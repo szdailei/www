@@ -1,1 +1,2 @@
-courses-dir = '/home/dailei/projects/www-data/storage/courses/' # 存放courses文件的目录
+[courses]
+root = '/home/dailei/projects/www-data/storage/courses/' # 存放courses文件的目录

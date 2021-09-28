@@ -49,7 +49,7 @@ function openReactCompenent(ctx, text) {
   if (textExceptTheFirstTag) {
     const tokens = getTokensByMarkdown(textExceptTheFirstTag);
 
-    contract('@require React tag里有MD \n%s\n@ensure 解析为%d个token%O', textExceptTheFirstTag, tokens.length, tokens);
+    contract('@require MD in React \n%s\n@ensure 解析为%O', textExceptTheFirstTag, tokens);
     tokens.forEach((token) => {
       contract('@require token \n%O \n@ensure 递归解析为subNode', token);
       const subNode = recursiveParseMarkedToken(token);

@@ -13,7 +13,7 @@ yarn build
 
 ```bash
 yarn pkg-fetch
-set courses-dir in packer/packer.toml
+set courses.root in packer/packer.toml
 yarn packer
 ```
 
@@ -22,11 +22,12 @@ yarn packer
 ```bash
 set static-server.root in dist/static-server/static-server.toml
 set storage.root in dist/api-server/api-server.toml
-./dist/start-servers
+modify and call ./dist/scripts/init-database if necessary
+./dist/scripts/start-servers
 ```
 
 ## 停止运行
 
 ```bash
-./dist/stop-servers
+./dist/scripts/stop-servers
 ```

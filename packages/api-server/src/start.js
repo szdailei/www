@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { getConfigInExecScriptPath } from '../../../config';
+import { getConfigInConfigScriptDir } from '../../../config';
 import log from './lib/log';
 import { connect } from './lib/database';
 import graphqlServer from './graphql-server';
@@ -8,7 +8,7 @@ import staticServer from '../../static-server/src/static-server';
 import stop from './stop';
 
 (async () => {
-  const config = await getConfigInExecScriptPath('api-server.toml');
+  const config = await getConfigInConfigScriptDir('api-server.toml');
   storage.setStorageRoot(config.storage.root);
   storage.setCoursesPath(config.storage.courses);
   storage.setResumeFile(config.storage.resume);

@@ -7,15 +7,16 @@ import HELP from './HELP';
 import packServers from './pack-servers';
 import copyWeb from './copy-web';
 import copyCoursesAndLocalHtml from './copy-courses-local-html';
-import copyTargetScripts from './copy-target-scripts';
+import copyScripts from './copy-scripts';
+import copyDocs from './copy-docs'
 
-function getExecScriptPath() {
+function getTheScriptDir() {
   return new URL('.', import.meta.url).pathname;
 }
 
-function getRootAndDistPath() {
-  const execScriptPath = getExecScriptPath();
-  const root = path.join(execScriptPath, '..');
+function getRootAndDistDir() {
+  const theScriptDir = getTheScriptDir();
+  const root = path.join(theScriptDir, '..');
   const dist = path.join(root, 'dist/');
   return { root, dist };
 }
@@ -29,7 +30,8 @@ function packer(root, dist, origCoursesDir) {
   packServers(root, dist);
   copyWeb(root, dist);
   copyCoursesAndLocalHtml(root, dist, origCoursesDir);
-  copyTargetScripts(root, dist);
+  copyScripts(root, dist);
+  copyDocs(root, dist);
 }
 
 (async () => {
@@ -45,11 +47,12 @@ function packer(root, dist, origCoursesDir) {
     process.exit(0);
   }
 
-  const config = await getConfig(getExecScriptPath(), 'packer.toml');
-  const origCoursesDir = config['courses-dir'];
-  if (!origCoursesDir) throw new Error("can't found courses-dir in config file");
+  const theScriptDir = getTheScriptDir()
+  const config = await getConfig(theScriptDir, 'packer.toml');
+  const origCoursesDir = config.courses.root;
+  if (!origCoursesDir) throw new Error("can't found courses.root in config file");
 
-  const { root, dist } = getRootAndDistPath();
+  const { root, dist } = getRootAndDistDir();
   clean(dist);
 
   packer(root, dist, origCoursesDir);

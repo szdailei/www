@@ -1,8 +1,9 @@
-import { getConfigInWorkingPath } from '../../../config';
+import { getConfigInWorkDir } from '../../../config';
 import config from './config';
 
 async function init() {
-  config.env = (await getConfigInWorkingPath('test.toml')).env;
+  const configData = await getConfigInWorkDir('test.toml')
+  config.env = configData.env;
 }
 
 export default init;

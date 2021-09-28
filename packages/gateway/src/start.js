@@ -1,11 +1,11 @@
-import { getConfigInExecScriptPath } from '../../../config';
+import { getConfigInConfigScriptDir } from '../../../config';
 import log from './lib/log';
 import rules from './rules';
 import reverseProxy from './reverse-proxy';
 import stop from './stop';
 
 (async () => {
-  const config = await getConfigInExecScriptPath('gateway.toml');
+  const config = await getConfigInConfigScriptDir('gateway.toml');
   rules.init(config['api-server'].endpoint);
 
   const server = reverseProxy(config.gateway.port);
