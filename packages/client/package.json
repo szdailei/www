@@ -6,8 +6,8 @@
   "version": "1.2.1",
   "scripts": {
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,mjs,json}\"",
-    "eslint": "eslint  --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
-    "stylelint": "stylelint  \"src/**/*.{jsx,tsx}\"",
+    "eslint": "eslint --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
+    "stylelint": "stylelint --syntax \"css-in-js\" \"src/**/*.{jsx,tsx}\"",
     "clean": "rimraf dist && mkdirp dist dist/web dist/local",
     "copy:web": "cp -r public/* dist/web/",
     "copy:local": "mkdirp dist/local/tmp && cp -r public/* dist/local/tmp",

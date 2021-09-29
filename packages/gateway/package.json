@@ -7,7 +7,7 @@
   "version": "1.1.0",
   "scripts": {
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,mjs,json}\"",
-    "eslint": "eslint  --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
+    "eslint": "eslint --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
     "clean": "rimraf dist && mkdirp dist",
     "build": "yarn clean && cp *.toml dist/ && yarn rollup -c  ../../rollup.config.js",
     "start": "node dist/index.js"

@@ -6,7 +6,7 @@
   "version": "1.1.0",
   "scripts": {
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,mjs,json}\"",
-    "eslint": "eslint  --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
+    "eslint": "eslint --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
     "clean": "rimraf pdfs reports && mkdirp pdfs reports",
     "export-resume": "node --experimental-specifier-resolution=node src/export-resume.js",
     "export-courses": "node --experimental-specifier-resolution=node src/export-courses.js",

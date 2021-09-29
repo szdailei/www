@@ -1,3 +1,4 @@
+import path from 'path';
 import crypto from 'crypto';
 import { getConfigInConfigScriptDir } from '../../../config';
 import log from './lib/log';
@@ -10,8 +11,11 @@ import stop from './stop';
 (async () => {
   const config = await getConfigInConfigScriptDir('api-server.toml');
   storage.setStorageRoot(config.storage.root);
-  storage.setCoursesPath(config.storage.courses);
-  storage.setResumeFile(config.storage.resume);
+  storage.setCoursesPath(config.storage.courses.root);
+  const resumeRoot = config.storage.resume.root;
+  storage.setResume(path.join(resumeRoot, config.storage.resume.json));
+  storage.setResumeImage(path.join(resumeRoot, config.storage.resume.image));
+  storage.setResumeWeChatImage(path.join(resumeRoot, config.storage.resume.wechat));
   storage.setSecretKey(crypto.randomBytes(16).toString('hex'));
 
   await connect(config.database);

@@ -4,11 +4,11 @@ import minimist from 'minimist';
 import log from 'loglevel';
 import { getConfig } from '../config';
 import HELP from './HELP';
-import packServers from './pack-servers';
+import bundleServers from './bundle-servers';
 import copyWeb from './copy-web';
 import copyCoursesAndLocalHtml from './copy-courses-local-html';
 import copyScripts from './copy-scripts';
-import copyDocs from './copy-docs'
+import copyDocs from './copy-docs';
 
 function getTheScriptDir() {
   return new URL('.', import.meta.url).pathname;
@@ -26,8 +26,8 @@ function clean(dist) {
   shell.mkdir(dist);
 }
 
-function packer(root, dist, origCoursesDir) {
-  packServers(root, dist);
+function bundle(root, dist, origCoursesDir) {
+  bundleServers(root, dist);
   copyWeb(root, dist);
   copyCoursesAndLocalHtml(root, dist, origCoursesDir);
   copyScripts(root, dist);
@@ -47,13 +47,13 @@ function packer(root, dist, origCoursesDir) {
     process.exit(0);
   }
 
-  const theScriptDir = getTheScriptDir()
-  const config = await getConfig(theScriptDir, 'packer.toml');
+  const theScriptDir = getTheScriptDir();
+  const config = await getConfig(theScriptDir, 'bundle.toml');
   const origCoursesDir = config.courses.root;
   if (!origCoursesDir) throw new Error("can't found courses.root in config file");
 
   const { root, dist } = getRootAndDistDir();
   clean(dist);
 
-  packer(root, dist, origCoursesDir);
+  bundle(root, dist, origCoursesDir);
 })();

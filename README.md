@@ -9,12 +9,12 @@ yarn
 yarn build
 ```
 
-## Package
+## Bundle
 
 ```bash
 yarn pkg-fetch    // fetch nodejs binary to cache dir.
-set courses.root in packer/packer.toml
-yarn packer
+set courses.root in bundle/bundle.toml
+yarn bundle
 ```
 
 ## Run servers

@@ -1,13 +1,13 @@
 /* eslint-disable no-await-in-loop */
 import log from './log';
 
-async function waitLoaded(page, timeout = 5000) {
+async function waitLoaded(page, timeout = 3000) {
   const checkDurationMsecs = 1000;
   const maxChecks = timeout / checkDurationMsecs;
   let lastHTMLSize = 0;
   let checkCounts = 1;
   let countStableSizeIterations = 0;
-  const minStableSizeIterations = 3;
+  const minStableSizeIterations = 2;
 
   while (checkCounts < maxChecks) {
     const html = await page.content();

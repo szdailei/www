@@ -6,7 +6,9 @@ const storageConfig = {
   secretKey: undefined,
   root: null,
   coursesPath: null,
-  resumeFile: null,
+  resume: null,
+  resumeImage: null,
+  resumeWeChatImage: null,
 };
 
 function storage() {}
@@ -31,10 +33,20 @@ storage.setStorageRoot = (root) => {
   storageConfig.root = root;
 };
 
-storage.getResumeFile = () => storageConfig.resumeFile;
+storage.getResume = () => storageConfig.resume;
+storage.getResumeImage = () => storageConfig.resumeImage;
+storage.getResumeWeChatImage = () => storageConfig.resumeWeChatImage;
 
-storage.setResumeFile = (resumeFile) => {
-  storageConfig.resumeFile = resumeFile;
+storage.setResume = (resume) => {
+  storageConfig.resume = resume;
+};
+
+storage.setResumeImage = (resumeImage) => {
+  storageConfig.resumeImage = resumeImage;
+};
+
+storage.setResumeWeChatImage = (resumeWeChatImage) => {
+  storageConfig.resumeWeChatImage = resumeWeChatImage;
 };
 
 storage.getUsers = async () => {
@@ -154,9 +166,9 @@ storage.readCourseFile = async (name) => {
   return storage.getDataByKey(key);
 };
 
-storage.getDataByKey = async (key) => {
+storage.getDataByKey = async (key, format) => {
   const filename = path.join(storageConfig.root, key);
-  return fs.promises.readFile(filename, 'utf8');
+  return fs.promises.readFile(filename, format || 'utf8');
 };
 
 storage.listFiles = async (dirName) => {

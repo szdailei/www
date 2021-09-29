@@ -6,8 +6,15 @@ port = 8002
 
 [storage]
 root = '/home/dailei/projects/www-data/storage/' # 存放courses和resume文件的根目录
-courses = 'courses/'
-resume = 'resume/resume.json'
+
+  [storage.courses]
+  root = 'courses/'
+
+  [storage.resume]
+  root =  'resume/'
+  json = 'resume.json'
+  image = 'resume.jpg'
+  wechat = 'wechat.png'
 
 [database]
 host = '127.0.0.1'

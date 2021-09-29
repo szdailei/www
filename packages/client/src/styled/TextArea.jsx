@@ -14,7 +14,7 @@ const TextArea = React.forwardRef(({ style, ...rest }, ref) => {
   const objStyle = {
     fontSize: '1em',
     transition: 'all 0.3s',
-    outline: '0px',
+    outline: 0,
     border: '1px dashed',
     ...style,
 

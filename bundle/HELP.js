@@ -1,4 +1,4 @@
-export default `Usage: packer [options]
+export default `Usage: bundle [options]
 
 工作步骤如下：
 1. 将js文件与nodejs打包成可执行文件，放在dist的各个服务器目录。

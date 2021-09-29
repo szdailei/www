@@ -6,7 +6,7 @@ import { exec } from 'pkg';
 
 async function trans(origFile, targetFile) {
   const options = {
-    compact:true,
+    compact: true,
     plugins: ['@babel/plugin-transform-modules-commonjs', 'babel-plugin-transform-import-meta'],
   };
 
@@ -15,13 +15,13 @@ async function trans(origFile, targetFile) {
   await fs.promises.writeFile(targetFile, code);
 }
 
-async function packerServer(config, mjs, cjs, exe, dist) {
+async function bundleServer(config, mjs, cjs, exe, dist) {
   await trans(mjs, cjs);
   await exec([cjs, '--target', 'linux-x64,win-x64', '--output', exe]);
   shell.cp(config, dist);
 }
 
-async function packerServers(root,dist) {
+async function bundleServers(root, dist) {
   const scriptPathOfStaticServer = path.join(root, 'packages/static-server/dist');
   const mjsOfStaticServer = path.join(scriptPathOfStaticServer, 'index.js');
   const cjsOfStaticServer = path.join(scriptPathOfStaticServer, 'index.cjs');
@@ -48,9 +48,9 @@ async function packerServers(root,dist) {
 
   shell.mkdir(distOfStaticServer, distOfGateway, distOfApiServer);
 
-  await packerServer(configOfStaticServer, mjsOfStaticServer, cjsOfStaticServer, exeOfStaticServer, distOfStaticServer);
-  await packerServer(configOfGateway, mjsOfGateway, cjsOfGateway, exeOfGateway, distOfGateway);
-  await packerServer(configOfApiServer, mjsOfApiServer, cjsOfApiServer, exeOfApiServer, distOfApiServer);
+  await bundleServer(configOfStaticServer, mjsOfStaticServer, cjsOfStaticServer, exeOfStaticServer, distOfStaticServer);
+  await bundleServer(configOfGateway, mjsOfGateway, cjsOfGateway, exeOfGateway, distOfGateway);
+  await bundleServer(configOfApiServer, mjsOfApiServer, cjsOfApiServer, exeOfApiServer, distOfApiServer);
 }
 
-export default packerServers
+export default bundleServers;

@@ -6,7 +6,7 @@
   "version": "1.0.0",
   "scripts": {
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,mjs,json}\"",
-    "eslint": "eslint  --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
+    "eslint": "eslint --cache \"src/**/*.{js,ts,jsx,tsx,mjs}\"",
     "clean": "rimraf reports && mkdirp reports",
     "prepare": "yarn clean && node src/git-log.js && cp src/index.html reports/",
     "inline": "node ../../inline.js reports/index.html reports/git-log.html",
