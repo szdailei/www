@@ -1,5 +1,5 @@
 import { trim } from '../lib/markdown';
-import { isClosingTagAtBeginning, getTextExceptTheFirstTag } from './parse-jsx-utils';
+import { isCloseTagAtBeginning, getTextExceptTheFirstTag } from './parse-jsx-utils';
 import { getCurrentNode, addComponentToChildren } from './tree';
 import MDXToReactHOC from './MDXToReactHOC';
 
@@ -22,7 +22,7 @@ function closeMultiJSXsInOneLine(ctx, origText) {
   let text = origText;
   if (!text || text.length < 4) return;
 
-  while (isClosingTagAtBeginning(text)) {
+  while (isCloseTagAtBeginning(text)) {
     closeJSX(ctx);
 
     text = trim(getTextExceptTheFirstTag(text));

@@ -1,10 +1,9 @@
-/* eslint-disable no-continue */
 import marked from 'marked';
 import { debug, MD_PARSE } from '../lib/debug';
 import {
   addBlankLines,
   modifyTokenIfMultiTagsInOneLine,
-  isOpeningTagAtBegginning,
+  isOpenTagAtBegginning,
   isSelfCloseTag,
   getTagName,
   getTheFirstTagTextContent,
@@ -42,6 +41,80 @@ function finishOnePage(ctx, pages) {
   pages.push(page);
 }
 
+function parsePageBreak(ctx, pages) {
+  finishOnePage(ctx, pages);
+  ctx.pageChildren = [];
+  ctx.currentPageNum += 1;
+  ctx.hasTitleInCurrentPage = false;
+}
+
+function createExample(ctx) {
+  const currentNode = getCurrentNode(ctx.jsxRoot);
+  // eslint-disable-next-line no-use-before-define
+  const component = ExampleContainer.createComponent(createPages);
+  addComponentToChildren(ctx.jsxRoot, currentNode, component);
+
+  if (ctx.jsxRoot === currentNode) {
+    ctx.pageChildren.push(component);
+    ctx.jsxRoot = null;
+  }
+}
+
+function pargeOpenTag(ctx, textExceptTheFirstTag, node) {
+  let text;
+  if (textExceptTheFirstTag) {
+    // Only parse the first tag name and params, textExceptTheFirstTag will be getTokensByMarkdown and insert it after current token.
+    text = `<${getTheFirstTagTextContent(node.text)}>`;
+  } else {
+    text = node.text;
+  }
+  openJSX(ctx, text);
+}
+
+function parsePageContent(ctx, tokens, index) {
+  const node = recursiveParseMarkedToken(tokens[index]);
+  if (!node) return;
+
+  if (node.error) {
+    contract('@require 发现JSX组件\n%s\n@ensure 解析JSX文本', node.text);
+    const textExceptTheFirstTag = getTextExceptTheFirstTag(node.text);
+    if (isOpenTagAtBegginning(node.text)) {
+      pargeOpenTag(ctx, textExceptTheFirstTag, node);
+    }
+
+    const tagName = getTagName(node.text);
+    if (isExampleTag(tagName)) {
+      createExample(ctx);
+      return;
+    }
+
+    if (!isOpenTagAtBegginning(node.text) || isSelfCloseTag(node.text)) {
+      closeJSX(ctx);
+    }
+
+    if (textExceptTheFirstTag) {
+      const tokensOfTextExceptTheFirstTag = getTokensByMarkdown(textExceptTheFirstTag);
+      tokens.splice(index + 1, 0, ...tokensOfTextExceptTheFirstTag);
+      return;
+    }
+    return;
+  }
+
+  if (node.props) {
+    recursiveSpliceChildren(node.props.children);
+  }
+
+  if (isParsingJSX(ctx)) {
+    contract('@require JSX节点里面有MD节点 \n%O\n@ensure 把MD节点push进JSX节点', node.props);
+    const currentNode = getCurrentNode(ctx.jsxRoot);
+    currentNode.children.push(node);
+    return;
+  }
+
+  contract('@require 独立的MD节点 \n%O\n@ensure 把MD节点push进Page节点', node.props);
+  ctx.pageChildren.push(node);
+}
+
 function createPages(markdown) {
   const formattedMarkdown = addBlankLines(markdown);
   const tokens = marked.lexer(formattedMarkdown);
@@ -61,67 +134,10 @@ function createPages(markdown) {
   for (let i = 0; i < tokens.length; i += 1) {
     const token = tokens[i];
     if (token.type === 'hr') {
-      finishOnePage(ctx, pages);
-      ctx.pageChildren = [];
-      ctx.currentPageNum += 1;
-      ctx.hasTitleInCurrentPage = false;
-      continue;
+      parsePageBreak(ctx, pages);
+    } else {
+      parsePageContent(ctx, tokens, i);
     }
-
-    const node = recursiveParseMarkedToken(token);
-    if (!node) continue;
-    if (node.error) {
-      contract('@require 发现JSX组件\n%s\n@ensure 解析JSX文本', node.text);
-      const textExceptTheFirstTag = getTextExceptTheFirstTag(node.text);
-      if (isOpeningTagAtBegginning(node.text)) {
-        let text;
-        if (textExceptTheFirstTag) {
-          // Only parse the first tag name and params, textExceptTheFirstTag will be getTokensByMarkdown and insert it after current token.
-          text = `<${getTheFirstTagTextContent(node.text)}>`;
-        } else {
-          text = node.text;
-        }
-        openJSX(ctx, text);
-      }
-
-      const tagName = getTagName(node.text);
-      if (isExampleTag(tagName)) {
-        const currentNode = getCurrentNode(ctx.jsxRoot);
-        const component = ExampleContainer.createComponent(createPages);
-        addComponentToChildren(ctx.jsxRoot, currentNode, component);
-
-        if (ctx.jsxRoot === currentNode) {
-          ctx.pageChildren.push(component);
-          ctx.jsxRoot = null;
-        }
-        continue;
-      }
-
-      if (!isOpeningTagAtBegginning(node.text) || isSelfCloseTag(node.text)) {
-        closeJSX(ctx);
-      }
-
-      if (textExceptTheFirstTag) {
-        const tokensOfTextExceptTheFirstTag = getTokensByMarkdown(textExceptTheFirstTag);
-        tokens.splice(i + 1, 0, ...tokensOfTextExceptTheFirstTag);
-        continue;
-      }
-      continue;
-    }
-
-    if (node.props) {
-      recursiveSpliceChildren(node.props.children);
-    }
-
-    if (isParsingJSX(ctx)) {
-      contract('@require JSX节点里面有MD节点 \n%O\n@ensure 把MD节点push进JSX节点', node.props);
-      const currentNode = getCurrentNode(ctx.jsxRoot);
-      currentNode.children.push(node);
-      continue;
-    }
-
-    contract('@require 独立的MD节点 \n%O\n@ensure 把MD节点push进Page节点', node.props);
-    ctx.pageChildren.push(node);
   }
 
   contract('@require 结束解析MD\n@ensure 把剩余节点push进Page节点');

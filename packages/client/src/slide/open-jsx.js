@@ -2,12 +2,7 @@ import marked from 'marked';
 import { debug, JSX_PARSE } from '../lib/debug';
 import recursiveParseMarkedToken from './recursive-parse-marked-token';
 import { createNode, addNodeToNodeList, getCurrentNode } from './tree';
-import {
-  isClosingTagAtEnd,
-  isOpeningTagAtBegginning,
-  isSelfCloseTag,
-  getTextExceptTheFirstTag,
-} from './parse-jsx-utils';
+import { isCloseTagAtEnd, isOpenTagAtBegginning, isSelfCloseTag, getTextExceptTheFirstTag } from './parse-jsx-utils';
 import { closeJSX } from './close-jsx';
 
 const contract = debug(JSX_PARSE);
@@ -34,7 +29,7 @@ function getTokensByMarkdown(markdown) {
   2. Remove first jsx open tag and recursiveParse rest text.
 */
 function openJSX(ctx, text) {
-  contract('@require JSX Opening tag \n%s', text);
+  contract('@require JSX open tag \n%s', text);
   const node = createNode(text);
   const textExceptTheFirstTag = getTextExceptTheFirstTag(text);
 
@@ -56,11 +51,11 @@ function openJSX(ctx, text) {
       if (!subNode) return;
 
       if (subNode.error) {
-        if (isOpeningTagAtBegginning(subNode.text)) {
-          contract('@require JSX有子节点文本\n%s\n@ensure 递归JSX Opening tag', subNode.text);
+        if (isOpenTagAtBegginning(subNode.text)) {
+          contract('@require JSX有子节点文本\n%s\n@ensure 递归JSX open tag', subNode.text);
           openJSX(ctx, subNode.text);
         } else {
-          contract('@require JSX Closing tag \n%s\n@ensure 结束解析JSX子节点文本', subNode.text);
+          contract('@require JSX close tag \n%s\n@ensure 结束解析JSX子节点文本', subNode.text);
           closeJSX(ctx);
         }
         return;
@@ -99,16 +94,16 @@ function recursiveSpliceChildren(origChildren) {
 
       for (let i = 0; i < children.length; i += 1) {
         if (children[i].error) {
-          if (isOpeningTagAtBegginning(children[i].text)) {
+          if (isOpenTagAtBegginning(children[i].text)) {
             htmlStartIndex = i;
             htmlStartIndexs.push(htmlStartIndex);
             openJSX(ctx, children[i].text);
           }
 
           if (
-            !isOpeningTagAtBegginning(children[i].text) ||
+            !isOpenTagAtBegginning(children[i].text) ||
             isSelfCloseTag(children[i].text) ||
-            isClosingTagAtEnd(children[i].text)
+            isCloseTagAtEnd(children[i].text)
           ) {
             const currentNode = getCurrentNode(ctx.jsxRoot);
             closeJSX(ctx);

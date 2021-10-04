@@ -1,4 +1,3 @@
-/* eslint-disable no-continue */
 import { isAlphabetical } from 'is-alphabetical';
 import { trim } from '../lib/markdown';
 import emptyTags from '../lib/empty-tags';
@@ -77,8 +76,9 @@ function getTextWithoutTagName(textWithTagName) {
 
   let textWithoutTagName = lines[1]; // lines[0] is tag name, skip it
   for (let i = 2; i < length; i += 1) {
-    if (lines[i] === '') continue;
-    textWithoutTagName += ` ${lines[i]}`;
+    if (lines[i] !== '') {
+      textWithoutTagName += ` ${lines[i]}`;
+    }
   }
 
   return trim(textWithoutTagName);
@@ -92,23 +92,24 @@ function getPairs(textWithoutTagName) {
   let pair = '';
   for (let i = 0; i < textWithoutTagName.length; i += 1) {
     const char = textWithoutTagName[i];
-    if (char === "'") {
-      insideSingleQuote = !insideSingleQuote;
-      continue;
-    }
-    if (char === '"') {
-      insideDoubleQuote = !insideDoubleQuote;
-      continue;
-    }
-    if (char === ' ') {
-      if (insideSingleQuote || insideDoubleQuote) {
+    switch (char) {
+      case "'":
+        insideSingleQuote = !insideSingleQuote;
+        break;
+      case '"':
+        insideDoubleQuote = !insideDoubleQuote;
+        break;
+      case ' ':
+        if (insideSingleQuote || insideDoubleQuote) {
+          pair += char;
+        } else {
+          pairs.push(pair);
+          pair = '';
+        }
+        break;
+      default:
         pair += char;
-      } else {
-        pairs.push(pair);
-        pair = '';
-      }
-    } else {
-      pair += char;
+        break;
     }
   }
   pairs.push(pair);
@@ -168,7 +169,7 @@ function isCapitalLetter(letter) {
   return false;
 }
 
-function isOpeningTagAtBegginning(text) {
+function isOpenTagAtBegginning(text) {
   if (text[1] === '/') return false;
   return true;
 }
@@ -181,12 +182,12 @@ function isEmptyTagAtBeginning(text) {
   return false;
 }
 
-function isClosingTagAtBeginning(text) {
+function isCloseTagAtBeginning(text) {
   if (text[0] === '<' && text[1] === '/') return true;
   return false;
 }
 
-function isClosingTagAtEnd(text) {
+function isCloseTagAtEnd(text) {
   const tokens = text.split('<');
   const lastTagName = tokens[tokens.length - 1];
 
@@ -207,7 +208,7 @@ function isSelfCloseTag(text) {
 
 function isJSXTagAtBegginning(text) {
   if (text[0] !== '<') return false;
-  if (isOpeningTagAtBegginning(text)) return isCapitalLetter(text[1]);
+  if (isOpenTagAtBegginning(text)) return isCapitalLetter(text[1]);
   return isCapitalLetter(text[2]);
 }
 
@@ -245,10 +246,10 @@ export {
   getTheFirstTagTextContent,
   getTextExceptTheFirstTag,
   getTextFromChildren,
-  isClosingTagAtBeginning,
+  isCloseTagAtBeginning,
   isEmptyTagAtBeginning,
-  isClosingTagAtEnd,
+  isCloseTagAtEnd,
   isJSXTagAtBegginning,
-  isOpeningTagAtBegginning,
+  isOpenTagAtBegginning,
   isSelfCloseTag,
 };
