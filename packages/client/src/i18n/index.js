@@ -121,7 +121,7 @@ function t(key) {
     i18n.init();
   }
   const keys = key.split(':');
-  let object = currentLocaleCode;
+  let object = i18n.getCurrentLocale();
   keys.forEach((memberName) => {
     if (object) {
       object = object[memberName];
