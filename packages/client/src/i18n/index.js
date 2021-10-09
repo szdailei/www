@@ -111,25 +111,25 @@ i18n.getCurrentLocale = () => {
 };
 
 /*
-@require  origKey is a string with valid format of key
+@require  key is a string with valid format of key
 @ensure   If there is a matched key in currentLocale, return translated string.
   Otherwise (including i18n.getCurrentLocale() return null), return error message
 */
-function t(origKey) {
+function t(key) {
   if (!i18n.getCurrentLocaleCode()) {
     i18n.init();
   }
-  const keys = origKey.split(':');
+  const keys = key.split(':');
   let object = i18n.getCurrentLocale();
-  keys.forEach((key) => {
+  keys.forEach((memberName) => {
     if (object) {
-      object = object[key];
+      object = object[memberName];
     }
   });
   if (typeof object === 'string') {
     return object;
   }
-  return `Can't find "${origKey}" in "${i18n.getCurrentLocaleCode()}" resource`;
+  return `Can't find "${key}" in "${i18n.getCurrentLocaleCode()}" resource`;
 }
 
 i18n.getNativeNames = () => nativeNames;
