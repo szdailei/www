@@ -116,11 +116,12 @@ i18n.getCurrentLocale = () => {
   Otherwise (including i18n.getCurrentLocale() return null), return error message
 */
 function t(key) {
-  if (!i18n.getCurrentLocaleCode()) {
+  const currentLocaleCode = i18n.getCurrentLocaleCode();
+  if (!currentLocaleCode) {
     i18n.init();
   }
   const keys = key.split(':');
-  let object = i18n.getCurrentLocale();
+  let object = currentLocaleCode;
   keys.forEach((memberName) => {
     if (object) {
       object = object[memberName];
@@ -129,7 +130,7 @@ function t(key) {
   if (typeof object === 'string') {
     return object;
   }
-  return `Can't find "${key}" in "${i18n.getCurrentLocaleCode()}" resource`;
+  return `Can't find "${key}" in "${currentLocaleCode}" resource`;
 }
 
 i18n.getNativeNames = () => nativeNames;
