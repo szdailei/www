@@ -32,6 +32,9 @@ function MarkdownNode(token, children, parent) {
         node = <PrismCode key={makeid()} code={token.text} language={token.lang} />;
       }
       break;
+    case 'codespan':
+      node = <span key={makeid()}>{token.raw}</span>;
+      break;
     case 'del':
       node = <span key={makeid()}>{token.raw}</span>;
       break;
