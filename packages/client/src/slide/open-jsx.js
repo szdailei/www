@@ -12,12 +12,17 @@ function isParsingJSX(ctx) {
 }
 
 function getTokensByMarkdown(markdown) {
-  const origTokens = marked.lexer(markdown);
+  const tokensFromMarked = marked.lexer(markdown);
   let tokens;
-  if (origTokens.length && origTokens.length === 1 && origTokens[0].type === 'paragraph' && origTokens[0].tokens) {
-    tokens = origTokens[0].tokens;
+  if (
+    tokensFromMarked.length &&
+    tokensFromMarked.length === 1 &&
+    tokensFromMarked[0].type === 'paragraph' &&
+    tokensFromMarked[0].tokens
+  ) {
+    tokens = tokensFromMarked[0].tokens;
   } else {
-    tokens = origTokens;
+    tokens = tokensFromMarked;
   }
   return tokens;
 }
@@ -75,8 +80,7 @@ function openJSX(ctx, text) {
   }
 }
 
-function recursiveSpliceChildren(origChildren) {
-  let children = origChildren;
+function recursiveSpliceChildren(children) {
   const ctx = {
     pageChildren: [],
     jsxRoot: null,
@@ -84,6 +88,7 @@ function recursiveSpliceChildren(origChildren) {
 
   while (children) {
     if (children.length === 1 && children[0].props) {
+      // eslint-disable-next-line no-param-reassign
       children = children[0].props.children;
     } else {
       let htmlStartIndex;
