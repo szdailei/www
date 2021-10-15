@@ -59,12 +59,11 @@ ${titles}
 
 <br>
 
-- 每门课各摘录5页，分别是：
+- 每门课各摘录4页，分别是：
   1. 课程介绍
   1. 目录
   1. 总结
-  1. 错误行为检查表
-  1. 回顾
+  1. 错误行为及其原因
 
 `;
 
@@ -74,7 +73,7 @@ ${titles}
     const pages = data.split('---');
     intro += `---${pages[1]}${footer}---${pages[2]}${footer}---${pages[pages.length - 3]}${footer}---${
       pages[pages.length - 2]
-    }${footer}---${pages[pages.length - 1]}${footer}`;
+    }${footer}`;
   }
   await fs.promises.writeFile(`${config.env.COURSES_DIR}${config.INTRO_FILE}`, intro);
 }
