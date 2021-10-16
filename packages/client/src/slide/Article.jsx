@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import { Article as RealArticle } from '../sectioning';

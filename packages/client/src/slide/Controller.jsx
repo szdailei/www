@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Article from './Article';

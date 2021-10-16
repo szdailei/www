@@ -10,7 +10,6 @@ const FlexContainer = React.forwardRef(({ style, ...rest }, ref) => {
     ...style,
   };
   const Styled = styled.div(objStyle);
-  // eslint-disable-next-line react/jsx-props-no-spreading
   return <Styled {...rest} ref={ref} />;
 });
 

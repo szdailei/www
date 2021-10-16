@@ -18,13 +18,13 @@ function closeJSX(ctx) {
   }
 }
 
-function closeMultiJSXsInOneLine(ctx, text) {
+function closeMultiJSXsInOneLine(ctx, inputText) {
+  let text = inputText;
   if (!text || text.length < 4) return;
 
   while (isCloseTagAtBeginning(text)) {
     closeJSX(ctx);
 
-    // eslint-disable-next-line no-param-reassign
     text = trim(getTextExceptTheFirstTag(text));
     if (!text || text.length < 4) return;
   }

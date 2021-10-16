@@ -80,7 +80,8 @@ function openJSX(ctx, text) {
   }
 }
 
-function recursiveSpliceChildren(children) {
+function recursiveSpliceChildren(inputChildren) {
+  let children = inputChildren;
   const ctx = {
     pageChildren: [],
     jsxRoot: null,
@@ -88,7 +89,6 @@ function recursiveSpliceChildren(children) {
 
   while (children) {
     if (children.length === 1 && children[0].props) {
-      // eslint-disable-next-line no-param-reassign
       children = children[0].props.children;
     } else {
       let htmlStartIndex;

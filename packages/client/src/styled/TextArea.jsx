@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback } from 'react';
 import styled from '@emotion/styled';
 

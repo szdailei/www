@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Div } from '../styled';

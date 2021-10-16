@@ -9,7 +9,6 @@ const Footer = React.forwardRef(({ style, ...rest }, ref) => {
     ...style,
   };
   const Styled = styled.footer(objStyle);
-  // eslint-disable-next-line react/jsx-props-no-spreading
   return <Styled {...rest} ref={ref} />;
 });
 

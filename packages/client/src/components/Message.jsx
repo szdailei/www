@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useImperativeHandle } from 'react';
 import { Div } from '../styled';
 
@@ -17,7 +16,6 @@ const Message = React.forwardRef(({ style, ...rest }, ref) => {
     },
   }));
 
-  // eslint-disable-next-line react/jsx-props-no-spreading
   return (
     <Div {...rest} style={objStyle} ref={ref}>
       {children}

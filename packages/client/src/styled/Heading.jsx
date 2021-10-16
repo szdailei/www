@@ -37,7 +37,7 @@ const Heading = React.forwardRef(({ depth, style, ...rest }, ref) => {
     default:
       Styled = styled.h3(objStyle);
   }
-  // eslint-disable-next-line react/jsx-props-no-spreading
+
   return <Styled {...rest} ref={ref} />;
 });
 

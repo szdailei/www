@@ -11,7 +11,6 @@ const Header = React.forwardRef(({ style, ...rest }, ref) => {
     ...style,
   };
   const Styled = styled.header(objStyle);
-  // eslint-disable-next-line react/jsx-props-no-spreading
   return <Styled {...rest} ref={ref} />;
 });
 

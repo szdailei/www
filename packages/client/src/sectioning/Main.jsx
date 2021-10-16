@@ -8,7 +8,6 @@ const Main = React.forwardRef(({ style, ...rest }, ref) => {
     ...style,
   };
   const Styled = styled.main(objStyle);
-  // eslint-disable-next-line react/jsx-props-no-spreading
   return <Styled {...rest} ref={ref} />;
 });
 

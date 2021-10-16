@@ -14,7 +14,6 @@ const Button = React.forwardRef(({ style, ...rest }, ref) => {
   };
 
   const Styled = styled.div(objStyle);
-  // eslint-disable-next-line react/jsx-props-no-spreading
   return <Styled {...rest} ref={ref} />;
 });
 

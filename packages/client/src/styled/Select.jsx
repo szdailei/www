@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -16,7 +15,7 @@ roles.forEach((role, key) => {
 // eslint-disable-next-line react/prop-types
 const Select = React.forwardRef(({ options, style, ...rest }, ref) => {
   const Styled = styled.select(style);
-  // eslint-disable-next-line react/jsx-props-no-spreading
+
   return (
     <Styled {...rest} ref={ref}>
       {options}

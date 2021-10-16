@@ -29,7 +29,7 @@ const Input = React.forwardRef(({ type, style, ...rest }, ref) => {
   }
 
   const Styled = styled.input(objStyle);
-  // eslint-disable-next-line react/jsx-props-no-spreading
+
   return <Styled type={type} {...rest} ref={ref} />;
 });
 

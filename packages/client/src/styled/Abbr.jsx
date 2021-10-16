@@ -9,7 +9,6 @@ const Abbr = React.forwardRef(({ style, ...rest }, ref) => {
   };
 
   const Styled = styled.abbr(objStyle);
-  // eslint-disable-next-line react/jsx-props-no-spreading
   return <Styled {...rest} ref={ref} />;
 });
 
