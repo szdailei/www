@@ -4,7 +4,7 @@ import makeid from '../lib/makeid';
 import { TH, TD, TR, THead, TBody, Table } from '../styled';
 import HtmlNode from './HtmlNode';
 
-function parseTD(text) {
+function parseTDWithHtml(text) {
   const tokens = marked.lexer(text);
   let children;
   if (tokens[0] && tokens[0].tokens && tokens[0].tokens.length > 1) {
@@ -46,7 +46,7 @@ function TableNode(table) {
   table.cells.forEach((rowCells) => {
     const dataCells = [];
     rowCells.forEach((text) => {
-      const tDChildren = parseTD(text);
+      const tDChildren = parseTDWithHtml(text);
       dataCells.push(
         <TD key={makeid()} style={{ padding }}>
           {tDChildren}
