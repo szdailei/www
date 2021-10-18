@@ -40,9 +40,9 @@ function getAttributeValues(attributes) {
 }
 
 function recursiveParseElement(element) {
-  let recursiveParseResult;
+  const recursiveParseResult = [];
+
   if (element.childNodes.length !== 0) {
-    recursiveParseResult = [];
     element.childNodes.forEach((child) => {
       const subNode = recursiveParseElement(child);
       if (subNode) {
@@ -54,7 +54,7 @@ function recursiveParseElement(element) {
   const attributes = getAttributeValues(element.attributes);
 
   let children;
-  if (recursiveParseResult && recursiveParseResult.length !== 0) {
+  if (recursiveParseResult.length !== 0) {
     children = recursiveParseResult;
   } else {
     children = trim(element.textContent);
@@ -125,7 +125,7 @@ function recursiveParseElement(element) {
       );
       break;
     case '#text':
-      node = null;
+      node = children;
       break;
     default:
       throw new TypeError(`Unknown html tag of ${element.tagName}`);
@@ -137,10 +137,12 @@ function HtmlNode(htmlString) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, 'text/html');
   const nodes = [];
+
   for (let i = 0; i < doc.body.children.length; i += 1) {
     const node = recursiveParseElement(doc.body.children[i]);
     nodes.push(node);
   }
+
   if (nodes.length === 0) return null;
   if (nodes.length === 1) return nodes[0];
   return nodes;

@@ -1,26 +1,11 @@
 import React from 'react';
-import marked from 'marked';
 import makeid from '../lib/makeid';
 import { TH, TD, TR, THead, TBody, Table } from '../styled';
 import HtmlNode from './HtmlNode';
 
 function parseTDWithHtml(text) {
-  const tokens = marked.lexer(text);
-  let children;
-  if (tokens[0] && tokens[0].tokens && tokens[0].tokens.length > 1) {
-    children = [];
-    tokens[0].tokens.forEach((token) => {
-      let node = token.text;
-      if (token.type === 'html') {
-        node = HtmlNode(token.text);
-      }
-      children.push(node);
-    });
-  } else {
-    children = text;
-  }
-
-  return children;
+  const htmlString = `<span>${text}</span>`;
+  return HtmlNode(htmlString);
 }
 
 function TableNode(table) {
