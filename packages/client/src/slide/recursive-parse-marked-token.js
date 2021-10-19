@@ -32,7 +32,7 @@ function recursiveParseMarkedToken(token, parent) {
   if (recursiveParseResult && recursiveParseResult.length !== 0) {
     children = recursiveParseResult;
   } else {
-    children = trim(token.raw);
+    children = token.type === 'text' ? token.raw : trim(token.raw);
   }
 
   if (isRequiredRecursiveParse(token) && !children) return null;

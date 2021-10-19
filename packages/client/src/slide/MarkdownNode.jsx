@@ -33,10 +33,10 @@ function MarkdownNode(token, children, parent) {
       }
       break;
     case 'codespan':
-      node = <span key={makeid()}>{token.raw}</span>;
+      node = <Span key={makeid()}>{token.raw}</Span>;
       break;
     case 'del':
-      node = <span key={makeid()}>{token.raw}</span>;
+      node = <Span key={makeid()}>{token.raw}</Span>;
       break;
     case 'em':
       node = <em key={makeid()}>{trimedText}</em>;
@@ -94,12 +94,12 @@ function MarkdownNode(token, children, parent) {
     case 'paragraph':
       if (children.length === 1) {
         if (children[0].type === 'span') {
-          node = <p key={makeid()}>{removeBlankLine(trimedText)}</p>;
+          node = <P key={makeid()}>{removeBlankLine(trimedText)}</P>;
         } else {
           [node] = children;
         }
       } else {
-        node = <p key={makeid()}>{children}</p>;
+        node = <P key={makeid()}>{children}</P>;
       }
       break;
     case 'space':
