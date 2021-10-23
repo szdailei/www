@@ -7,7 +7,7 @@ const TextArea = React.forwardRef(({ style, ...rest }, ref) => {
   const onChange = useCallback((event) => {
     const currentRows = event.target.value.split('\n').length;
     // eslint-disable-next-line no-param-reassign
-    if (currentRows > minRows) event.target.rows = currentRows + 1;
+    if (currentRows > minRows) event.target.rows = currentRows;
   }, []);
 
   const objStyle = {
