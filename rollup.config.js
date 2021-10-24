@@ -4,7 +4,7 @@ import replace from '@rollup/plugin-replace';
 import commonjs from '@rollup/plugin-commonjs';
 import external from 'rollup-plugin-node-externals';
 import json from '@rollup/plugin-json';
-import css from 'rollup-plugin-import-css';
+import postcss from 'rollup-plugin-postcss';
 import { string } from 'rollup-plugin-string';
 
 const mode = process.env.NODE_ENV;
@@ -30,9 +30,9 @@ const config = {
     replace({ 'process.env.NODE_ENV': JSON.stringify(mode), preventAssignment: true }),
     external(),
     json(),
-    css({
-      extensions: ['.css'],
-   }),
+    postcss({
+      plugins: [],
+    }),
     string({
       include: '**/*.md',
     }),
